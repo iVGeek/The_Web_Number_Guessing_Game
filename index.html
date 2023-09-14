@@ -3,31 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number</title>
+    <title>Guess the Number Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Guess the Number</h1>
-        <div id="game-controls">
-            <button id="start-button">Start New Game</button>
-            <div id="game-mode">
-                <label for="single-player">Single Player</label>
-                <input type="radio" id="single-player" name="game-mode" value="single" checked>
-                <label for="multi-player">Multiplayer</label>
-                <input type="radio" id="multi-player" name="game-mode" value="multi">
+        <button id="toggle-dark-mode">Toggle Dark Mode</button>
+    </header>
+    
+    <main>
+        <section id="game-controls">
+            <div id="single-player-controls">
+                <input type="radio" name="game-mode" id="single-mode" value="single" checked>
+                <label for="single-mode">Single Player</label>
             </div>
-        </div>
-        <div id="game-area">
-            <p id="attempts-left">Attempts left: 0</p>
-            <input type="number" id="guess-input" placeholder="Enter your guess">
+            <div id="multi-player-controls">
+                <input type="radio" name="game-mode" id="multi-mode" value="multi">
+                <label for="multi-mode">Multiplayer</label>
+            </div>
+            <div id="level-controls">
+                <input type="radio" name="game-level" id="easy" value="easy" checked>
+                <label for="easy">Easy</label>
+                <input type="radio" name="game-level" id="medium" value="medium">
+                <label for="medium">Medium</label>
+                <input type="radio" name="game-level" id="hard" value="hard">
+                <label for="hard">Hard</label>
+            </div>
+            <button id="start-button">Start New Game</button>
+        </section>
+        
+        <section id="gameplay">
+            <p id="attempts-left"></p>
+            <input type="text" id="guess-input" placeholder="Enter your guess">
             <button id="guess-button">Guess</button>
             <p id="result-message"></p>
-        </div>
-        <div id="leaderboard">
+        </section>
+        
+        <section id="leaderboard">
             <h2>Leaderboard</h2>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Guess the Number Game</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
