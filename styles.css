@@ -1,34 +1,71 @@
-/* Dark Mode Styles */
-body.dark-mode {
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    color: #333;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 5px;
+}
+
+button {
+    padding: 5px 10px;
     background-color: #333;
     color: #fff;
-}
-
-.dark-mode .container {
-    background-color: #444;
-    color: #fff;
-}
-
-.dark-mode .game-controls label,
-.dark-mode .game-message {
-    color: #fff;
-}
-
-.dark-mode .game-controls #user-guess,
-.dark-mode .leaderboard h2,
-.dark-mode .leaderboard #leaderboard-list li {
-    background-color: #555;
-    color: #fff;
-}
-
-.dark-mode #toggle-theme {
-    background-color: #007bff;
-    color: #fff;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
 }
 
-.dark-mode #toggle-theme:hover {
-    background-color: #0056b3;
+.gameplay p {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.leaderboard h2 {
+    font-size: 24px;
+}
+
+#leaderboard-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#leaderboard-list li {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.sound {
+    display: none;
 }
