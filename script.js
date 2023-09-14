@@ -4,31 +4,19 @@ let currentLevel;
 let secretNumber;
 let attemptsLeft;
 
-// Define game levels
-class GameLevel {
-    constructor(name, min, max, maxAttempts, color) {
-        this.name = name;
-        this.min = min;
-        this.max = max;
-        this.maxAttempts = maxAttempts;
-        this.color = color;
-    }
-}
-
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by iVGeek";
+    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
 }
 
 // Function to select a game level
 function selectGameLevel() {
-    const levelSelect = document.getElementById('level-select');
-    levelSelect.style.display = 'block';
+    const levelDropdown = document.getElementById('level-dropdown');
+    const startButton = document.getElementById('start-button');
 
-    // Listen for level selection
-    levelSelect.addEventListener('change', function () {
-        const selectedLevel = levelSelect.value;
+    startButton.addEventListener('click', () => {
+        const selectedLevel = levelDropdown.value;
         switch (selectedLevel) {
             case 'easy':
                 currentLevel = new GameLevel("Easy", 1, 10, 8, "green");
@@ -44,7 +32,6 @@ function selectGameLevel() {
                 break;
         }
         startGame();
-        levelSelect.style.display = 'none';
     });
 }
 
@@ -54,15 +41,14 @@ function startGame() {
     attemptsLeft = currentLevel.maxAttempts;
 
     // Display game elements
+    const levelSelect = document.getElementById('level-select');
     const gameElements = document.getElementById('game-elements');
-    gameElements.style.display = 'block';
-
-    // Clear previous messages
     const messageElement = document.getElementById('message');
-    messageElement.textContent = '';
-
-    // Display attempts left
     const attemptsLeftElement = document.getElementById('attempts-left');
+
+    levelSelect.style.display = 'none';
+    gameElements.style.display = 'block';
+    messageElement.textContent = '';
     attemptsLeftElement.textContent = `Attempts left: ${attemptsLeft}`;
 }
 
@@ -146,12 +132,6 @@ function displayLeaderboard() {
         row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td><td>${entry.level}</td>`;
         leaderboardTable.appendChild(row);
     }
-}
-
-// Function to clear the leaderboard
-function clearLeaderboard() {
-    leaderboard = [];
-    displayLeaderboard();
 }
 
 // Main menu
