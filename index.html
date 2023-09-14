@@ -4,32 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Guess the Number</title>
+    <title>Guess the Number Game - Developed by iVGeek</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Guess the Number</h1>
-        <div class="controls">
-            <label for="guess">Enter your guess:</label>
-            <input type="number" id="guess" min="1" max="100">
-            <button id="submit">Guess</button>
+    <div id="game-container">
+        <h1 id="game-title">Guess the Number!</h1>
+        <p id="welcome-message">Welcome to the game.</p>
+        <div id="animation"></div>
+        
+        <div id="game-controls">
+            <label for="guess-input">Enter your guess: </label>
+            <input type="number" id="guess-input" min="1" max="100">
+            <button id="guess-button">Guess</button>
+            <p id="attempts-left">Attempts left: 4</p>
         </div>
-        <p>Attempts left: <span id="attempts">5</span></p>
-        <div class="gameplay">
-            <p>Guesses: <span id="guesses">0</span></p>
-        </div>
-        <div class="leaderboard">
-            <h2>Leaderboard</h2>
-            <ol id="leaderboard-list">
-                <!-- Leaderboard data will be added dynamically -->
-            </ol>
-        </div>
+        
+        <div id="result-message"></div>
+        
+        <button id="view-leaderboard-button">View Leaderboard</button>
+        <button id="clear-leaderboard-button">Clear Leaderboard</button>
     </div>
-    <div class="sound">
-        <audio id="correct-sound" src="correct.mp3"></audio>
-        <audio id="incorrect-sound" src="incorrect.mp3"></audio>
-        <audio id="gameover-sound" src="gameover.mp3"></audio>
+    
+    <div id="leaderboard-container">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard"></div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
