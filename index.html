@@ -7,33 +7,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <div class="container">
         <h1>Guess the Number</h1>
-    </header>
-    <main>
-        <div id="game-container">
-            <p id="message">Welcome to the game! Try to guess the number between 1 and 100.</p>
-            <input type="number" id="guess-input" placeholder="Enter your guess">
-            <button id="guess-button">Guess</button>
-            <button id="restart-button">Restart</button>
+        <div class="game">
+            <div class="game-controls">
+                <label for="user-guess">Enter a number:</label>
+                <input type="number" id="user-guess" min="1" max="100" required>
+                <button id="guess-button">Guess</button>
+            </div>
+            <div class="game-message" id="game-message"></div>
         </div>
-        <div id="score-container">
-            <p>Attempts: <span id="attempts">0</span></p>
-            <p>Score: <span id="score">100</span></p>
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ol id="leaderboard-list"></ol>
+            <button id="clear-leaderboard">Clear Leaderboard</button>
         </div>
-    </main>
-    <audio id="correct-audio" preload="auto">
-        <source src="correct.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <audio id="incorrect-audio" preload="auto">
-        <source src="incorrect.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <audio id="gameover-audio" preload="auto">
-        <source src="gameover.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
