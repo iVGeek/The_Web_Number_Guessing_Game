@@ -1,107 +1,107 @@
-// JavaScript for Guess the Number game
-
-// Initialize game variables
-let secretNumber;
-let attemptsLeft;
-let isGameOver = false;
-let leaderboard = [];
-let player1Name = '';
-let player2Name = '';
-
-// Function to start a new game
-function startNewGame() {
-    secretNumber = generateRandomNumber(1, 100);
-    attemptsLeft = 4;
-    isGameOver = false;
-    document.getElementById('result-message').textContent = '';
-    document.getElementById('attempts-left').textContent = `Attempts left: ${attemptsLeft}`;
-    document.getElementById('guess-input').value = '';
-    
-    // Prompt for player names only once when starting a two-player game
-    if (document.getElementById('player-selection').value === 'two-players') {
-        if (!player1Name) {
-            player1Name = prompt('Enter Player 1 name:');
-        }
-        if (!player2Name) {
-            player2Name = prompt('Enter Player 2 name:');
-        }
-    }
-    updatePlayerInfo();
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
 }
 
-// Function to update player info
-function updatePlayerInfo() {
-    const playerInfo = document.getElementById('player-info');
-    if (document.getElementById('player-selection').value === 'two-players') {
-        playerInfo.textContent = `Players: ${player1Name} vs ${player2Name}`;
-    } else {
-        playerInfo.textContent = `Player: ${player1Name}`;
-    }
+.dark-mode {
+    background-color: #333;
+    color: #fff;
 }
 
-// Function to generate a random number between min and max (inclusive)
-function generateRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+header {
+    background-color: #007acc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
 }
 
-// Function to handle the "Guess" button click
-function handleGuessClick() {
-    if (isGameOver) {
-        return;
-    }
-
-    const guessInput = document.getElementById('guess-input');
-    const guess = parseInt(guessInput.value);
-
-    if (isNaN(guess) || guess < 1 || guess > 100) {
-        document.getElementById('result-message').textContent = 'Invalid guess. Please enter a number between 1 and 100.';
-        return;
-    }
-
-    attemptsLeft--;
-
-    if (guess === secretNumber) {
-        endGame(true);
-    } else if (attemptsLeft === 0) {
-        endGame(false);
-    } else {
-        document.getElementById('attempts-left').textContent = `Attempts left: ${attemptsLeft}`;
-        document.getElementById('result-message').textContent = guess < secretNumber ? 'Too low!' : 'Too high!';
-    }
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
 }
 
-// Function to end the game and display the result
-function endGame(isWinner) {
-    isGameOver = true;
-    const resultMessage = document.getElementById('result-message');
-    resultMessage.textContent = isWinner ? 'Congratulations! You guessed the number!' : `Game over. The number was ${secretNumber}.`;
-    leaderboard.push({ player: player1Name, attempts: 5 - attemptsLeft, isWinner });
-    showLeaderboard();
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-// Function to display the leaderboard
-function showLeaderboard() {
-    leaderboard.sort((a, b) => a.attempts - b.attempts);
-    const leaderboardContainer = document.getElementById('leaderboard');
-    leaderboardContainer.innerHTML = '<h2>Leaderboard</h2>';
-    leaderboard.forEach((entry, index) => {
-        leaderboardContainer.innerHTML += `<p>${index + 1}. ${entry.player}: Attempts: ${entry.attempts}, ${entry.isWinner ? 'Winner' : 'Loser'}</p>`;
-    });
+.game-controls {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-// Event listeners
-document.getElementById('start-button').addEventListener('click', startNewGame);
-document.getElementById('guess-button').addEventListener('click', handleGuessClick);
-
-// Dark/Light Mode Button
-const darkModeButton = document.getElementById('dark-mode-button');
-darkModeButton.addEventListener('click', toggleDarkMode);
-
-// Function to toggle dark/light mode
-function toggleDarkMode() {
-    const body = document.body;
-    body.classList.toggle('dark-mode');
+.game-controls h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-// Start a new game when the page loads
-startNewGame();
+.game-controls label {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.game-controls select, .game-controls input {
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.game-controls button {
+    background-color: #007acc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.game-controls button:hover {
+    background-color: #005f99;
+}
+
+#result-message, #attempts-left {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.leaderboard {
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+.leaderboard h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.leaderboard p {
+    font-size: 16px;
+    margin: 5px;
+}
+
+#dark-mode-button {
+    background-color: #007acc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+#dark-mode-button:hover {
+    background-color: #005f99;
+}
