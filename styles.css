@@ -1,83 +1,61 @@
+/* Add these styles for font colors */
 body {
+    color: #333;
     font-family: Arial, sans-serif;
-    background-image: url('background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
-#game-container {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    padding: 20px;
+header {
+    background-color: #3498db;
+    color: #fff;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
 }
 
-#game-title {
-    font-size: 36px;
-    color: #007acc;
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
 }
 
-#welcome-message {
+button:hover {
+    background-color: #2980b9;
+}
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#game-controls {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#result-message {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #e74c3c;
+}
+
+#attempts-left {
     font-size: 18px;
     margin-top: 10px;
 }
 
-#game-controls {
-    margin-top: 20px;
-}
-
-#guess-input {
-    width: 60px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-#guess-button {
-    padding: 5px 10px;
-    font-size: 16px;
-    background-color: #007acc;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#attempts-left {
-    margin-top: 10px;
-    font-size: 16px;
-}
-
-#result-message {
-    margin-top: 20px;
-    font-size: 24px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    font-size: 16px;
-    background-color: #007acc;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#leaderboard-container {
-    margin-top: 30px;
-    text-align: center;
-    color: white;
-}
-
 #leaderboard {
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-    padding: 10px;
-    overflow-y: auto;
-    max-height: 200px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#leaderboard h2 {
+    font-size: 24px;
+    color: #333;
 }
