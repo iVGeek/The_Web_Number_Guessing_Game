@@ -1,92 +1,124 @@
 /* Reset some default styles */
-body, h1, h2, p, input, button {
+body, h1, h2, p {
     margin: 0;
     padding: 0;
 }
 
-/* Set a background color and font family */
 body {
-    background-color: #f0f0f0; /* You can customize the background color */
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Background color for the entire page */
 }
 
 .container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Game level selection */
+#level-select {
     text-align: center;
 }
 
-/* Styling for headers */
-h1 {
+#level-dropdown {
+    padding: 10px;
+    font-size: 18px;
+}
+
+#start-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Game elements */
+#game-elements {
+    text-align: center;
+}
+
+#game-title {
     font-size: 24px;
     color: #333;
     margin-bottom: 10px;
 }
 
-h2 {
-    font-size: 20px;
+#message {
+    font-size: 18px;
     color: #333;
     margin-bottom: 10px;
 }
 
-/* Styling for buttons */
-button {
+#attempts-left {
+    font-size: 16px;
+    color: #777;
+}
+
+#guess-input {
+    padding: 10px;
+    font-size: 18px;
+}
+
+#guess-button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #0074d9; /* You can customize the button color */
+    background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3; /* Change color on hover */
-}
-
-/* Styling for input elements */
-input[type="number"] {
-    padding: 10px;
-    font-size: 16px;
-    width: 100px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Styling for messages */
-p {
-    font-size: 18px;
-    color: #333;
-    margin-top: 10px;
-}
-
-/* Styling for leaderboard table */
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Leaderboard styles */
+#leaderboard {
+    text-align: center;
     margin-top: 20px;
 }
 
-table, th, td {
-    border: 1px solid #ccc;
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-th, td {
+#leaderboard-table th {
+    background-color: #007bff;
+    color: #fff;
     padding: 10px;
-    text-align: center;
 }
 
-th {
-    background-color: #f0f0f0; /* Header background color */
+#leaderboard-table td, #leaderboard-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
 }
 
-/* Hide the level select and leaderboard initially */
-.hidden {
-    display: none;
+/* Dark mode styles */
+.dark-mode {
+    background-color: #333;
+    color: #fff;
 }
+
+/* Button styles */
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Add more styles as needed */
