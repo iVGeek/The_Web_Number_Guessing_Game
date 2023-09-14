@@ -3,52 +3,85 @@ let leaderboard = [];
 let currentLevel;
 let secretNumber;
 let attemptsLeft;
+let currentPlayer = 1;
+let player1Name;
+let player2Name;
+
+// Define game levels
+class GameLevel {
+    constructor(name, min, max, maxAttempts, color) {
+        this.name = name;
+        this.min = min;
+        this.max = max;
+        this.maxAttempts = maxAttempts;
+        this.color = color;
+    }
+}
 
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
+    welcomeMessage.textContent = "Welcome to Guess the Number!";
+
+    const modeSelect = document.getElementById('mode-select');
+    modeSelect.style.display = 'block';
+
+    const playerInfo = document.getElementById('player-info');
+    playerInfo.style.display = 'none';
+
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'none';
+
+    const leaderboardSection = document.getElementById('leaderboard');
+    leaderboardSection.style.display = 'none';
+
+    const clearLeaderboardButton = document.getElementById('clear-leaderboard');
+    clearLeaderboardButton.addEventListener('click', clearLeaderboard);
 }
 
-// Function to select a game level
-function selectGameLevel() {
-    const levelDropdown = document.getElementById('level-dropdown');
-    const startButton = document.getElementById('start-button');
+// Function to select a game mode (Single or Multiplayer)
+function selectGameMode() {
+    const singlePlayerButton = document.getElementById('single-player');
+    const multiplayerButton = document.getElementById('multiplayer');
 
-    startButton.addEventListener('click', () => {
-        const selectedLevel = levelDropdown.value;
-        switch (selectedLevel) {
-            case 'easy':
-                currentLevel = new GameLevel("Easy", 1, 10, 8, "green");
-                break;
-            case 'medium':
-                currentLevel = new GameLevel("Medium", 1, 50, 6, "yellow");
-                break;
-            case 'hard':
-                currentLevel = new GameLevel("Hard", 1, 100, 4, "red");
-                break;
-            default:
-                currentLevel = new GameLevel("Medium", 1, 50, 4, "yellow");
-                break;
-        }
+    singlePlayerButton.addEventListener('click', () => {
+        currentPlayer = 1;
+        player1Name = prompt("Enter your name (Player 1):");
+        startGame();
+    });
+
+    multiplayerButton.addEventListener('click', () => {
+        currentPlayer = 1;
+        player1Name = prompt("Enter Player 1 name:");
+        player2Name = prompt("Enter Player 2 name:");
         startGame();
     });
 }
 
 // Function to start the game
 function startGame() {
+    const modeSelect = document.getElementById('mode-select');
+    modeSelect.style.display = 'none';
+
+    const playerInfo = document.getElementById('player-info');
+    playerInfo.style.display = 'none';
+
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'block';
+
+    const leaderboardSection = document.getElementById('leaderboard');
+    leaderboardSection.style.display = 'none';
+
     secretNumber = generateRandomNumber(currentLevel.min, currentLevel.max);
     attemptsLeft = currentLevel.maxAttempts;
 
-    // Display game elements
-    const levelSelect = document.getElementById('level-select');
-    const gameElements = document.getElementById('game-elements');
-    const messageElement = document.getElementById('message');
-    const attemptsLeftElement = document.getElementById('attempts-left');
+    const gameTitle = document.getElementById('game-title');
+    gameTitle.textContent = 'Guess the Number';
 
-    levelSelect.style.display = 'none';
-    gameElements.style.display = 'block';
+    const messageElement = document.getElementById('message');
     messageElement.textContent = '';
+
+    const attemptsLeftElement = document.getElementById('attempts-left');
     attemptsLeftElement.textContent = `Attempts left: ${attemptsLeft}`;
 }
 
@@ -84,20 +117,26 @@ function endGame(isWinner) {
     const messageElement = document.getElementById('message');
     if (isWinner) {
         messageElement.textContent = 'Congratulations! You guessed the number!';
+        playSound('correct-sound');
+        updateLeaderboard(currentPlayer === 1 ? player1Name : player2Name, currentLevel.maxAttempts - attemptsLeft);
     } else {
         messageElement.textContent = 'Game over. The number was ' + secretNumber + '.';
+        playSound('gameover-sound');
     }
 
-    // Update leaderboard
-    updateLeaderboard('Player Name', currentLevel.maxAttempts - attemptsLeft, currentLevel.name);
-
-    // Hide game elements
     const gameElements = document.getElementById('game-elements');
     gameElements.style.display = 'none';
 
-    // Show level select again
-    const levelSelect = document.getElementById('level-select');
-    levelSelect.style.display = 'block';
+    const leaderboardSection = document.getElementById('leaderboard');
+    leaderboardSection.style.display = 'block';
+    displayLeaderboard();
+}
+
+// Function to play sound effects
+function playSound(soundId) {
+    const sound = document.getElementById(soundId);
+    sound.currentTime = 0;
+    sound.play();
 }
 
 // Function to display a message to the user
@@ -113,11 +152,11 @@ function displayAttemptsLeft() {
 }
 
 // Function to update the leaderboard
-function updateLeaderboard(player, score, level) {
-    leaderboard.push({ player, score, level });
-    leaderboard.sort((a, b) => a.score - b.score);
+function updateLeaderboard(player, score) {
+    leaderboard.push({ player, score });
+    leaderboard.sort((a, b) => b.score - a.score);
     if (leaderboard.length > 5) {
-        leaderboard.shift(); // Remove the lowest score if leaderboard size exceeds the maximum
+        leaderboard.pop(); // Remove the lowest score if leaderboard size exceeds the maximum
     }
     displayLeaderboard();
 }
@@ -125,19 +164,42 @@ function updateLeaderboard(player, score, level) {
 // Function to display the leaderboard
 function displayLeaderboard() {
     const leaderboardTable = document.getElementById('leaderboard-table');
-    leaderboardTable.innerHTML = '<tr><th>Player</th><th>Score</th><th>Level</th></tr>';
+    const leaderboardRows = leaderboardTable.querySelectorAll('tr');
+    
+    // Clear previous leaderboard data
+    for (let i = 1; i < leaderboardRows.length; i++) {
+        leaderboardRows[i].remove();
+    }
 
-    for (const entry of leaderboard) {
+    // Populate the leaderboard
+    for (let i = 0; i < leaderboard.length; i++) {
         const row = document.createElement('tr');
-        row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td><td>${entry.level}</td>`;
+        const rank = document.createElement('td');
+        const player = document.createElement('td');
+        const score = document.createElement('td');
+
+        rank.textContent = i + 1;
+        player.textContent = leaderboard[i].player;
+        score.textContent = leaderboard[i].score;
+
+        row.appendChild(rank);
+        row.appendChild(player);
+        row.appendChild(score);
+
         leaderboardTable.appendChild(row);
     }
+}
+
+// Function to clear the leaderboard
+function clearLeaderboard() {
+    leaderboard = [];
+    displayLeaderboard();
 }
 
 // Main menu
 function main() {
     displayWelcomeScreen();
-    selectGameLevel();
+    selectGameMode();
 }
 
 // Call the main function when the page loads
