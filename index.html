@@ -8,26 +8,24 @@
 </head>
 <body>
     <header>
-        <h1>Guess the Number</h1>
-        <button id="dark-light-button">Toggle Dark Mode</button>
+        <h1>Guess the Number Game</h1>
     </header>
     <main>
-        <div id="game-container">
-            <!-- Game controls and information -->
-            <div id="game-info">
-                <!-- Player names, game mode selection, game info, etc. -->
+        <div class="game-container">
+            <div class="game-controls">
+                <button id="start-button">Start New Game</button>
+                <p id="attempts-left">Attempts left: 4</p>
+                <input type="number" id="guess-input" placeholder="Enter your guess">
+                <button id="guess-button">Guess</button>
+                <p id="result-message"></p>
             </div>
-            <!-- Game display area -->
-            <div id="game-display">
-                <!-- Display game elements, result, etc. -->
+            <div class="leaderboard-container">
+                <div id="leaderboard"></div>
             </div>
-        </div>
-        <div id="leaderboard">
-            <!-- Display leaderboard -->
         </div>
     </main>
     <footer>
-        <p>Developed by iVGeek</p>
+        <p>Developer: Your Name</p>
     </footer>
     <script src="script.js"></script>
 </body>
