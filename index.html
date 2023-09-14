@@ -7,30 +7,27 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <div class="container">
         <h1>Guess the Number</h1>
-        <button id="toggle-dark-mode">Toggle Dark Mode</button>
-    </header>
-    <main>
-        <div id="game-mode">
-    <label for="single-player">Single Player</label>
-    <input type="radio" id="single-player" name="game-mode" value="single" checked>
-    <label for="multi-player">Multiplayer</label>
-    <input type="radio" id="multi-player" name="game-mode" value="multi">
-</div>
         <div id="game-controls">
-            <label for="guess-input">Enter your guess: </label>
-            <input type="number" id="guess-input" min="1" max="100">
-            <button id="guess-button">Guess</button>
-            <p id="attempts-left">Attempts left: 4</p>
             <button id="start-button">Start New Game</button>
+            <div id="game-mode">
+                <label for="single-player">Single Player</label>
+                <input type="radio" id="single-player" name="game-mode" value="single" checked>
+                <label for="multi-player">Multiplayer</label>
+                <input type="radio" id="multi-player" name="game-mode" value="multi">
+            </div>
         </div>
-        <p id="result-message"></p>
+        <div id="game-area">
+            <p id="attempts-left">Attempts left: 0</p>
+            <input type="number" id="guess-input" placeholder="Enter your guess">
+            <button id="guess-button">Guess</button>
+            <p id="result-message"></p>
+        </div>
         <div id="leaderboard">
             <h2>Leaderboard</h2>
         </div>
-        
-    </main>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
