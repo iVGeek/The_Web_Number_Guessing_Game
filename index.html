@@ -12,6 +12,12 @@
         <button id="toggle-dark-mode">Toggle Dark Mode</button>
     </header>
     <main>
+        <div id="game-mode">
+    <label for="single-player">Single Player</label>
+    <input type="radio" id="single-player" name="game-mode" value="single" checked>
+    <label for="multi-player">Multiplayer</label>
+    <input type="radio" id="multi-player" name="game-mode" value="multi">
+</div>
         <div id="game-controls">
             <label for="guess-input">Enter your guess: </label>
             <input type="number" id="guess-input" min="1" max="100">
@@ -23,6 +29,7 @@
         <div id="leaderboard">
             <h2>Leaderboard</h2>
         </div>
+        
     </main>
     <script src="script.js"></script>
 </body>
