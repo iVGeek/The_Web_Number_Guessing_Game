@@ -18,7 +18,7 @@ class GameLevel {
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
+    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by iVGeek";
 }
 
 // Function to select a game level
