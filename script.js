@@ -5,7 +5,7 @@ let secretNumber;
 let attemptsLeft;
 let isGameOver = false;
 let leaderboard = [];
-let gameMode = 'single'; // Default to single player
+let gameMode = 'single';
 
 // Function to start a new game
 function startNewGame() {
@@ -18,16 +18,39 @@ function startNewGame() {
         }
     }
 
+    // Retrieve the selected game level
+    const gameLevelRadios = document.getElementsByName('game-level');
+    let minRange, maxRange, maxAttempts;
+    for (const radio of gameLevelRadios) {
+        if (radio.checked) {
+            const level = radio.value;
+            if (level === 'easy') {
+                minRange = 1;
+                maxRange = 30;
+                maxAttempts = 10;
+            } else if (level === 'medium') {
+                minRange = 1;
+                maxRange = 50;
+                maxAttempts = 6;
+            } else if (level === 'hard') {
+                minRange = 1;
+                maxRange = 100;
+                maxAttempts = 4;
+            }
+            break;
+        }
+    }
+
     // Prompt for the player's name
     const playerName = prompt('Enter your name to start the game:');
     if (!playerName) {
         return; // Exit if the player cancels or leaves the name blank
     }
 
-    // Adjust game settings based on the selected mode
+    // Adjust game settings based on the selected mode and level
     if (gameMode === 'single') {
-        secretNumber = generateRandomNumber(1, 100);
-        attemptsLeft = 4;
+        secretNumber = generateRandomNumber(minRange, maxRange);
+        attemptsLeft = maxAttempts;
     } else if (gameMode === 'multi') {
         // Adjust settings for multiplayer mode here
     }
@@ -74,14 +97,7 @@ function endGame(isWinner) {
     isGameOver = true;
     const resultMessage = document.getElementById('result-message');
     resultMessage.textContent = isWinner ? 'Congratulations! You guessed the number!' : `Game over. The number was ${secretNumber}.`;
-
-    // Prompt players to enter their names
-    const playerName = prompt('Enter your name to save your score:');
-    if (!playerName) {
-        return; // Exit if the player cancels or leaves the name blank
-    }
-
-    leaderboard.push({ player: playerName, attempts: 5 - attemptsLeft, isWinner });
+    leaderboard.push({ playerName, attempts: 5 - attemptsLeft, isWinner });
     showLeaderboard();
 }
 
@@ -91,7 +107,7 @@ function showLeaderboard() {
     const leaderboardContainer = document.getElementById('leaderboard');
     leaderboardContainer.innerHTML = '<h2>Leaderboard</h2>';
     leaderboard.forEach((entry, index) => {
-        leaderboardContainer.innerHTML += `<p>${index + 1}. ${entry.player}: Attempts: ${entry.attempts}, ${entry.isWinner ? 'Winner' : 'Loser'}</p>`;
+        leaderboardContainer.innerHTML += `<p>${index + 1}. ${entry.playerName}: Attempts - ${entry.attempts}, ${entry.isWinner ? 'Winner' : 'Loser'}</p>`;
     });
 }
 
