@@ -1,5 +1,3 @@
-// JavaScript for Guess the Number game
-
 // Initialize game variables
 let secretNumber;
 let attemptsLeft;
