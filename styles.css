@@ -1,76 +1,107 @@
-body {
-    background-image: url('background.jpg');
-    background-size: cover;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    color: white;
-    margin: 0;
-    padding: 0;
+// JavaScript for Guess the Number game
+
+// Initialize game variables
+let secretNumber;
+let attemptsLeft;
+let isGameOver = false;
+let leaderboard = [];
+let player1Name = '';
+let player2Name = '';
+
+// Function to start a new game
+function startNewGame() {
+    secretNumber = generateRandomNumber(1, 100);
+    attemptsLeft = 4;
+    isGameOver = false;
+    document.getElementById('result-message').textContent = '';
+    document.getElementById('attempts-left').textContent = `Attempts left: ${attemptsLeft}`;
+    document.getElementById('guess-input').value = '';
+    
+    // Prompt for player names only once when starting a two-player game
+    if (document.getElementById('player-selection').value === 'two-players') {
+        if (!player1Name) {
+            player1Name = prompt('Enter Player 1 name:');
+        }
+        if (!player2Name) {
+            player2Name = prompt('Enter Player 2 name:');
+        }
+    }
+    updatePlayerInfo();
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+// Function to update player info
+function updatePlayerInfo() {
+    const playerInfo = document.getElementById('player-info');
+    if (document.getElementById('player-selection').value === 'two-players') {
+        playerInfo.textContent = `Players: ${player1Name} vs ${player2Name}`;
+    } else {
+        playerInfo.textContent = `Player: ${player1Name}`;
+    }
 }
 
-h1 {
-    font-size: 36px;
+// Function to generate a random number between min and max (inclusive)
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-#game-controls {
-    margin-bottom: 20px;
+// Function to handle the "Guess" button click
+function handleGuessClick() {
+    if (isGameOver) {
+        return;
+    }
+
+    const guessInput = document.getElementById('guess-input');
+    const guess = parseInt(guessInput.value);
+
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+        document.getElementById('result-message').textContent = 'Invalid guess. Please enter a number between 1 and 100.';
+        return;
+    }
+
+    attemptsLeft--;
+
+    if (guess === secretNumber) {
+        endGame(true);
+    } else if (attemptsLeft === 0) {
+        endGame(false);
+    } else {
+        document.getElementById('attempts-left').textContent = `Attempts left: ${attemptsLeft}`;
+        document.getElementById('result-message').textContent = guess < secretNumber ? 'Too low!' : 'Too high!';
+    }
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 18px;
+// Function to end the game and display the result
+function endGame(isWinner) {
+    isGameOver = true;
+    const resultMessage = document.getElementById('result-message');
+    resultMessage.textContent = isWinner ? 'Congratulations! You guessed the number!' : `Game over. The number was ${secretNumber}.`;
+    leaderboard.push({ player: player1Name, attempts: 5 - attemptsLeft, isWinner });
+    showLeaderboard();
 }
 
-#game-mode {
-    margin-top: 10px;
+// Function to display the leaderboard
+function showLeaderboard() {
+    leaderboard.sort((a, b) => a.attempts - b.attempts);
+    const leaderboardContainer = document.getElementById('leaderboard');
+    leaderboardContainer.innerHTML = '<h2>Leaderboard</h2>';
+    leaderboard.forEach((entry, index) => {
+        leaderboardContainer.innerHTML += `<p>${index + 1}. ${entry.player}: Attempts: ${entry.attempts}, ${entry.isWinner ? 'Winner' : 'Loser'}</p>`;
+    });
 }
 
-label {
-    margin-right: 10px;
+// Event listeners
+document.getElementById('start-button').addEventListener('click', startNewGame);
+document.getElementById('guess-button').addEventListener('click', handleGuessClick);
+
+// Dark/Light Mode Button
+const darkModeButton = document.getElementById('dark-mode-button');
+darkModeButton.addEventListener('click', toggleDarkMode);
+
+// Function to toggle dark/light mode
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
 }
 
-#game-area {
-    margin-top: 20px;
-}
-
-input[type="number"] {
-    padding: 5px;
-    width: 60px;
-}
-
-#guess-button {
-    background-color: #28a745;
-}
-
-#result-message {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-#leaderboard {
-    margin-top: 20px;
-}
-
-h2 {
-    font-size: 24px;
-}
-
-p {
-    font-size: 16px;
-}
-
+// Start a new game when the page loads
+startNewGame();
