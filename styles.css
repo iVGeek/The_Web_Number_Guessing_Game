@@ -1,107 +1,92 @@
+/* Reset some default styles */
+body, h1, h2, p, input, button {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set a background color and font family */
 body {
+    background-color: #f0f0f0; /* You can customize the background color */
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Styling for headers */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Styling for buttons */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0074d9; /* You can customize the button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
     transition: background-color 0.3s;
 }
 
-.dark-mode {
-    background-color: #333;
-    color: #fff;
+button:hover {
+    background-color: #0056b3; /* Change color on hover */
 }
 
-header {
-    background-color: #007acc;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-}
-
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-}
-
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #fff;
+/* Styling for input elements */
+input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 100px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.game-controls {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.game-controls h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.game-controls label {
-    font-size: 16px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.game-controls select, .game-controls input {
-    padding: 5px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.game-controls button {
-    background-color: #007acc;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.game-controls button:hover {
-    background-color: #005f99;
-}
-
-#result-message, #attempts-left {
+/* Styling for messages */
+p {
     font-size: 18px;
+    color: #333;
     margin-top: 10px;
 }
 
-.leaderboard {
+/* Styling for leaderboard table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
     text-align: center;
-    border-top: 1px solid #ccc;
-    padding-top: 20px;
 }
 
-.leaderboard h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+th {
+    background-color: #f0f0f0; /* Header background color */
 }
 
-.leaderboard p {
-    font-size: 16px;
-    margin: 5px;
-}
-
-#dark-mode-button {
-    background-color: #007acc;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
-}
-
-#dark-mode-button:hover {
-    background-color: #005f99;
+/* Hide the level select and leaderboard initially */
+.hidden {
+    display: none;
 }
