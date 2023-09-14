@@ -9,34 +9,44 @@
 <body>
     <div class="container">
         <h1 id="welcome-message">Welcome to Guess the Number!</h1>
-        <div id="level-select" class="hidden">
-            <h2>Select a Game Level:</h2>
-            <select id="level-dropdown">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-            <button id="start-button">Start Game</button>
+        <div id="mode-select" class="hidden">
+            <h2>Select Game Mode:</h2>
+            <button id="single-player">Single Player</button>
+            <button id="multiplayer">Multiplayer</button>
+        </div>
+
+        <div id="player-info" class="hidden">
+            <h2>Enter Player Names:</h2>
+            <input type="text" id="player1-name" placeholder="Player 1 Name">
+            <input type="text" id="player2-name" placeholder="Player 2 Name">
+            <button id="start-game">Start Game</button>
         </div>
 
         <div id="game-elements" class="hidden">
-            <h2>Guess the Number</h2>
+            <h2 id="game-title">Guess the Number</h2>
             <p id="message"></p>
             <p id="attempts-left"></p>
             <input type="number" id="guess-input" placeholder="Enter your guess">
             <button id="guess-button">Guess</button>
         </div>
 
-        <table id="leaderboard-table" class="hidden">
-            <caption>Leaderboard</caption>
-            <tr>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Level</th>
-            </tr>
-        </table>
+        <div id="leaderboard" class="hidden">
+            <h2>Leaderboard</h2>
+            <table id="leaderboard-table">
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                </tr>
+            </table>
+            <button id="clear-leaderboard">Clear Leaderboard</button>
+        </div>
     </div>
 
+    <audio id="correct-sound" src="sounds/correct.mp3"></audio>
+    <audio id="incorrect-sound" src="sounds/incorrect.mp3"></audio>
+    <audio id="gameover-sound" src="sounds/gameover.mp3"></audio>
+    
     <script src="script.js"></script>
 </body>
 </html>
