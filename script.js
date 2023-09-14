@@ -1,170 +1,228 @@
-const toggleThemeButton = document.getElementById('toggle-theme');
-const body = document.body;
-const container = document.querySelector('.container');
-const leaderboardList = document.getElementById('leaderboard-list');
-const gameControls = document.getElementById('game-controls');
-const guessInput = document.getElementById('guess-input');
-const guessButton = document.getElementById('guess-button');
-const attemptsLeft = document.getElementById('attempts-left');
-const gameModeSelect = document.getElementById('game-mode-select');
-const player1Input = document.getElementById('player1-input');
-const player2Input = document.getElementById('player2-input');
-const playerNameDisplay = document.getElementById('player-name-display');
+const MAX_LEADERBOARD_SIZE = 5;
+const leaderboard = [];
 
-toggleThemeButton.addEventListener('click', toggleTheme);
-guessButton.addEventListener('click', makeGuess);
-gameModeSelect.addEventListener('change', selectGameMode);
-
-let darkMode = false;
-let gameMode = 'single';
-let currentPlayer = 'Player 1';
-let targetNumber;
-let guessCount = 0;
-let maxAttempts = 0;
-let attempts = 0;
-let player1Name = 'Player 1';
-let player2Name = 'Player 2';
-
-function toggleTheme() {
-    darkMode = !darkMode;
-    const theme = darkMode ? 'dark' : 'light';
-    body.className = theme;
-    container.className = theme;
-    leaderboardList.className = theme;
-    gameControls.className = theme;
-    guessInput.className = theme;
-    guessButton.className = theme;
-    attemptsLeft.className = theme;
-    gameModeSelect.className = theme;
-    playerNameDisplay.className = theme;
-    updateThemeButtonText();
+class GameLevel {
+  constructor(name, min, max, attempts, color) {
+    this.name = name;
+    this.min = min;
+    this.max = max;
+    this.attempts = attempts;
+    this.color = color;
+  }
 }
 
-function updateThemeButtonText() {
-    toggleThemeButton.textContent = darkMode ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+function displayWelcomeScreen() {
+  const gameTitle = document.getElementById("game-title");
+  gameTitle.textContent = "Guess the Number!";
+  gameTitle.classList.add("cyan");
+
+  const welcomeMessage = document.getElementById("welcome-message");
+  welcomeMessage.textContent = "Welcome to Guess the Number!";
+  welcomeMessage.classList.add("cyan");
+
+  // Initialize game
+  setTimeout(() => {
+    initializeGame();
+  }, 2000);
 }
 
-function selectGameMode() {
-    gameMode = gameModeSelect.value;
-    resetGame();
+function printAnimation() {
+  const animationFrames = [
+    "[■     ]",
+    "[ ■    ]",
+    "[  ■   ]",
+    "[   ■  ]",
+    "[    ■ ]",
+    "[     ■]",
+    "[    ■ ]",
+    "[   ■  ]",
+    "[  ■   ]",
+    "[ ■    ]",
+  ];
+
+  const animationElement = document.getElementById("animation");
+  let frameIndex = 0;
+
+  function animateFrame() {
+    animationElement.textContent = animationFrames[frameIndex];
+    frameIndex = (frameIndex + 1) % animationFrames.length;
+  }
+
+  const animationInterval = setInterval(animateFrame, 500);
+
+  // Stop animation after 5 seconds
+  setTimeout(() => {
+    clearInterval(animationInterval);
+    animationElement.textContent = "";
+  }, 5000);
 }
 
 function initializeGame() {
-    guessCount = 0;
-    attempts = maxAttempts;
-    targetNumber = Math.floor(Math.random() * 100) + 1;
-    guessInput.disabled = false;
-    guessButton.disabled = false;
-    guessInput.value = '';
-    updateAttemptsLeft();
-    if (gameMode === 'single' && currentPlayer === player2Name) {
-        setTimeout(makeAIGuess, 1000); // Simulate AI's guess after a delay
-    }
+  printAnimation();
+
+  setTimeout(() => {
+    document.getElementById("game-container").style.display = "block";
+  }, 2000);
 }
 
-function makeGuess() {
-    const guess = parseInt(guessInput.value);
-    if (isNaN(guess) || guess < 1 || guess > 100) {
-        alert('Please enter a valid number between 1 and 100.');
-        return;
-    }
-
-    guessCount++;
-    attempts--;
-
-    if (guess < targetNumber) {
-        alert('Too low! Try again.');
-    } else if (guess > targetNumber) {
-        alert('Too high! Try again.');
-    } else {
-        handleWin();
-        return;
-    }
-
-    if (attempts === 0) {
-        handleLoss();
-        return;
-    }
-
-    guessInput.value = '';
-    updateAttemptsLeft();
-    if (gameMode === 'single' && currentPlayer === player2Name) {
-        setTimeout(makeAIGuess, 1000); // Simulate AI's guess after a delay
-    }
+function selectGameLevel() {
+  const levelSelect = document.getElementById("level-select");
+  return levelSelect.options[levelSelect.selectedIndex].value;
 }
 
-function makeAIGuess() {
-    const aiGuess = Math.floor(Math.random() * 100) + 1;
-    guessInput.value = aiGuess;
-    makeGuess();
-}
+function updateLeaderboard(player, score, level) {
+  const now = new Date();
+  const date = now.toLocaleString();
+  leaderboard.push({ player, score, level, date });
+  leaderboard.sort((a, b) => a.score - b.score);
 
-function handleWin() {
-    guessInput.disabled = true;
-    guessButton.disabled = true;
-    const message = `${currentPlayer} wins! You guessed the number in ${guessCount} tries.`;
-    alert(message);
+  if (leaderboard.length > MAX_LEADERBOARD_SIZE) {
+    leaderboard.shift();
+  }
 
-    updateLeaderboard(currentPlayer, guessCount);
-    displayLeaderboard();
-
-    if (gameMode === 'single') {
-        currentPlayer = player1Name;
-    } else {
-        currentPlayer = currentPlayer === player1Name ? player2Name : player1Name;
-    }
-
-    initializeGame();
-}
-
-function handleLoss() {
-    guessInput.disabled = true;
-    guessButton.disabled = true;
-    alert(`Game over! The correct number was ${targetNumber}.`);
-    initializeGame();
-}
-
-function updateAttemptsLeft() {
-    attemptsLeft.textContent = `Attempts left: ${attempts}`;
-}
-
-function updateLeaderboard(player, score) {
-    const leaderboardEntry = { player, score };
-    leaderboard.push(leaderboardEntry);
-    leaderboard.sort((a, b) => a.score - b.score);
-    if (leaderboard.length > 5) {
-        leaderboard.pop();
-    }
+  displayLeaderboard();
 }
 
 function displayLeaderboard() {
-    leaderboardList.innerHTML = '';
-    for (let i = leaderboard.length - 1; i >= 0; i--) {
-        const entry = leaderboard[i];
-        const listItem = document.createElement('li');
-        listItem.textContent = `${entry.player}: ${entry.score} tries`;
-        leaderboardList.appendChild(listItem);
-    }
+  const leaderboardContainer = document.getElementById("leaderboard");
+  leaderboardContainer.innerHTML = ""; // Clear previous leaderboard
+
+  if (leaderboard.length === 0) {
+    const message = document.createElement("p");
+    message.textContent = "No leaderboard data available.";
+    message.classList.add("red");
+    leaderboardContainer.appendChild(message);
+  } else {
+    const sortedLeaderboard = [...leaderboard].sort((a, b) => b.score - a.score);
+
+    sortedLeaderboard.forEach((entry, index) => {
+      const playerRow = document.createElement("div");
+      playerRow.classList.add("leaderboard-row");
+
+      const rank = document.createElement("span");
+      rank.textContent = `${index + 1}.`;
+      playerRow.appendChild(rank);
+
+      const playerName = document.createElement("span");
+      playerName.textContent = entry.player;
+      playerRow.appendChild(playerName);
+
+      const playerScore = document.createElement("span");
+      playerScore.textContent = entry.score;
+      playerRow.appendChild(playerScore);
+
+      const playerLevel = document.createElement("span");
+      playerLevel.textContent = entry.level;
+      playerRow.appendChild(playerLevel);
+
+      const playerDate = document.createElement("span");
+      playerDate.textContent = entry.date;
+      playerRow.appendChild(playerDate);
+
+      leaderboardContainer.appendChild(playerRow);
+    });
+  }
 }
 
-function resetGame() {
-    if (gameMode === 'single') {
-        currentPlayer = player1Name;
+function clearLeaderboard() {
+  leaderboard.length = 0;
+  displayLeaderboard();
+}
+
+function playGame(player1, player2 = null, levelName) {
+  const level = getGameLevel(levelName);
+  const targetNumber = generateRandomNumber(level.min, level.max);
+  let guessCount = 0;
+  let attemptsLeft = level.attempts;
+
+  const currentPlayer = player1;
+  const playerDisplay = document.getElementById("current-player");
+  playerDisplay.textContent = `Current Player: ${currentPlayer}`;
+
+  const guessInput = document.getElementById("guess-input");
+  const guessButton = document.getElementById("guess-button");
+  const attemptsDisplay = document.getElementById("attempts-left");
+  const gameStatusDisplay = document.getElementById("game-status");
+
+  function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function handleGuess(guess) {
+    guessCount++;
+    attemptsLeft--;
+
+    if (guess < targetNumber) {
+      gameStatusDisplay.textContent = "Too low!";
+      gameStatusDisplay.classList.add("red");
+    } else if (guess > targetNumber) {
+      gameStatusDisplay.textContent = "Too high!";
+      gameStatusDisplay.classList.add("red");
     } else {
-        currentPlayer = player1Name;
-        playerNameDisplay.textContent = `Current Player: ${currentPlayer}`;
+      gameStatusDisplay.textContent = `Congratulations, ${currentPlayer}! You guessed the number in ${guessCount} tries!`;
+      gameStatusDisplay.classList.add("green");
+
+      playConfettiAnimation();
+      updateLeaderboard(currentPlayer, guessCount, level.name);
     }
 
-    maxAttempts = gameMode === 'single' ? 8 : 10;
-    updateAttemptsLeft();
-    initializeGame();
+    attemptsDisplay.textContent = `Attempts left: ${attemptsLeft}`;
+
+    if (attemptsLeft === 0) {
+      gameStatusDisplay.textContent = `Game over! The correct number was ${targetNumber}.`;
+      gameStatusDisplay.classList.add("red");
+      guessInput.disabled = true;
+      guessButton.disabled = true;
+    }
+  }
+
+  function playConfettiAnimation() {
+    // Implement confetti animation here (you can use a library like 'confetti-js')
+  }
+
+  guessButton.addEventListener("click", () => {
+    const guess = parseInt(guessInput.value);
+
+    if (!isNaN(guess)) {
+      handleGuess(guess);
+    }
+  });
 }
 
-function init() {
-    toggleTheme();
-    selectGameMode();
-    playerNameDisplay.textContent = `Current Player: ${currentPlayer}`;
-    resetGame();
+function getGameLevel(levelName) {
+  // Define game levels here
+  const levels = {
+    easy: new GameLevel("Easy", 1, 10, 8, "green"),
+    medium: new GameLevel("Medium", 1, 50, 6, "yellow"),
+    hard: new GameLevel("Hard", 1, 100, 4, "red"),
+  };
+
+  return levels[levelName] || levels.medium; // Default to medium level if invalid levelName
 }
 
-init();
+function startSinglePlayerGame() {
+  const playerName = prompt("Enter your name:");
+  const selectedLevel = selectGameLevel();
+
+  if (!playerName) {
+    alert("Please enter a valid player name.");
+    return;
+  }
+
+  playGame(playerName, null, selectedLevel);
+}
+
+function main() {
+  displayWelcomeScreen();
+
+  const singlePlayerButton = document.getElementById("single-player-button");
+  singlePlayerButton.addEventListener("click", startSinglePlayerGame);
+
+  const viewLeaderboardButton = document.getElementById("view-leaderboard-button");
+  viewLeaderboardButton.addEventListener("click", displayLeaderboard);
+
+  const clearLeaderboardButton = document.getElementById("clear-leaderboard-button");
+  clearLeaderboardButton.addEventListener("click", clearLeaderboard);
+}
+
+document.addEventListener("DOMContentLoaded", main);
