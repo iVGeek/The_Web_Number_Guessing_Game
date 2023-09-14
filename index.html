@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number Game</title>
+    <title>Guess the Number</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Guess the Number Game</h1>
-    </header>
-    <main>
-        <div class="game-container">
-            <div class="game-controls">
-                <button id="start-button">Start New Game</button>
-                <p id="attempts-left">Attempts left: 4</p>
-                <input type="number" id="guess-input" placeholder="Enter your guess">
-                <button id="guess-button">Guess</button>
-                <p id="result-message"></p>
-            </div>
-            <div class="leaderboard-container">
-                <div id="leaderboard"></div>
-            </div>
+    <div class="container">
+        <h1 id="welcome-message">Welcome to Guess the Number!</h1>
+        <div id="level-select" class="hidden">
+            <h2>Select a Game Level:</h2>
+            <select id="level-dropdown">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="start-button">Start Game</button>
         </div>
-    </main>
-    <footer>
-        <p>Developer: Your Name</p>
-    </footer>
+
+        <div id="game-elements" class="hidden">
+            <h2>Guess the Number</h2>
+            <p id="message"></p>
+            <p id="attempts-left"></p>
+            <input type="number" id="guess-input" placeholder="Enter your guess">
+            <button id="guess-button">Guess</button>
+        </div>
+
+        <table id="leaderboard-table" class="hidden">
+            <caption>Leaderboard</caption>
+            <tr>
+                <th>Player</th>
+                <th>Score</th>
+                <th>Level</th>
+            </tr>
+        </table>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
