@@ -18,16 +18,15 @@ class GameLevel {
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!";
+    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
 }
 
 // Function to select a game level
 function selectGameLevel() {
     const levelSelect = document.getElementById('level-dropdown');
-    const startButton = document.getElementById('start-button');
     
     // Listen for level selection
-    startButton.addEventListener('click', function () {
+    levelSelect.addEventListener('change', function () {
         const selectedLevel = levelSelect.value;
         switch (selectedLevel) {
             case 'easy':
@@ -44,6 +43,7 @@ function selectGameLevel() {
                 break;
         }
         startGame();
+        levelSelect.style.display = 'none';
     });
 }
 
@@ -53,9 +53,6 @@ function startGame() {
     attemptsLeft = currentLevel.maxAttempts;
 
     // Display game elements
-    const levelSelect = document.getElementById('level-select');
-    levelSelect.style.display = 'none';
-
     const gameElements = document.getElementById('game-elements');
     gameElements.style.display = 'block';
 
@@ -106,6 +103,14 @@ function endGame(isWinner) {
 
     // Update leaderboard
     updateLeaderboard('Player Name', currentLevel.maxAttempts - attemptsLeft, currentLevel.name);
+
+    // Hide game elements
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'none';
+
+    // Show level select again
+    const levelSelect = document.getElementById('level-dropdown');
+    levelSelect.style.display = 'block';
 }
 
 // Function to display a message to the user
@@ -152,7 +157,10 @@ function clearLeaderboard() {
 function main() {
     displayWelcomeScreen();
     selectGameLevel();
+    displayLeaderboard(); // Added to display the leaderboard initially
 }
 
 // Call the main function when the page loads
-window.onload = main;
+document.addEventListener("DOMContentLoaded", function() {
+    main();
+});
