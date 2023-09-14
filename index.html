@@ -3,37 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Guess the Number Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Guess the Number Game</h1>
+        <h1>Guess the Number</h1>
+        <button id="dark-light-button">Toggle Dark Mode</button>
     </header>
     <main>
-        <div class="game-container">
-            <section class="game-controls">
-                <h2>Game Controls</h2>
-                <label for="player-selection">Select Player Mode:</label>
-                <select id="player-selection">
-                    <option value="single-player">Single Player</option>
-                    <option value="two-players">Two Players</option>
-                </select>
-                <div id="player-info">Player: </div>
-                <button id="start-button">Start New Game</button>
-                <label for="guess-input">Enter your guess:</label>
-                <input type="number" id="guess-input" min="1" max="100">
-                <button id="guess-button">Guess</button>
-                <p id="result-message"></p>
-                <p id="attempts-left"></p>
-            </section>
-            <section class="leaderboard">
-                <h2>Leaderboard</h2>
-                <div id="leaderboard"></div>
-            </section>
+        <div id="game-container">
+            <!-- Game controls and information -->
+            <div id="game-info">
+                <!-- Player names, game mode selection, game info, etc. -->
+            </div>
+            <!-- Game display area -->
+            <div id="game-display">
+                <!-- Display game elements, result, etc. -->
+            </div>
+        </div>
+        <div id="leaderboard">
+            <!-- Display leaderboard -->
         </div>
     </main>
-    <button id="dark-mode-button">Toggle Dark Mode</button>
+    <footer>
+        <p>Developed by iVGeek</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
