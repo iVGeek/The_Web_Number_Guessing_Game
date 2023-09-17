@@ -23,8 +23,7 @@ function displayWelcomeScreen() {
 
 // Function to select a game level
 function selectGameLevel() {
-    const levelSelect = document.getElementById('level-select');
-    levelSelect.style.display = 'block';
+    const levelSelect = document.getElementById('level-dropdown');
 
     // Listen for level selection
     levelSelect.addEventListener('change', function () {
@@ -44,7 +43,6 @@ function selectGameLevel() {
                 break;
         }
         startGame();
-        levelSelect.style.display = 'none';
     });
 }
 
@@ -54,7 +52,9 @@ function startGame() {
     attemptsLeft = currentLevel.maxAttempts;
 
     // Display game elements
+    const levelSelect = document.getElementById('level-select');
     const gameElements = document.getElementById('game-elements');
+    levelSelect.style.display = 'none';
     gameElements.style.display = 'block';
 
     // Clear previous messages
@@ -162,3 +162,10 @@ function main() {
 
 // Call the main function when the page loads
 window.onload = main;
+
+// Toggle Dark Mode
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+darkModeToggle.addEventListener('click', () => {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+});
