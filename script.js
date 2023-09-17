@@ -1,3 +1,10 @@
+// Initialize Howler.js audio
+const sound = new Howl({
+    src: ['path/to/your/sound.mp3'], // Replace with the actual path to your audio file
+    volume: 0.5,
+    preload: true,
+});
+
 // Initialize game variables
 let leaderboard = [];
 let player1Name;
@@ -212,6 +219,15 @@ function clearLeaderboard() {
     displayLeaderboard();
 }
 
+// Toggle Multiplayer Mode
+const toggleMultiplayer = document.getElementById('toggle-multiplayer');
+toggleMultiplayer.addEventListener('click', () => {
+    isMultiplayer = !isMultiplayer;
+    toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
+    currentPlayer = player1Name; // Reset the current player
+    displayPlayerAndAttempts();
+});
+
 // Main menu
 function main() {
     // Display the welcome screen
@@ -219,36 +235,10 @@ function main() {
 
     // Initialize game elements
     selectGameLevel();
-
-    // Toggle Multiplayer Mode
-    const toggleMultiplayer = document.getElementById('toggle-multiplayer');
-
-    if (toggleMultiplayer) {
-        toggleMultiplayer.addEventListener('click', () => {
-            isMultiplayer = !isMultiplayer;
-            toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
-            currentPlayer = player1Name; // Reset the current player
-            displayPlayerAndAttempts();
-        });
-    } else {
-        console.error("Element with ID 'toggle-multiplayer' not found.");
-    }
 }
 
 // Call the main function when the page loads
-document.addEventListener("DOMContentLoaded", main);
-
-// Audio Effects Setup using Howler.js
-const sound = new Howl({
-    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
-    volume: 0.5, // Adjust the volume as needed
-    preload: true,
-});
-
-// Function to play audio effect
-function playAudio() {
-    sound.play();
-}
+window.onload = main;
 
 // Dark Mode Toggle
 const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -256,7 +246,3 @@ const body = document.body;
 darkModeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
 });
-
-
-// Call the main function when the page loads
-document.addEventListener("DOMContentLoaded", main);
