@@ -13,6 +13,12 @@ const playerGuesses = {
     2: [],
 };
 
+// Get player names from input fields
+const player1NameInput = document.getElementById('player1Name');
+const player2NameInput = document.getElementById('player2Name');
+let player1Name = 'Player 1'; // Default names
+let player2Name = 'Player 2';
+
 const difficultySelect = document.getElementById('difficulty');
 const timeLimitInput = document.getElementById('timeLimit');
 const startButton = document.getElementById('startButton');
@@ -33,6 +39,10 @@ guessSubmit.addEventListener('click', function () {
 
 // Start the game
 function startGame() {
+    // Get player names from input fields
+    player1Name = player1NameInput.value || 'Player 1';
+    player2Name = player2NameInput.value || 'Player 2';
+
     // Get selected difficulty and set game parameters
     const selectedDifficulty = difficultySelect.value;
     if (selectedDifficulty === 'easy') {
@@ -107,7 +117,7 @@ function checkGuess(player) {
     const userGuess = parseInt(guessField.value);
 
     if (isNaN(userGuess) || userGuess < min || userGuess > max) {
-        message.textContent = `Player ${player}, please enter a valid number between ${min} and ${max}.`;
+        message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
         return;
     }
 
@@ -117,7 +127,7 @@ function checkGuess(player) {
     if (userGuess === targetNumber || Math.abs(userGuess - targetNumber) < Math.abs(playerGuesses[3 - player][playerGuesses[3 - player].length - 1] - targetNumber)) {
         endGame(player);
     } else {
-        message.textContent = `Player ${player}, your guess is recorded. Next player's turn.`;
+        message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
         guessField.value = '';
         guessField.focus();
         currentPlayer = 3 - currentPlayer; // Switch players
@@ -133,8 +143,13 @@ function endGame(winner) {
     startButton.removeAttribute('disabled');
 
     if (winner === 1 || winner === 2) {
-        message.textContent = `Player ${winner} wins! The correct number was ${targetNumber}.`;
+        message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
     } else {
         message.textContent = `It's a tie! The correct number was ${targetNumber}.`;
     }
+}
+
+// Helper function to get player name
+function getPlayerName(player) {
+    return player === 1 ? player1Name : player2Name;
 }
