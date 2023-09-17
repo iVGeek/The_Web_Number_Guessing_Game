@@ -18,7 +18,7 @@ class GameLevel {
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!";
+    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
 }
 
 // Function to select a game level
@@ -43,20 +43,9 @@ function selectGameLevel() {
                 currentLevel = new GameLevel("Medium", 1, 50, 4, "yellow");
                 break;
         }
-
-        // Enable the "Start Game" button
-        const startButton = document.getElementById('start-button');
-        startButton.disabled = false;
-
+        startGame();
         levelSelect.style.display = 'none';
     });
-
-    // Enable the "Start Game" button initially
-    const startButton = document.getElementById('start-button');
-    startButton.disabled = false;
-
-    // Add click event listener to the "Start Game" button
-    startButton.addEventListener('click', startGame);
 }
 
 // Function to start the game
