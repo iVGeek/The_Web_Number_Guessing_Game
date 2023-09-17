@@ -130,9 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         playerGuesses[player].push(userGuess);
 
-        // Check if the current player has guessed correctly or come closest
-        if (userGuess === targetNumber || Math.abs(userGuess - targetNumber) < Math.abs(playerGuesses[3 - player][playerGuesses[3 - player].length - 1] - targetNumber)) {
+        // Check if the current player has guessed correctly
+        if (userGuess === targetNumber) {
             endGame(player);
+        } else if (playerGuesses[player].length >= remainingAttempts) {
+            endGame(0); // All attempts used, declare a tie
         } else {
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
