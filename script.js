@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeLeft = document.getElementById('timeLeft');
     const attempts = document.getElementById('attempts');
     const bestScoreDisplay = document.getElementById('bestScore');
+    const correctSound = document.getElementById('correctSound');
+    const wrongSound = document.getElementById('wrongSound');
+    const gameOverSound = document.getElementById('gameOverSound');
 
     let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
     const playerGuesses = {
@@ -135,29 +138,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // End the game and declare the winner
-    function endGame(winner) {
-        clearInterval(timer);
-        guessField.setAttribute('disabled', 'disabled');
-        guessSubmit.setAttribute('disabled', 'disabled');
-        timeLimitInput.removeAttribute('disabled');
-        startButton.removeAttribute('disabled');
-
-        if (winner === 1 || winner === 2) {
-            if (playerGuesses[1].length < bestScore) {
-                bestScore = playerGuesses[1].length;
-                localStorage.setItem(difficultySelect.value, bestScore);
-                bestScoreDisplay.textContent = bestScore;
-            } else if (playerGuesses[2].length < bestScore) {
-                bestScore = playerGuesses[2].length;
-                localStorage.setItem(difficultySelect.value, bestScore);
-                bestScoreDisplay.textContent = bestScore;
-            }
-        }
-    }
-
-    // Helper function to get player name
-    function getPlayerName(player) {
-        return player === 1 ? player1Name : player2Name;
-    }
-});
