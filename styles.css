@@ -1,25 +1,72 @@
 body {
     text-align: center;
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     color: #333;
 }
 
-input {
+.settings {
+    margin: 20px auto;
+    max-width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+select, input[type="number"] {
+    width: 100%;
     padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     font-size: 16px;
 }
 
-#guessSubmit {
+button {
     background-color: #333;
     color: #fff;
     border: none;
+    padding: 10px 20px;
+    font-size: 18px;
     cursor: pointer;
-    margin-top: 10px;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
 }
 
 .message {
     color: #333;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+p {
+    font-size: 18px;
+    color: #333;
+}
+
+#timeLeft, #attempts, #bestScore {
+    font-weight: bold;
+    color: #333;
+}
+
+#timeLeft {
+    font-size: 24px;
+    color: #ff5733;
 }
