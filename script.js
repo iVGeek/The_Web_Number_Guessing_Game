@@ -38,10 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
         checkGuess(currentPlayer);
     });
 
-    // Initialize leaderboard
-    const leaderboardList = document.getElementById('leaderboardList');
-    initLeaderboard();
-
     // Start the game
     function startGame() {
         // Get player names from input fields
@@ -152,32 +148,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 bestScore = playerGuesses[1].length;
                 localStorage.setItem(difficultySelect.value, bestScore);
                 bestScoreDisplay.textContent = bestScore;
-                updateLeaderboard(difficultySelect.value, bestScore, getPlayerName(winner));
             } else if (playerGuesses[2].length < bestScore) {
                 bestScore = playerGuesses[2].length;
                 localStorage.setItem(difficultySelect.value, bestScore);
                 bestScoreDisplay.textContent = bestScore;
-                updateLeaderboard(difficultySelect.value, bestScore, getPlayerName(winner));
-            }
-        }
-    }
-
-    // Function to update the leaderboard
-    function updateLeaderboard(difficulty, score, playerName) {
-        const leaderboardItem = document.createElement('li');
-        leaderboardItem.textContent = `${playerName} - ${score} attempts (${difficulty})`;
-        leaderboardList.appendChild(leaderboardItem);
-    }
-
-    // Function to initialize the leaderboard from localStorage
-    function initLeaderboard() {
-        leaderboardList.innerHTML = ''; // Clear the leaderboard
-        // Loop through localStorage to populate the leaderboard
-        for (const key in localStorage) {
-            if (localStorage.hasOwnProperty(key) && !isNaN(parseInt(localStorage[key]))) {
-                const leaderboardItem = document.createElement('li');
-                leaderboardItem.textContent = `Player - ${localStorage[key]} attempts (${key})`;
-                leaderboardList.appendChild(leaderboardItem);
             }
         }
     }
