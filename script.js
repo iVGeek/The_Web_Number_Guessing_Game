@@ -144,9 +144,26 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.removeAttribute('disabled');
 
         if (winner === 1 || winner === 2) {
-            message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
+            if (playerGuesses[1].length < playerGuesses[2].length) {
+                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
+            } else if (playerGuesses[2].length < playerGuesses[1].length) {
+                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
+            } else {
+                message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+            }
         } else {
-            message.textContent = `It's a tie! The correct number was ${targetNumber}.`;
+            message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+        }
+
+        // Update best score if applicable
+        if (playerGuesses[1].length < bestScore) {
+            bestScore = playerGuesses[1].length;
+            localStorage.setItem(difficultySelect.value, bestScore);
+            bestScoreDisplay.textContent = bestScore;
+        } else if (playerGuesses[2].length < bestScore) {
+            bestScore = playerGuesses[2].length;
+            localStorage.setItem(difficultySelect.value, bestScore);
+            bestScoreDisplay.textContent = bestScore;
         }
     }
 
