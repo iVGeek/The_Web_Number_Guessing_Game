@@ -23,13 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeLeft = document.getElementById('timeLeft');
     const attempts = document.getElementById('attempts');
     const bestScoreDisplay = document.getElementById('bestScore');
-
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
-    const playerGuesses = {
-        1: [],
-        2: [],
-    };
-
+    
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
 
@@ -37,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
     guessSubmit.addEventListener('click', function () {
         checkGuess(currentPlayer);
     });
+
+    // Initialize leaderboard
+    const leaderboardList = document.getElementById('leaderboardList');
+    initLeaderboard();
 
     // Start the game
     function startGame() {
@@ -144,26 +142,37 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.removeAttribute('disabled');
 
         if (winner === 1 || winner === 2) {
-            if (playerGuesses[1].length < playerGuesses[2].length) {
-                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
-            } else if (playerGuesses[2].length < playerGuesses[1].length) {
-                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
-            } else {
-                message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+            if (playerGuesses[1].length < bestScore) {
+                bestScore = playerGuesses[1].length;
+                localStorage.setItem(difficultySelect.value, bestScore);
+                bestScoreDisplay.textContent = bestScore;
+                updateLeaderboard(difficultySelect.value, bestScore, getPlayerName(winner));
+            } else if (playerGuesses[2].length < bestScore) {
+                bestScore = playerGuesses[2].length;
+                localStorage.setItem(difficultySelect.value, bestScore);
+                bestScoreDisplay.textContent = bestScore;
+                updateLeaderboard(difficultySelect.value, bestScore, getPlayerName(winner));
             }
-        } else {
-            message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
         }
+    }
 
-        // Update best score if applicable
-        if (playerGuesses[1].length < bestScore) {
-            bestScore = playerGuesses[1].length;
-            localStorage.setItem(difficultySelect.value, bestScore);
-            bestScoreDisplay.textContent = bestScore;
-        } else if (playerGuesses[2].length < bestScore) {
-            bestScore = playerGuesses[2].length;
-            localStorage.setItem(difficultySelect.value, bestScore);
-            bestScoreDisplay.textContent = bestScore;
+    // Function to update the leaderboard
+    function updateLeaderboard(difficulty, score, playerName) {
+        const leaderboardItem = document.createElement('li');
+        leaderboardItem.textContent = `${playerName} - ${score} attempts (${difficulty})`;
+        leaderboardList.appendChild(leaderboardItem);
+    }
+
+    // Function to initialize the leaderboard from localStorage
+    function initLeaderboard() {
+        leaderboardList.innerHTML = ''; // Clear the leaderboard
+        // Loop through localStorage to populate the leaderboard
+        for (const key in localStorage) {
+            if (localStorage.hasOwnProperty(key) && !isNaN(parseInt(localStorage[key]))) {
+                const leaderboardItem = document.createElement('li');
+                leaderboardItem.textContent = `Player - ${localStorage[key]} attempts (${key})`;
+                leaderboardList.appendChild(leaderboardItem);
+            }
         }
     }
 
