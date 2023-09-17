@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
         2: [],
     };
 
+    // Countdown animation
+    const timeLeftElement = document.getElementById('timeLeft');
+
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
 
@@ -138,3 +141,47 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // End the game and declare the winner
+    function endGame(winner) {
+        clearInterval(timer);
+        guessField.setAttribute('disabled', 'disabled');
+        guessSubmit.setAttribute('disabled', 'disabled');
+        timeLimitInput.removeAttribute('disabled');
+        startButton.removeAttribute('disabled');
+
+        if (winner === 1 || winner === 2) {
+            if (playerGuesses[1].length < playerGuesses[2].length) {
+                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
+            } else if (playerGuesses[2].length < playerGuesses[1].length) {
+                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
+            } else {
+                message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+            }
+        } else {
+            message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+        }
+
+        // Update best score if applicable
+        if (playerGuesses[1].length < bestScore) {
+            bestScore = playerGuesses[1].length;
+            localStorage.setItem(difficultySelect.value, bestScore);
+            bestScoreDisplay.textContent = bestScore;
+        } else if (playerGuesses[2].length < bestScore) {
+            bestScore = playerGuesses[2].length;
+            localStorage.setItem(difficultySelect.value, bestScore);
+            bestScoreDisplay.textContent = bestScore;
+        }
+
+        // Play sound based on the result
+        if (winner === 1 || winner === 2) {
+            correctSound.play(); // Play a victory sound
+        } else {
+            gameOverSound.play(); // Play a game over sound
+        }
+    }
+
+    // Helper function to get player name
+    function getPlayerName(player) {
+        return player === 1 ? player1Name : player2Name;
+    }
+});
