@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeLeft = document.getElementById('timeLeft');
     const attempts = document.getElementById('attempts');
     const bestScoreDisplay = document.getElementById('bestScore');
-
+    
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
 
