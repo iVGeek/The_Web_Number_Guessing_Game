@@ -7,7 +7,6 @@ let currentLevel;
 let secretNumber;
 let attemptsLeft;
 let isMultiplayer = false; // Flag to indicate multiplayer mode
-let sound; // Audio object
 
 // Define game levels
 class GameLevel {
@@ -70,32 +69,34 @@ function startGame() {
 // Function to select a game level
 function selectGameLevel() {
     const levelSelect = document.getElementById('level-dropdown');
+    if (levelSelect) {
+        levelSelect.addEventListener('change', function () {
+            const selectedLevel = levelSelect.value;
+            switch (selectedLevel) {
+                case 'easy':
+                    currentLevel = new GameLevel("Easy", 1, 10, 8, "green");
+                    break;
+                case 'medium':
+                    currentLevel = new GameLevel("Medium", 1, 50, 6, "yellow");
+                    break;
+                case 'hard':
+                    currentLevel = new GameLevel("Hard", 1, 100, 4, "red");
+                    break;
+                default:
+                    currentLevel = new GameLevel("Medium", 1, 50, 4, "yellow");
+                    break;
+            }
 
-    // Listen for level selection
-    levelSelect.addEventListener('change', function () {
-        const selectedLevel = levelSelect.value;
-        switch (selectedLevel) {
-            case 'easy':
-                currentLevel = new GameLevel("Easy", 1, 10, 8, "green");
-                break;
-            case 'medium':
-                currentLevel = new GameLevel("Medium", 1, 50, 6, "yellow");
-                break;
-            case 'hard':
-                currentLevel = new GameLevel("Hard", 1, 100, 4, "red");
-                break;
-            default:
-                currentLevel = new GameLevel("Medium", 1, 50, 4, "yellow");
-                break;
-        }
+            // Hide level selection
+            const levelSelect = document.getElementById('level-select');
+            if (levelSelect) {
+                levelSelect.style.display = 'none';
+            }
 
-        // Hide level selection
-        const levelSelect = document.getElementById('level-select');
-        levelSelect.style.display = 'none';
-
-        // Initialize game
-        initializeGame();
-    });
+            // Initialize game
+            initializeGame();
+        });
+    }
 }
 
 // Function to initialize the game
@@ -213,14 +214,33 @@ function clearLeaderboard() {
     displayLeaderboard();
 }
 
-// Function to initialize audio
-function initializeAudio() {
-    sound = new Howl({
-        src: ['sound.mp3'], // Update to the name of your audio file
-        volume: 0.5,
-        preload: true,
-    });
+// Toggle Multiplayer Mode
+const toggleMultiplayer = document.getElementById('toggle-multiplayer');
+toggleMultiplayer.addEventListener('click', () => {
+    isMultiplayer = !isMultiplayer;
+    toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
+    currentPlayer = player1Name; // Reset the current player
+    displayPlayerAndAttempts();
+});
+
+// Main menu
+function main() {
+    // Display the welcome screen
+    displayWelcomeScreen();
+
+    // Initialize game elements
+    selectGameLevel();
 }
+
+// Call the main function when the page loads
+window.onload = main;
+
+// Audio Effects Setup using Howler.js
+const sound = new Howl({
+    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
+    volume: 0.5, // Adjust the volume as needed
+    preload: true,
+});
 
 // Function to play audio effect
 function playAudio() {
@@ -233,18 +253,6 @@ const body = document.body;
 darkModeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
 });
-
-// Main menu
-function main() {
-    // Display the welcome screen
-    displayWelcomeScreen();
-
-    // Initialize game elements
-    selectGameLevel();
-    
-    // Initialize audio
-    initializeAudio();
-}
 
 // Call the main function when the page loads
 window.onload = main;
