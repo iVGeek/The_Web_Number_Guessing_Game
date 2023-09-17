@@ -1,44 +1,25 @@
 body {
-    font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
 }
 
-.centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0 auto;
-}
-
-#game-elements, #level-select, #leaderboard-table, #clear-leaderboard {
-    display: none;
-}
-
-#level-select label, #level-dropdown {
-    margin-bottom: 10px;
-}
-
-#message {
-    font-weight: bold;
+h1 {
     color: #333;
 }
 
-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
+input {
+    padding: 10px;
+    font-size: 16px;
 }
 
-#dark-mode-toggle {
+#guessSubmit {
     background-color: #333;
     color: #fff;
     border: none;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
-.dark-mode {
-    background-color: #333;
-    color: #fff;
+.message {
+    color: #333;
 }
