@@ -65,17 +65,3 @@ th {
     background-color: #333;
     color: white;
 }
-
-/* Style for player names input */
-#player-names label {
-    display: block;
-    margin-top: 10px;
-}
-
-#player-names input {
-    width: 100%;
-    padding: 5px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
