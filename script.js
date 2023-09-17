@@ -1,8 +1,12 @@
 // Initialize game variables
 let leaderboard = [];
+let player1Name;
+let player2Name;
+let currentPlayer;
 let currentLevel;
 let secretNumber;
 let attemptsLeft;
+let isMultiplayer = false; // Flag to indicate multiplayer mode
 
 // Define game levels
 class GameLevel {
@@ -19,76 +23,236 @@ class GameLevel {
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
     welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
-}
 
-// Function to toggle dark mode
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-darkModeToggle.addEventListener('click', () => {
-    const body = document.body;
-    body.classList.toggle('dark-mode');
-    const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.classList.toggle('dark-mode');
-    // You can add more elements to toggle for dark mode
-});
-
-// Function to display player names input
-function displayPlayerNamesInput() {
+    // Show player name input for single-player mode
     const playerNames = document.getElementById('player-names');
     playerNames.style.display = 'block';
+
+    // Listen for the Start Game button click
+    const startButton = document.getElementById('start-button');
+    startButton.addEventListener('click', startGame);
 }
 
 // Function to start the game
-function startGame(player1Name, player2Name) {
-    // Implement your game logic here
-    // You can use player1Name and player2Name in your game
+function startGame() {
+    // Hide player name input
+    const playerNames = document.getElementById('player-names');
+    playerNames.style.display = 'none';
+
+    // Get player names from input fields
+    player1Name = document.getElementById('player1-name').value.trim();
+    player2Name = document.getElementById('player2-name').value.trim();
+
+    // Determine game mode (single-player or multiplayer)
+    isMultiplayer = player2Name !== '';
+
+    // Set the current player
+    currentPlayer = player1Name;
+
+    // Display game elements
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'block';
+
+    // Clear previous messages
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = '';
+
+    // Display attempts left
+    const attemptsLeftElement = document.getElementById('attempts-left');
+    attemptsLeftElement.textContent = '';
+
+    // Show game level selection
+    const levelSelect = document.getElementById('level-select');
+    levelSelect.style.display = 'block';
+}
+
+// Function to select a game level
+function selectGameLevel() {
+    const levelSelect = document.getElementById('level-dropdown');
+
+    // Listen for level selection
+    levelSelect.addEventListener('change', function () {
+        const selectedLevel = levelSelect.value;
+        switch (selectedLevel) {
+            case 'easy':
+                currentLevel = new GameLevel("Easy", 1, 10, 8, "green");
+                break;
+            case 'medium':
+                currentLevel = new GameLevel("Medium", 1, 50, 6, "yellow");
+                break;
+            case 'hard':
+                currentLevel = new GameLevel("Hard", 1, 100, 4, "red");
+                break;
+            default:
+                currentLevel = new GameLevel("Medium", 1, 50, 4, "yellow");
+                break;
+        }
+
+        // Hide level selection
+        const levelSelect = document.getElementById('level-select');
+        levelSelect.style.display = 'none';
+
+        // Initialize game
+        initializeGame();
+    });
+}
+
+// Function to initialize the game
+function initializeGame() {
+    // Generate a random secret number for the current level
+    secretNumber = generateRandomNumber(currentLevel.min, currentLevel.max);
+
+    // Initialize attempts left
+    attemptsLeft = currentLevel.maxAttempts;
+
+    // Display game elements
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'block';
+
+    // Display current player and attempts left
+    displayPlayerAndAttempts();
+
+    // Listen for the Guess button click
+    const guessButton = document.getElementById('guess-button');
+    guessButton.addEventListener('click', handleGuess);
+}
+
+// Function to generate a random number between min and max (inclusive)
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // Function to handle user guesses
 function handleGuess() {
-    // Implement your guess handling logic here
+    const guessInput = document.getElementById('guess-input');
+    const guess = parseInt(guessInput.value);
+
+    if (isNaN(guess) || guess < currentLevel.min || guess > currentLevel.max) {
+        displayMessage('Invalid guess. Please enter a number between ' + currentLevel.min + ' and ' + currentLevel.max + '.');
+        return;
+    }
+
+    attemptsLeft--;
+
+    if (guess === secretNumber) {
+        endGame(true);
+    } else if (attemptsLeft === 0) {
+        endGame(false);
+    } else {
+        // Switch to the other player in multiplayer mode
+        if (isMultiplayer) {
+            currentPlayer = currentPlayer === player1Name ? player2Name : player1Name;
+        }
+        displayMessage(guess < secretNumber ? 'Too low!' : 'Too high!');
+        displayPlayerAndAttempts();
+    }
 }
 
 // Function to end the game
 function endGame(isWinner) {
-    // Implement your end game logic here
+    const messageElement = document.getElementById('message');
+    if (isWinner) {
+        messageElement.textContent = 'Congratulations, ' + currentPlayer + '! You guessed the number!';
+    } else {
+        messageElement.textContent = 'Game over. The number was ' + secretNumber + '.';
+    }
+
+    // Update leaderboard
+    updateLeaderboard(currentPlayer, currentLevel.maxAttempts - attemptsLeft, currentLevel.name);
+
+    // Hide game elements
+    const gameElements = document.getElementById('game-elements');
+    gameElements.style.display = 'none';
+
+    // Show level selection again
+    const levelSelect = document.getElementById('level-select');
+    levelSelect.style.display = 'block';
 }
 
 // Function to display a message to the user
 function displayMessage(message) {
-    // Implement your message display logic here
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = message;
 }
 
-// Function to display remaining attempts
-function displayAttemptsLeft() {
-    // Implement displaying attempts left here
+// Function to display current player and attempts left
+function displayPlayerAndAttempts() {
+    const currentPlayerElement = document.getElementById('current-player');
+    currentPlayerElement.textContent = 'Current Player: ' + currentPlayer;
+
+    const attemptsLeftElement = document.getElementById('attempts-left');
+    attemptsLeftElement.textContent = 'Attempts left: ' + attemptsLeft;
 }
 
 // Function to update the leaderboard
 function updateLeaderboard(player, score, level) {
-    // Implement updating the leaderboard here
+    leaderboard.push({ player, score, level });
+    leaderboard.sort((a, b) => a.score - b.score);
+    if (leaderboard.length > 5) {
+        leaderboard.shift(); // Remove the lowest score if leaderboard size exceeds the maximum
+    }
+    displayLeaderboard();
 }
 
 // Function to display the leaderboard
 function displayLeaderboard() {
-    // Implement displaying the leaderboard here
+    const leaderboardTable = document.getElementById('leaderboard-table');
+    leaderboardTable.innerHTML = '<tr><th>Player</th><th>Score</th><th>Level</th></tr>';
+
+    for (const entry of leaderboard) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td><td>${entry.level}</td>`;
+        leaderboardTable.appendChild(row);
+    }
 }
 
 // Function to clear the leaderboard
 function clearLeaderboard() {
-    // Implement clearing the leaderboard here
+    leaderboard = [];
+    displayLeaderboard();
 }
+
+// Toggle Multiplayer Mode
+const toggleMultiplayer = document.getElementById('toggle-multiplayer');
+toggleMultiplayer.addEventListener('click', () => {
+    isMultiplayer = !isMultiplayer;
+    toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
+    currentPlayer = player1Name; // Reset the current player
+    displayPlayerAndAttempts();
+});
 
 // Main menu
 function main() {
+    // Display the welcome screen
     displayWelcomeScreen();
-    const startButton = document.getElementById('start-button');
-    startButton.addEventListener('click', () => {
-        const player1Name = document.getElementById('player1-name').value;
-        const player2Name = document.getElementById('player2-name').value;
-        displayPlayerNamesInput();
-        startGame(player1Name, player2Name);
-    });
+
+    // Initialize game elements
+    selectGameLevel();
 }
+
+// Call the main function when the page loads
+window.onload = main;
+
+// Audio Effects Setup using Howler.js
+const sound = new Howl({
+    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
+    volume: 0.5, // Adjust the volume as needed
+    preload: true,
+});
+
+// Function to play audio effect
+function playAudio() {
+    sound.play();
+}
+
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
+darkModeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+});
+
+// ... (remaining code)
 
 // Call the main function when the page loads
 window.onload = main;
