@@ -1,54 +1,60 @@
-/* Add your CSS styles here */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
 .container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     text-align: center;
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 400px;
 }
 
 .hidden {
     display: none;
 }
 
-#game-elements {
-    margin-top: 20px;
-}
-
-#message {
-    font-weight: bold;
-    color: #333;
-}
-
-#attempts-left {
-    color: #666;
-}
-
-#guess-input {
-    width: 100px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-#guess-button {
+button {
+    margin: 10px;
     padding: 5px 10px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: #fff;
+    background-color: #007bff;
+    color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px;
 }
 
-#leaderboard-table {
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-#leaderboard-table th, #leaderboard-table td {
+table, th, td {
     border: 1px solid #ddd;
+}
+
+th, td {
     padding: 8px;
     text-align: left;
 }
 
-#leaderboard-table th {
+th {
     background-color: #f2f2f2;
+}
+
+#dark-mode-toggle {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
