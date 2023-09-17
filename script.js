@@ -19,6 +19,18 @@ class GameLevel {
     }
 }
 
+// Audio Effects Setup using Howler.js
+const sound = new Howl({
+    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
+    volume: 0.5, // Adjust the volume as needed
+    preload: true,
+});
+
+// Function to play audio effect
+function playAudio() {
+    sound.play();
+}
+
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
@@ -64,6 +76,9 @@ function startGame() {
     // Show game level selection
     const levelSelect = document.getElementById('level-select');
     levelSelect.style.display = 'block';
+
+    // Initialize game
+    initializeGame();
 }
 
 // Function to select a game level
@@ -143,6 +158,7 @@ function handleGuess() {
         if (isMultiplayer) {
             currentPlayer = currentPlayer === player1Name ? player2Name : player1Name;
         }
+        playAudio(); // Play audio effect
         displayMessage(guess < secretNumber ? 'Too low!' : 'Too high!');
         displayPlayerAndAttempts();
     }
@@ -229,30 +245,6 @@ function main() {
     // Initialize game elements
     selectGameLevel();
 }
-
-// Call the main function when the page loads
-window.onload = main;
-
-// Audio Effects Setup using Howler.js
-const sound = new Howl({
-    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
-    volume: 0.5, // Adjust the volume as needed
-    preload: true,
-});
-
-// Function to play audio effect
-function playAudio() {
-    sound.play();
-}
-
-// Dark Mode Toggle
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const body = document.body;
-darkModeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-});
-
-// ... (remaining code)
 
 // Call the main function when the page loads
 window.onload = main;
