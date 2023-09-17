@@ -22,7 +22,7 @@ class GameLevel {
 // Function to display the welcome screen
 function displayWelcomeScreen() {
     const welcomeMessage = document.getElementById('welcome-message');
-    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by Your Name";
+    welcomeMessage.textContent = "Welcome to Guess the Number!\nGame developed by iVGeek";
 
     // Show player name input for single-player mode
     const playerNames = document.getElementById('player-names');
@@ -231,28 +231,6 @@ function main() {
     // Initialize game elements
     selectGameLevel();
 }
-
-// Call the main function when the page loads
-window.onload = main;
-
-// Audio Effects Setup using Howler.js
-const sound = new Howl({
-    src: ['sound.mp3'], // Replace 'sound.mp3' with the path to your audio file
-    volume: 0.5, // Adjust the volume as needed
-    preload: true,
-});
-
-// Function to play audio effect
-function playAudio() {
-    sound.play();
-}
-
-// Dark Mode Toggle
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const body = document.body;
-darkModeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-});
 
 // Call the main function when the page loads
 window.onload = main;
