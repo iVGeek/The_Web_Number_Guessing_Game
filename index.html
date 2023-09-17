@@ -7,37 +7,37 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Game header -->
+    <header>
+        <h1>Welcome to Guess the Number!</h1>
+        <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    </header>
+
+    <!-- Main game container -->
     <div class="container">
-        <h1 id="welcome-message">Welcome to Guess the Number!</h1>
-        <div id="level-select" class="hidden">
-            <h2>Select a Game Level:</h2>
-            <select id="level-dropdown">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-            <button id="start-button">Start Game</button>
+        <!-- Player name input -->
+        <input type="text" id="player-name" placeholder="Enter your name">
+        
+        <!-- Game mode selection (Single Player vs. Multiplayer) -->
+        <div id="game-mode">
+            <button id="single-player">Single Player</button>
+            <button id="multi-player">Multiplayer</button>
         </div>
 
-        <div id="game-elements" class="hidden">
-            <h2>Guess the Number</h2>
-            <p id="message"></p>
-            <p id="attempts-left"></p>
-            <input type="number" id="guess-input" placeholder="Enter your guess">
-            <button id="guess-button">Guess</button>
+        <!-- Game area (will be populated with game elements) -->
+        <div id="game-area" class="hidden">
+            <!-- Game elements will be displayed here -->
         </div>
 
-        <table id="leaderboard-table" class="hidden">
-            <caption>Leaderboard</caption>
-            <tr>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Level</th>
-            </tr>
-        </table>
+        <!-- Leaderboard (will be populated with leaderboard data) -->
+        <div id="leaderboard" class="hidden">
+            <!-- Leaderboard data will be displayed here -->
+        </div>
     </div>
 
-    <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    <!-- Include JavaScript and libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
