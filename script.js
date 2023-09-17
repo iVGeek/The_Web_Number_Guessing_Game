@@ -212,15 +212,6 @@ function clearLeaderboard() {
     displayLeaderboard();
 }
 
-// Toggle Multiplayer Mode
-const toggleMultiplayer = document.getElementById('toggle-multiplayer');
-toggleMultiplayer.addEventListener('click', () => {
-    isMultiplayer = !isMultiplayer;
-    toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
-    currentPlayer = player1Name; // Reset the current player
-    displayPlayerAndAttempts();
-});
-
 // Main menu
 function main() {
     // Display the welcome screen
@@ -228,10 +219,24 @@ function main() {
 
     // Initialize game elements
     selectGameLevel();
+
+    // Toggle Multiplayer Mode
+    const toggleMultiplayer = document.getElementById('toggle-multiplayer');
+
+    if (toggleMultiplayer) {
+        toggleMultiplayer.addEventListener('click', () => {
+            isMultiplayer = !isMultiplayer;
+            toggleMultiplayer.textContent = isMultiplayer ? 'Switch to Single Player' : 'Switch to Multiplayer';
+            currentPlayer = player1Name; // Reset the current player
+            displayPlayerAndAttempts();
+        });
+    } else {
+        console.error("Element with ID 'toggle-multiplayer' not found.");
+    }
 }
 
 // Call the main function when the page loads
-window.onload = main;
+document.addEventListener("DOMContentLoaded", main);
 
 // Audio Effects Setup using Howler.js
 const sound = new Howl({
@@ -252,7 +257,6 @@ darkModeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
 });
 
-// ... (remaining code)
 
 // Call the main function when the page loads
-window.onload = main;
+document.addEventListener("DOMContentLoaded", main);
