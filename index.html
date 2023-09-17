@@ -3,40 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number</title>
     <link rel="stylesheet" href="styles.css">
+    <title>Guess the Number Game</title>
 </head>
 <body>
-    <div class="container">
-        <h1 id="welcome-message">Welcome to Guess the Number!</h1>
-        
-        <!-- Player Names Input -->
-        <div id="player-names" class="hidden">
-            <input type="text" id="player1-name" placeholder="Enter Player 1 Name">
-            <input type="text" id="player2-name" placeholder="Enter Player 2 Name">
+    <div id="welcome-screen" class="centered">
+        <h1 id="welcome-message"></h1>
+        <div id="player-names">
+            <label for="player1-name">Player 1 Name:</label>
+            <input type="text" id="player1-name">
+            <label for="player2-name">Player 2 Name (Optional):</label>
+            <input type="text" id="player2-name">
             <button id="start-button">Start Game</button>
         </div>
-
-        <!-- Game Elements -->
-        <div id="game-elements" class="hidden">
-            <h2>Guess the Number</h2>
-            <p id="message"></p>
-            <p id="attempts-left"></p>
-            <input type="number" id="guess-input" placeholder="Enter your guess">
-            <button id="guess-button">Guess</button>
-        </div>
-
-        <table id="leaderboard-table" class="hidden">
-            <caption>Leaderboard</caption>
-            <tr>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Level</th>
-            </tr>
-        </table>
     </div>
 
+    <div id="game-elements" class="centered">
+        <h2 id="current-player"></h2>
+        <h2 id="attempts-left"></h2>
+        <input type="number" id="guess-input" placeholder="Enter your guess">
+        <button id="guess-button">Guess</button>
+        <p id="message"></p>
+        <button id="toggle-multiplayer">Switch to Multiplayer</button>
+    </div>
+
+    <div id="level-select" class="centered">
+        <label for="level-dropdown">Select a Game Level:</label>
+        <select id="level-dropdown">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <table id="leaderboard-table" class="centered">
+        <tr>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Level</th>
+        </tr>
+    </table>
+
+    <button id="clear-leaderboard">Clear Leaderboard</button>
     <button id="dark-mode-toggle">Toggle Dark Mode</button>
+
+    <script src="howler.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
