@@ -24,18 +24,21 @@
         <input type="number" id="timeLimit" value="60">
         <button id="startButton">Start Game</button>
     </div>
-    <p>Guess a number:</p>
-    <input type="number" id="guessField">
-    <button id="guessSubmit">Submit Guess</button>
-    <p class="message"></p>
-    <p>Time Left: <span id="timeLeft">60</span> seconds</p>
-    <p>Attempts: <span id="attempts">0</span></p>
-    <p>Best Score: <span id="bestScore">-</span> attempts</p>
-
-    <!-- Add the leaderboard section -->
-    <div class="leaderboard">
-        <h2>Leaderboard</h2>
-        <ul id="leaderboardList"></ul>
+    <div class="game-container">
+        <div class="game">
+            <p>Guess a number:</p>
+            <input type="number" id="guessField">
+            <button id="guessSubmit">Submit Guess</button>
+            <p class="message"></p>
+            <p>Time Left: <span id="timeLeft">60</span> seconds</p>
+            <p>Attempts: <span id="attempts">0</span></p>
+            <p>Best Score: <span id="bestScore">-</span> attempts</p>
+        </div>
+        <!-- Add the leaderboard section -->
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
     </div>
 
     <script src="script.js"></script>
