@@ -3,37 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Number Guessing Game</h1>
+
     <div class="game-settings">
-        <h2>Game Settings</h2>
-        <label for="player1Name">Player 1 Name:</label>
-        <input type="text" id="player1Name" placeholder="Enter Player 1's Name">
-        
-        <label for="difficulty">Select Difficulty:</label>
-        <select id="difficulty">
-            <option value="easy">Easy (1-20)</option>
-            <option value="medium">Medium (1-50)</option>
-            <option value="hard">Hard (1-100)</option>
-        </select>
-        
-        <button id="startButton">Start Game</button>
+        <label for="gameMode">Select Game Mode:</label>
+        <input type="radio" id="singlePlayer" name="gameMode" value="single" checked>
+        <label for="singlePlayer">Single Player</label>
+        <input type="radio" id="multiPlayer" name="gameMode" value="multi">
+        <label for="multiPlayer">Multiplayer</label>
     </div>
 
-    <div class="gameplay">
+    <div class="game-settings">
+        <label for="player1Name">Player 1 Name:</label>
+        <input type="text" id="player1Name" placeholder="Player 1">
+    </div>
+
+    <div class="game-settings" id="player2Settings" style="display: none;">
+        <label for="player2Name">Player 2 Name:</label>
+        <input type="text" id="player2Name" placeholder="Player 2">
+    </div>
+
+    <div class="game-settings">
+        <label for="difficulty">Select Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy (1-50)</option>
+            <option value="medium">Medium (1-100)</option>
+            <option value="hard">Hard (1-500)</option>
+        </select>
+    </div>
+
+    <div class="game-settings">
+        <label for="timeLimit">Time Limit (seconds):</label>
+        <input type="number" id="timeLimit" value="60">
+    </div>
+
+    <button id="startButton">Start Game</button>
+
+    <div class="gameplay" style="display: none;">
         <div class="player-info">
-            <p id="player1">Player 1:</p>
+            <p id="currentPlayerInfo"></p>
         </div>
+
         <div class="game-controls">
             <input type="number" id="guessField" class="guess-field" placeholder="Enter a guess">
             <button id="guessSubmit" class="guess-submit">Submit Guess</button>
         </div>
-        <div class="message">
-            <p>Enter a number and click "Submit Guess".</p>
-        </div>
+
+        <p class="message"></p>
+        <p class="time-left">Time Left: <span id="timeLeft">60</span> seconds</p>
+        <p class="attempts">Attempts Left: <span id="attempts">0</span></p>
+        <p class="best-score">Best Score: <span id="bestScore">-</span></p>
+        <audio id="correctSound" src="correct.mp3"></audio>
+        <audio id="wrongSound" src="wrong.mp3"></audio>
+        <audio id="gameOverSound" src="game-over.mp3"></audio>
     </div>
 
     <script src="script.js"></script>
