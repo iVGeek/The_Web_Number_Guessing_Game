@@ -3,9 +3,17 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f2f2f2;
+    background-image: url('background.jpg'); /* Replace with your image file path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
+}
+
+.dark-mode {
+    background-color: #333;
+    color: #fff;
 }
 
 h1 {
@@ -99,4 +107,39 @@ h1 {
     margin-top: 10px;
     font-weight: bold;
     color: #28a745;
+}
+
+#leaderboard {
+    display: none;
+    background-color: #fff;
+    width: 80%;
+    max-width: 400px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#leaderboard h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+#leaderboardList {
+    list-style: none;
+    padding: 0;
+}
+
+#leaderboardList li {
+    margin-bottom: 5px;
+}
+
+#leaderboardCloseButton {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
 }
