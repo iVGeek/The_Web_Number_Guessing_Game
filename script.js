@@ -1,4 +1,3 @@
-// Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
     const EASY_MIN = 1;
@@ -8,14 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const HARD_MIN = 1;
     const HARD_MAX = 100;
 
-    // Get player names from input fields
+    // Get elements from the HTML
     const gameModeSelect = document.getElementById('gameMode');
     const playerNameInputs = document.getElementById('playerNameInputs');
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
-    const guessField = document.getElementById('guessField');
-    const guessSubmit = document.getElementById('guessSubmit');
     const message = document.querySelector('.message');
     const timeLeft = document.getElementById('timeLeft');
     const attempts = document.getElementById('attempts');
@@ -23,96 +20,71 @@ document.addEventListener('DOMContentLoaded', function () {
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
+    const guessField = document.getElementById('guessField');
+    const guessSubmit = document.getElementById('guessSubmit');
 
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer, playerAttempts;
-    const playerGuesses = {
-        1: [],
-        2: [],
-    };
+    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
+    let player1Name = '';
+    let player2Name = '';
+    let gameMode = 'single';
 
-    // Event listener for the game mode select
+    // Event listener for the game mode selection
     gameModeSelect.addEventListener('change', function () {
-        const selectedMode = gameModeSelect.value;
-        playerNameInputs.innerHTML = '';
-
-        if (selectedMode === 'single') {
-            createPlayerNameInput('player1Name', 'Player Name:');
-        } else if (selectedMode === 'multi') {
-            createPlayerNameInput('player1Name', 'Player 1 Name:');
-            createPlayerNameInput('player2Name', 'Player 2 Name:');
-        }
+        gameMode = gameModeSelect.value;
+        updatePlayerNameInputs();
     });
 
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
 
-    // Event listener for the guess button
-    guessSubmit.addEventListener('click', function () {
-        checkGuess(currentPlayer);
-    });
-
-    // Function to create player name input fields
-    function createPlayerNameInput(id, label) {
-        const labelElement = document.createElement('label');
-        labelElement.setAttribute('for', id);
-        labelElement.textContent = label;
-
-        const inputElement = document.createElement('input');
-        inputElement.setAttribute('type', 'text');
-        inputElement.setAttribute('id', id);
-
-        playerNameInputs.appendChild(labelElement);
-        playerNameInputs.appendChild(inputElement);
+    // Update player name inputs based on game mode
+    function updatePlayerNameInputs() {
+        if (gameMode === 'single') {
+            playerNameInputs.innerHTML = `
+                <label for="playerName">Enter Your Name:</label>
+                <input type="text" id="playerName" required>
+            `;
+        } else if (gameMode === 'multi') {
+            playerNameInputs.innerHTML = `
+                <label for="player1Name">Player 1 Name:</label>
+                <input type="text" id="player1Name" required>
+                <label for="player2Name">Player 2 Name:</label>
+                <input type="text" id="player2Name" required>
+            `;
+        }
     }
 
     // Start the game
     function startGame() {
-        // Get selected game mode
-        const selectedMode = gameModeSelect.value;
-
-        // Check if player names are entered based on the selected game mode
-        let player1Name, player2Name;
-
-        if (selectedMode === 'single') {
-            player1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
-        } else if (selectedMode === 'multi') {
-            player1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
-            player2Name = document.getElementById('player2Name').value.trim() || 'Player 2';
-
-            if (player1Name === 'Player 1' || player2Name === 'Player 2') {
-                alert('Please enter names for both players.');
-                return;
-            }
-        }
+        // Get player names
+        player1Name = document.getElementById('player1Name').value;
+        player2Name = document.getElementById('player2Name').value;
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
         if (selectedDifficulty === 'easy') {
             min = EASY_MIN;
             max = EASY_MAX;
-            playerAttempts = [4, 4];
+            remainingAttempts = 4;
         } else if (selectedDifficulty === 'medium') {
             min = MEDIUM_MIN;
             max = MEDIUM_MAX;
-            playerAttempts = [6, 6];
+            remainingAttempts = 6;
         } else {
             min = HARD_MIN;
             max = HARD_MAX;
-            playerAttempts = [8, 8];
+            remainingAttempts = 8;
         }
 
         targetNumber = generateRandomNumber(min, max);
-        remainingAttempts = [...playerAttempts];
-        bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
+        bestScore = localStorage.getItem(selectedDifficulty) || '-';
         currentPlayer = 1;
-        playerGuesses[1] = [];
-        playerGuesses[2] = [];
 
         guessField.value = '';
         message.textContent = '';
         timeLeft.textContent = timeLimitInput.value;
-        attempts.textContent = playerAttempts[currentPlayer - 1];
-        bestScoreDisplay.textContent = bestScore === Infinity ? '-' : bestScore;
+        attempts.textContent = remainingAttempts;
+        bestScoreDisplay.textContent = bestScore;
 
         guessField.removeAttribute('disabled');
         guessSubmit.removeAttribute('disabled');
@@ -138,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeLeft.textContent = timeRemaining;
 
             if (timeRemaining === 0) {
-                endGame(0, false);
+                endGame(0); // Time's up, declare a tie
             }
         }, 1000);
     }
@@ -149,60 +121,73 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
             message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
-            guessField.style.borderColor = 'red';
             return;
         }
 
-        playerGuesses[player].push(userGuess);
+        // Decrease the attempts
+        remainingAttempts--;
 
         if (userGuess === targetNumber) {
-            endGame(player, true);
+            endGame(player);
+        } else if (remainingAttempts === 0) {
+            endGame(0);
         } else {
-            guessField.style.borderColor = 'green';
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
             guessField.focus();
-            currentPlayer = 3 - currentPlayer;
-            attempts.textContent = playerAttempts[currentPlayer - 1];
+            currentPlayer = 3 - currentPlayer; // Switch players
         }
     }
 
-    // End the game and declare the result
-    function endGame(winner, correctGuess) {
+    // End the game
+    function endGame(winner) {
         clearInterval(timer);
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
         timeLimitInput.removeAttribute('disabled');
         startButton.removeAttribute('disabled');
 
-        if (correctGuess) {
-            message.textContent = `${getPlayerName(winner)} wins with ${playerAttempts[3 - winner]} attempts left! The correct number was ${targetNumber}.`;
+        if (winner === 1 || winner === 2) {
+            message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
         } else {
-            message.textContent = `Both players, ${player1Name} and ${player2Name}, lose! The correct number was ${targetNumber}.`;
+            message.textContent = `${player1Name} and ${player2Name} lost. The correct number was ${targetNumber}.`;
         }
 
-        if (playerAttempts[3 - winner] < bestScore) {
-            bestScore = playerAttempts[3 - winner];
+        if (bestScore === '-' || remainingAttempts < bestScore) {
+            bestScore = remainingAttempts;
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
         }
 
-        correctSound.play();
-        guessField.style.borderColor = '';
-        guessField.value = '';
-
-        if (selectedMode === 'multi') {
-            document.getElementById('player1Name').value = '';
-            document.getElementById('player2Name').value = '';
+        if (winner === 1 || winner === 2) {
+            correctSound.play(); // Play a victory sound
+        } else {
+            gameOverSound.play(); // Play a game over sound
         }
+
+        setTimeout(() => {
+            // Reset the game
+            guessField.removeAttribute('disabled');
+            guessSubmit.removeAttribute('disabled');
+            timeLimitInput.setAttribute('disabled', 'disabled');
+            startButton.setAttribute('disabled', 'disabled');
+            message.textContent = '';
+            timeLeft.textContent = timeLimitInput.value;
+            attempts.textContent = remainingAttempts;
+            startGame();
+        }, 3000);
     }
 
     // Helper function to get player name
     function getPlayerName(player) {
-        if (selectedMode === 'single') {
-            return player === 1 ? player1Name : 'Computer';
-        } else {
-            return player === 1 ? player1Name : player2Name;
-        }
+        return player === 1 ? player1Name : player2Name;
     }
+
+    // Event listener for the guess button
+    guessSubmit.addEventListener('click', function () {
+        checkGuess(currentPlayer);
+    });
+
+    // Initial setup based on game mode
+    updatePlayerNameInputs();
 });
