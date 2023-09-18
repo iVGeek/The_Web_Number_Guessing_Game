@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (winner === 1 || winner === 2) {
             if (playerGuesses[1].length < playerGuesses[2].length) {
-                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
+                message.innerHTML = `<span style="color: blue;">${player1Name}</span> wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
             } else if (playerGuesses[2].length < playerGuesses[1].length) {
-                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
+                message.innerHTML = `<span style="color: red;">${player2Name}</span> wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
             } else {
                 message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
             }
@@ -169,8 +169,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Helper function to get player name
+    // Helper function to get player name with color
     function getPlayerName(player) {
-        return player === 1 ? player1Name : player2Name;
+        const playerName = player === 1 ? player1Name : player2Name;
+        const color = player === 1 ? 'blue' : 'red'; // You can adjust the colors as needed
+        return `<span style="color: ${color};">${playerName}</span>`;
     }
 });
