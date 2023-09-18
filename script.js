@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (selectedDifficulty === 'medium') {
             min = MEDIUM_MIN;
             max = MEDIUM_MAX;
-        } else {
+        } else if (selectedDifficulty === 'hard') {
             min = HARD_MIN;
             max = HARD_MAX;
         }
@@ -124,10 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const userGuess = parseInt(guessField.value);
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
-            // For an invalid entry
             message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
-            message.classList.remove('correct-guess'); // Remove the correct-guess class
-            message.classList.add('wrong-guess'); // Add the wrong-guess class
             return;
         }
 
@@ -135,22 +132,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
-            // For a correct guess
-            message.textContent = `${getPlayerName(player)} wins with a correct guess of ${userGuess}!`;
-            message.classList.remove('wrong-guess'); // Remove the wrong-guess class
-            message.classList.add('correct-guess'); // Add the correct-guess class
             endGame(player);
-        } else if (playerGuesses[3 - player].length > 0) {
-            // Both players have played, and neither guessed correctly
-            message.textContent = `${getPlayerName(1)} and ${getPlayerName(2)} both lost. The correct number was ${targetNumber}.`;
-            message.classList.remove('correct-guess'); // Remove the correct-guess class
-            message.classList.add('wrong-guess'); // Add the wrong-guess class
-            endGame(0); // Declare both players as losers
+        } else if (playerGuesses[player].length >= remainingAttempts) {
+            endGame(0); // All attempts used, declare a tie
         } else {
-            // For a wrong guess
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
-            message.classList.remove('correct-guess'); // Remove the correct-guess class
-            message.classList.add('wrong-guess'); // Add the wrong-guess class
             guessField.value = '';
             guessField.focus();
             currentPlayer = 3 - currentPlayer; // Switch players
