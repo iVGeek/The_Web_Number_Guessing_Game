@@ -6,8 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const HARD_MIN = 1;
     const HARD_MAX = 100;
 
-    const playerNameInput = document.getElementById('playerName');
     const gameModeSelect = document.getElementById('gameMode');
+    const playerNameInputs = document.getElementById('playerNameInputs');
+    const player1NameInput = document.getElementById('player1Name');
+    const player2NameLabel = document.getElementById('player2NameLabel');
+    const player2NameInput = document.getElementById('player2NameInput');
     const difficultySelect = document.getElementById('difficulty');
     const startButton = document.getElementById('startButton');
     const guessField = document.getElementById('guessField');
@@ -18,26 +21,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const attemptsLeftDisplay = document.getElementById('attemptsLeft');
 
     let min, max, targetNumber, remainingAttempts, currentPlayer;
-    let player1Name = 'Player 1';
-    let player2Name = 'A.I';
-    let currentPlayerName = player1Name;
-
-    playerNameInput.addEventListener('input', function () {
-        currentPlayerName = playerNameInput.value.trim() || 'Player 1';
-    });
+    let player1Name = '';
+    let player2Name = '';
+    let currentPlayerName = '';
 
     gameModeSelect.addEventListener('change', function () {
-        if (gameModeSelect.value === 'single') {
-            player2Name = 'A.I';
+        const selectedGameMode = gameModeSelect.value;
+        if (selectedGameMode === 'single') {
+            playerNameInputs.classList.remove('hidden');
+            player2NameLabel.classList.add('hidden');
+            player2NameInput.classList.add('hidden');
         } else {
-            player2Name = 'Player 2';
+            playerNameInputs.classList.remove('hidden');
+            player2NameLabel.classList.remove('hidden');
+            player2NameInput.classList.remove('hidden');
         }
+        startButton.classList.remove('hidden');
     });
 
-    startButton.addEventListener('click', startGame);
-    guessSubmit.addEventListener('click', makeGuess);
+    startButton.addEventListener('click', function () {
+        player1Name = player1NameInput.value.trim() || 'Player 1';
+        player2Name = player2NameInput.value.trim() || 'Player 2';
+        currentPlayerName = player1Name;
 
-    function startGame() {
         const selectedDifficulty = difficultySelect.value;
         if (selectedDifficulty === 'easy') {
             min = EASY_MIN;
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         targetNumber = generateRandomNumber(min, max);
         currentPlayer = 1;
         resetUI();
-    }
+    });
 
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1) ? player1Name : player2Name;
-            message.textContent = `It's ${currentPlayerName}'s turn.`;
+            message.textContent = `${currentPlayerName}'s Turn`;
         }
     }
 
@@ -102,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         guessField.value = '';
         guessField.removeAttribute('disabled');
         guessSubmit.removeAttribute('disabled');
-        message.textContent = `It's ${currentPlayerName}'s turn.`;
+        message.textContent = `${currentPlayerName}'s Turn`;
         winnerDisplay.textContent = '';
         attemptsLeftDisplay.textContent = remainingAttempts;
         playerNameDisplay.textContent = currentPlayerName;
