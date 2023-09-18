@@ -83,9 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
         attemptsLeftDisplay.textContent = remainingAttempts;
 
         if (userGuess === targetNumber) {
-            endGame(currentPlayerName);
+            endGame(currentPlayerName, true); // Correct guess, pass 'true' as the second argument
         } else if (remainingAttempts === 0) {
-            endGame('none');
+            endGame('none', false); // No correct guess, pass 'false' as the second argument
         } else {
             currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function endGame(winner) {
+    function endGame(winner, correctGuess) {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
         startButton.removeAttribute('disabled');
@@ -102,7 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
             message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = '';
         } else {
-            message.textContent = `${winner} wins! The correct number was ${targetNumber}.`;
+            const winnerColor = correctGuess ? (winner === player1Name ? player1Color : player2Color) : 'black';
+            message.innerHTML = `<span style="color:${winnerColor}">${winner} wins! The correct number was ${targetNumber}.</span>`;
             winnerDisplay.textContent = `${winner} wins!`;
         }
     }
