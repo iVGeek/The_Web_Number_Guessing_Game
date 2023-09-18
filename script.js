@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 name: winner,
                 attempts: remainingAttempts,
                 difficulty: difficultySelect.value,
+                entryTime: new Date().toLocaleString(), // Entry time in a readable format
             });
 
             // Sort the leaderboard data by attempts (lower attempts are better)
@@ -160,8 +161,19 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add leaderboard entries to the UI
         leaderboardData.forEach((entry, index) => {
             const listItem = document.createElement('li');
-            listItem.textContent = `#${index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
+            listItem.innerHTML = `<span style="color: ${getRandomColor()};">${entry.name}</span> - ` +
+                `Attempts: ${entry.attempts}, Difficulty: ${entry.difficulty}, ` +
+                `Entry Time: ${entry.entryTime}`;
             leaderboardList.appendChild(listItem);
         });
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     }
 });
