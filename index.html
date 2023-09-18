@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number Game Guess the Number Game Developed by iVGeek</title>
+    <title>Guess the Number Game Developed by iVGeek</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Guess the Number Game Developed by iVGeek</h1>
+    <button id="toggleDarkMode">Toggle Dark Mode</button>
     <div class="game-settings">
         <label for="gameMode">Game Mode:</label>
         <select id="gameMode">
@@ -45,6 +46,12 @@
     <audio id="correctSound" src="correct.mp3"></audio>
     <audio id="wrongSound" src="wrong.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
+    <button id="leaderboardButton">Leaderboard</button>
+    <div id="leaderboard" class="hidden">
+        <h2>Leaderboard</h2>
+        <ol id="leaderboardList"></ol>
+        <button id="leaderboardCloseButton">Close</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
