@@ -1,72 +1,165 @@
-body {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    color: #333;
-}
-
-.settings {
-    margin: 20px auto;
-    max-width: 300px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
+/* Add styles for player names with colors */
+.player-names .player {
     font-weight: bold;
-    color: #333;
+    margin-right: 20px;
 }
 
-select, input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+.player-names .player-name {
+    color: #FF5733; /* Change color as needed */
 }
 
-button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
+/* Add styles for game interface */
+.game {
+    margin-top: 20px;
     font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
-button:disabled {
-    background-color: #999;
-    cursor: not-allowed;
+.game p {
+    margin: 5px 0;
 }
 
-.message {
-    color: #333;
-    font-weight: bold;
+/* Add styles for input fields */
+.guess {
     margin-top: 10px;
 }
 
-p {
+.guess-field {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.guess-submit {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #0074cc; /* Change color as needed */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Add styles for leaderboard */
+.leaderboard {
+    margin-top: 20px;
     font-size: 18px;
-    color: #333;
 }
 
-#timeLeft, #attempts, #bestScore {
-    font-weight: bold;
-    color: #333;
+.leaderboard h2 {
+    margin-bottom: 10px;
 }
 
-#timeLeft {
-    font-size: 24px;
-    color: #ff5733;
+.leaderboardList {
+    list-style: none;
+    padding: 0;
+}
+
+.leaderboardList li {
+    margin: 5px 0;
+}
+
+/* Add styles for friend system */
+.friend-system {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.friend-system h2 {
+    margin-bottom: 10px;
+}
+
+/* Add styles for chat system */
+.chat-system {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.chat-system h2 {
+    margin-bottom: 10px;
+}
+
+/* Add styles for customization options */
+.customization {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.customization h2 {
+    margin-bottom: 10px;
+}
+
+.customization label {
+    display: block;
+    margin-top: 10px;
+}
+
+.customization select {
+    width: 200px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.customization button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #0074cc; /* Change color as needed */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Add styles for daily challenges */
+.daily-challenges {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.daily-challenges h2 {
+    margin-bottom: 10px;
+}
+
+.daily-challenges ul {
+    list-style: none;
+    padding: 0;
+}
+
+.daily-challenges li {
+    margin: 5px 0;
+}
+
+/* Add styles for achievements */
+.achievements {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.achievements h2 {
+    margin-bottom: 10px;
+}
+
+.achievements ul {
+    list-style: none;
+    padding: 0;
+}
+
+.achievements li {
+    margin: 5px 0;
+}
+
+/* Add styles for daily login rewards */
+.daily-login-rewards {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.daily-login-rewards h2 {
+    margin-bottom: 10px;
+}
+
+.daily-login-rewards ul {
+    list-style: none;
+    padding: 0;
+}
+
+.daily-login-rewards li {
+    margin: 5px 0;
 }
