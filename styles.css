@@ -10,7 +10,7 @@ h1 {
     color: #333;
 }
 
-.settings {
+.game-settings {
     margin: 20px auto;
     max-width: 300px;
     background-color: #fff;
@@ -26,7 +26,9 @@ label {
     color: #333;
 }
 
-select, input[type="number"] {
+input[type="text"],
+input[type="number"],
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -50,62 +52,50 @@ button:disabled {
     cursor: not-allowed;
 }
 
-.message {
-    color: #333;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-p {
-    font-size: 18px;
-    color: #333;
-}
-
-#timeLeft, #attempts, #bestScore {
-    font-weight: bold;
-    font-size: 20px;
-    color: #333;
-}
-
-.sound-controls {
-    margin-top: 20px;
-    font-size: 24px;
-}
-
-.sound-icon {
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-.leaderboard {
-    max-width: 400px;
+.gameplay {
+    display: flex;
+    justify-content: space-between;
     margin: 20px auto;
+    max-width: 800px;
+    padding: 10px;
     background-color: #fff;
-    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.leaderboard h2 {
-    font-size: 24px;
+.gameplay p {
+    font-size: 18px;
     color: #333;
 }
 
-#leaderboardList {
-    list-style: none;
-    padding: 0;
+.message {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
 }
 
-#leaderboardList li {
-    font-size: 18px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.guess-field {
+    width: 60px;
 }
 
-/* Add some spacing to the leaderboard list items */
-#leaderboardList li:not(:last-child) {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
+.guess-submit {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
 }
+
+.guess-submit:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.winner {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Add more styles as needed */
