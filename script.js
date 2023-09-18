@@ -26,6 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
 
+    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+    const body = document.body;
+
+    toggleDarkModeButton.addEventListener('click', function () {
+        body.classList.toggle('dark-mode');
+    });
+
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
         if (selectedGameMode === 'single') {
@@ -120,4 +127,88 @@ document.addEventListener('DOMContentLoaded', function () {
     guessSubmit.addEventListener('click', function () {
         makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
+
+    // Leaderboard features
+    const leaderboardButton = document.getElementById('leaderboardButton');
+    const leaderboard = document.getElementById('leaderboard');
+    const leaderboardList = document.getElementById('leaderboardList');
+    const leaderboardCloseButton = document.getElementById('leaderboardCloseButton');
+    const sortCriteriaSelect = document.getElementById('sortCriteria');
+    const filterDifficultySelect = document.getElementById('filterDifficulty');
+    const prevPageButton = document.getElementById('prevPageButton');
+    const nextPageButton = document.getElementById('nextPageButton');
+    const currentPageDisplay = document.getElementById('currentPage');
+
+    let leaderboardData = [];
+    let currentPage = 1;
+    const leaderboardPerPage = 5;
+
+    leaderboardButton.addEventListener('click', function () {
+        // Display the leaderboard
+        leaderboard.style.display = 'block';
+
+        // Update the leaderboard UI
+        updateLeaderboard();
+    });
+
+    leaderboardCloseButton.addEventListener('click', function () {
+        // Hide the leaderboard
+        leaderboard.style.display = 'none';
+    });
+
+    sortCriteriaSelect.addEventListener('change', updateLeaderboard);
+    filterDifficultySelect.addEventListener('change', updateLeaderboard);
+
+    prevPageButton.addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            updateLeaderboard();
+        }
+    });
+
+    nextPageButton.addEventListener('click', function () {
+        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            updateLeaderboard();
+        }
+    });
+
+    function updateLeaderboard() {
+        leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
+
+        // Calculate the start and end indices for the current page
+        const startIndex = (currentPage - 1) * leaderboardPerPage;
+        const endIndex = startIndex + leaderboardPerPage;
+
+        // Add leaderboard entries to the UI for the current page
+        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
+
+            // Highlight the current user's entry
+            if (entry.name === currentPlayerName) {
+                listItem.classList.add('current-user');
+            }
+
+            leaderboardList.appendChild(listItem);
+        });
+
+        // Update current page display
+        currentPageDisplay.textContent = `Page ${currentPage}`;
+
+        // Disable pagination buttons when at the start or end of the leaderboard
+        if (currentPage === 1) {
+            prevPageButton.setAttribute('disabled', 'disabled');
+        } else {
+            prevPageButton.removeAttribute('disabled');
+        }
+
+        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
+        if (currentPage === maxPage) {
+            nextPageButton.setAttribute('disabled', 'disabled');
+        } else {
+            nextPageButton.removeAttribute('disabled');
+        }
+    }
 });
