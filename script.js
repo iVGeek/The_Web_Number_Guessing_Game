@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let player1Name = '';
     let player2Name = '';
     let currentPlayerName = '';
+    let singlePlayer = true; // Single player mode flag
 
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
@@ -31,10 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
             playerNameInputs.classList.remove('hidden');
             player2NameLabel.classList.add('hidden');
             player2NameInput.classList.add('hidden');
+            singlePlayer = true;
         } else {
             playerNameInputs.classList.remove('hidden');
             player2NameLabel.classList.remove('hidden');
             player2NameInput.classList.remove('hidden');
+            singlePlayer = false;
         }
         startButton.classList.remove('hidden');
     });
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
             endGame('none');
         } else {
             currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
-            currentPlayerName = (currentPlayer === 1) ? player1Name : player2Name;
+            currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
             message.textContent = `${currentPlayerName}'s Turn`;
         }
     }
@@ -113,4 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
         attemptsLeftDisplay.textContent = remainingAttempts;
         playerNameDisplay.textContent = currentPlayerName;
     }
+
+    guessSubmit.addEventListener('click', function () {
+        makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
+    });
 });
