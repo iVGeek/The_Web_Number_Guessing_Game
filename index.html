@@ -3,62 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game</title>
+    <title>Guess the Number Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Number Guessing Game</h1>
-
+    <h1>Guess the Number Game</h1>
     <div class="game-settings">
-        <label for="gameMode">Select Game Mode:</label>
-        <input type="radio" id="singlePlayer" name="gameMode" value="single" checked>
-        <label for="singlePlayer">Single Player</label>
-        <input type="radio" id="multiPlayer" name="gameMode" value="multi">
-        <label for="multiPlayer">Multiplayer</label>
-    </div>
-
-    <div class="game-settings" id="playerNameInputs" style="display: none;">
-        <label for="player1Name">Player 1 Name:</label>
-        <input type="text" id="player1Name" placeholder="Player 1">
-        <label for="player2Name" id="player2NameLabel" style="display: none;">Player 2 Name:</label>
-        <input type="text" id="player2Name" placeholder="Player 2" style="display: none;">
-    </div>
-
-    <div class="game-settings">
-        <label for="difficulty">Select Difficulty:</label>
-        <select id="difficulty">
-            <option value="easy">Easy (1-50)</option>
-            <option value="medium">Medium (1-100)</option>
-            <option value="hard">Hard (1-500)</option>
+        <label for="gameMode">Game Mode:</label>
+        <select id="gameMode">
+            <option value="single">Single Player</option>
+            <option value="multi">Multiplayer</option>
         </select>
     </div>
-
+    <div id="playerNameInputs" class="hidden">
+        <label for="player1Name">Player 1 Name:</label>
+        <input type="text" id="player1Name">
+        <label id="player2NameLabel" class="hidden" for="player2Name">Player 2 Name:</label>
+        <input id="player2NameInput" class="hidden" type="text" id="player2Name">
+    </div>
     <div class="game-settings">
-        <label for="timeLimit">Time Limit (seconds):</label>
-        <input type="number" id="timeLimit" value="60">
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy (1-20)</option>
+            <option value="medium">Medium (1-50)</option>
+            <option value="hard">Hard (1-100)</option>
+        </select>
+        <button id="startButton" class="hidden">Start Game</button>
     </div>
-
-    <button id="startButton">Start Game</button>
-
-    <div class="gameplay" style="display: none;">
+    <div class="gameplay">
         <div class="player-info">
-            <p id="currentPlayerInfo"></p>
+            <p id="playerNameDisplay">Player 1's Turn</p>
+            <p>Attempts Left: <span id="attemptsLeft">-</span></p>
         </div>
-
         <div class="game-controls">
-            <input type="number" id="guessField" class="guess-field" placeholder="Enter a guess">
-            <button id="guessSubmit" class="guess-submit">Submit Guess</button>
+            <input type="number" id="guessField" class="guess-field" disabled>
+            <button id="guessSubmit" class="guess-submit" disabled>Submit Guess</button>
         </div>
-
-        <p class="message"></p>
-        <p class="time-left">Time Left: <span id="timeLeft">60</span> seconds</p>
-        <p class="attempts">Attempts Left: <span id="attempts">0</span></p>
-        <p class="best-score">Best Score: <span id="bestScore">-</span></p>
-        <audio id="correctSound" src="correct.mp3"></audio>
-        <audio id="wrongSound" src="wrong.mp3"></audio>
-        <audio id="gameOverSound" src="game-over.mp3"></audio>
     </div>
-
+    <p class="message"></p>
+    <p class="winner"></p>
+    <audio id="correctSound" src="correct.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+    <audio id="gameOverSound" src="gameover.mp3"></audio>
     <script src="script.js"></script>
 </body>
 </html>
