@@ -9,11 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const HARD_MAX = 100;
 
     // Get player names from input fields
-    const player1NameInput = document.getElementById('player1Name');
-    const player2NameInput = document.getElementById('player2Name');
-    let player1Name = ''; // Default names
-    let player2Name = '';
-
+    const gameModeSelect = document.getElementById('gameMode');
+    const playerNameInputs = document.getElementById('playerNameInputs');
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
@@ -26,13 +23,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
-    const gameModeSelect = document.getElementById('gameMode');
 
     let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer, playerAttempts;
     const playerGuesses = {
         1: [],
         2: [],
     };
+
+    // Event listener for the game mode select
+    gameModeSelect.addEventListener('change', function () {
+        const selectedMode = gameModeSelect.value;
+        playerNameInputs.innerHTML = ''; // Clear previous player name inputs
+
+        if (selectedMode === 'single') {
+            createPlayerNameInput('player1Name', 'Player Name:');
+        } else if (selectedMode === 'multi') {
+            createPlayerNameInput('player1Name', 'Player 1 Name:');
+            createPlayerNameInput('player2Name', 'Player 2 Name:');
+        }
+    });
 
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
@@ -42,16 +51,36 @@ document.addEventListener('DOMContentLoaded', function () {
         checkGuess(currentPlayer);
     });
 
+    // Function to create player name input fields
+    function createPlayerNameInput(id, label) {
+        const labelElement = document.createElement('label');
+        labelElement.setAttribute('for', id);
+        labelElement.textContent = label;
+
+        const inputElement = document.createElement('input');
+        inputElement.setAttribute('type', 'text');
+        inputElement.setAttribute('id', id);
+
+        playerNameInputs.appendChild(labelElement);
+        playerNameInputs.appendChild(inputElement);
+    }
+
     // Start the game
     function startGame() {
-        // Get player names from input fields
-        player1Name = player1NameInput.value.trim() || 'Player 1';
-        player2Name = player2NameInput.value.trim() || 'Player 2';
+        // Get selected game mode
+        const selectedMode = gameModeSelect.value;
 
-        // Check if both players have entered their names (for multiplayer mode)
-        if (gameModeSelect.value === 'multi' && (player1Name === 'Player 1' || player2Name === 'Player 2')) {
-            alert('Please enter names for both players.');
-            return;
+        // Check if player names are entered based on the selected game mode
+        if (selectedMode === 'single') {
+            player1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
+        } else if (selectedMode === 'multi') {
+            player1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
+            player2Name = document.getElementById('player2Name').value.trim() || 'Player 2';
+
+            if (player1Name === 'Player 1' || player2Name === 'Player 2') {
+                alert('Please enter names for both players.');
+                return;
+            }
         }
 
         // Get selected difficulty and set game parameters
@@ -107,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeLeft.textContent = timeRemaining;
 
             if (timeRemaining === 0) {
-                endGame(0); // Time's up, declare both players as losers
+                endGame(0, false); // Time's up, declare the result
             }
         }, 1000);
     }
