@@ -1,29 +1,18 @@
 // Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
-    const DIFFICULTIES = {
-        easy: {
-            min: 1,
-            max: 20,
-            maxTries: 4, // Adjusted number of tries for easy difficulty
-        },
-        medium: {
-            min: 1,
-            max: 50,
-            maxTries: 6, // Adjusted number of tries for medium difficulty
-        },
-        hard: {
-            min: 1,
-            max: 100,
-            maxTries: 8, // Adjusted number of tries for hard difficulty
-        },
-    };
+    const EASY_MIN = 1;
+    const EASY_MAX = 20;
+    const MEDIUM_MIN = 1;
+    const MEDIUM_MAX = 50;
+    const HARD_MIN = 1;
+    const HARD_MAX = 100;
 
     // Get player names from input fields
     const player1NameInput = document.getElementById('player1Name');
     const player2NameInput = document.getElementById('player2Name');
-    let player1Name = 'Player 1'; // Default names
-    let player2Name = 'Player 2';
+    let player1Name = ''; // Default names
+    let player2Name = '';
 
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
@@ -37,19 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
+    const gameModeSelect = document.getElementById('gameMode');
 
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
+    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer, playerAttempts;
     const playerGuesses = {
         1: [],
         2: [],
     };
-    const playerAttempts = {
-        1: 0,
-        2: 0,
-    };
-
-    // Countdown animation
-    const timeLeftElement = document.getElementById('timeLeft');
 
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
@@ -62,20 +45,33 @@ document.addEventListener('DOMContentLoaded', function () {
     // Start the game
     function startGame() {
         // Get player names from input fields
-        player1Name = player1NameInput.value || 'Player 1';
-        player2Name = player2NameInput.value || 'Player 2';
+        player1Name = player1NameInput.value.trim() || 'Player 1';
+        player2Name = player2NameInput.value.trim() || 'Player 2';
+
+        // Check if both players have entered their names (for multiplayer mode)
+        if (gameModeSelect.value === 'multi' && (player1Name === 'Player 1' || player2Name === 'Player 2')) {
+            alert('Please enter names for both players.');
+            return;
+        }
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
-        const difficulty = DIFFICULTIES[selectedDifficulty];
-
-        min = difficulty.min;
-        max = difficulty.max;
-        remainingAttempts = difficulty.maxTries; // Adjusted number of tries based on difficulty
-        playerAttempts[1] = remainingAttempts;
-        playerAttempts[2] = remainingAttempts;
+        if (selectedDifficulty === 'easy') {
+            min = EASY_MIN;
+            max = EASY_MAX;
+            playerAttempts = [4, 4];
+        } else if (selectedDifficulty === 'medium') {
+            min = MEDIUM_MIN;
+            max = MEDIUM_MAX;
+            playerAttempts = [6, 6];
+        } else {
+            min = HARD_MIN;
+            max = HARD_MAX;
+            playerAttempts = [8, 8];
+        }
 
         targetNumber = generateRandomNumber(min, max);
+        remainingAttempts = [...playerAttempts];
         bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
         currentPlayer = 1;
         playerGuesses[1] = [];
@@ -84,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         guessField.value = '';
         message.textContent = '';
         timeLeft.textContent = timeLimitInput.value;
-        attempts.textContent = playerAttempts[1];
+        attempts.textContent = playerAttempts[currentPlayer - 1];
         bestScoreDisplay.textContent = bestScore === Infinity ? '-' : bestScore;
 
         guessField.removeAttribute('disabled');
@@ -122,53 +118,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
             message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
+            guessField.style.borderColor = 'red'; // Set the border color to red for wrong entry
             return;
         }
 
         playerGuesses[player].push(userGuess);
 
+        // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
-            endGame(player);
+            endGame(player, true); // The current player won
         } else {
-            message.textContent = `${getPlayerName(player)}, your guess is recorded.`;
+            guessField.style.borderColor = 'green'; // Set the border color to green for correct entry
+            message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
             guessField.focus();
-            playerAttempts[player]--;
-
-            if (playerAttempts[player] === 0) {
-                endGame(0); // No more attempts, declare both players as losers
-            } else {
-                attempts.textContent = playerAttempts[player];
-                currentPlayer = 3 - currentPlayer; // Switch players
-            }
+            currentPlayer = 3 - currentPlayer; // Switch players
+            attempts.textContent = playerAttempts[currentPlayer - 1];
         }
     }
 
-    // End the game and declare the winner or both players as losers
-    function endGame(winner) {
+    // End the game and declare the result
+    function endGame(winner, correctGuess) {
         clearInterval(timer);
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
         timeLimitInput.removeAttribute('disabled');
         startButton.removeAttribute('disabled');
 
-        if (winner === 1 || winner === 2) {
-            message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
-            correctSound.play();
+        if (correctGuess) {
+            message.textContent = `${getPlayerName(winner)} wins with ${playerAttempts[3 - winner]} attempts left! The correct number was ${targetNumber}.`;
         } else {
-            message.textContent = `${player1Name} and ${player2Name} both lose. The correct number was ${targetNumber}.`;
-            gameOverSound.play();
+            message.textContent = `Both players, ${player1Name} and ${player2Name}, lose! The correct number was ${targetNumber}.`;
         }
 
-        if (playerGuesses[1].length < bestScore) {
-            bestScore = playerGuesses[1].length;
-            localStorage.setItem(difficultySelect.value, bestScore);
-            bestScoreDisplay.textContent = bestScore;
-        } else if (playerGuesses[2].length < bestScore) {
-            bestScore = playerGuesses[2].length;
+        // Update best score if applicable
+        if (playerAttempts[3 - winner] < bestScore) {
+            bestScore = playerAttempts[3 - winner];
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
         }
+
+        // Play sound based on the result
+        if (correctGuess) {
+            correctSound.play(); // Play a victory sound
+        } else {
+            gameOverSound.play(); // Play a game over sound
+        }
+
+        // Reset the guess field border color
+        guessField.style.borderColor = '';
+
+        // Reset player names
+        player1NameInput.value = '';
+        player2NameInput.value = '';
     }
 
     // Helper function to get player name
