@@ -113,7 +113,6 @@ h1 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
     text-align: left;
-    display: none;
 }
 
 #leaderboard h2 {
@@ -122,38 +121,25 @@ h1 {
     font-size: 1.5rem;
 }
 
-#leaderboardSort,
-#leaderboardFilter,
-#leaderboardPagination {
-    margin: 10px 0;
+#leaderboardList {
+    list-style: none;
+    padding: 0;
 }
 
-#sortCriteria,
-#filterDifficulty {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
+#leaderboardList li {
+    margin-bottom: 10px;
 }
 
-#prevPageButton,
-#nextPageButton {
-    padding: 5px 10px;
-    background-color: #007BFF;
+#leaderboardCloseButton {
+    background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
     cursor: pointer;
-    margin-right: 10px;
 }
 
-#currentPage {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-#leaderboardList .current-user {
-    background-color: #28a745;
-    color: #fff;
-    font-weight: bold;
+#leaderboardCloseButton:hover {
+    background-color: #c82333;
 }
