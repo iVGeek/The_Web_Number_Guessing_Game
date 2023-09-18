@@ -9,33 +9,42 @@
 <body>
     <h1>Guess the Number Game</h1>
     <div class="game-settings">
-        <label for="playerName">Your Name:</label>
-        <input type="text" id="playerName">
         <label for="gameMode">Game Mode:</label>
         <select id="gameMode">
             <option value="single">Single Player</option>
             <option value="multi">Multiplayer</option>
         </select>
+    </div>
+    <div id="playerNameInputs" class="hidden">
+        <label for="player1Name">Player 1 Name:</label>
+        <input type="text" id="player1Name">
+        <label id="player2NameLabel" class="hidden" for="player2Name">Player 2 Name:</label>
+        <input id="player2NameInput" class="hidden" type="text" id="player2Name">
+    </div>
+    <div class="game-settings">
         <label for="difficulty">Difficulty:</label>
         <select id="difficulty">
             <option value="easy">Easy (1-20)</option>
             <option value="medium">Medium (1-50)</option>
             <option value="hard">Hard (1-100)</option>
         </select>
-        <button id="startButton">Start Game</button>
+        <button id="startButton" class="hidden">Start Game</button>
     </div>
     <div class="gameplay">
         <div class="player-info">
-            <p>Player Name: <span id="playerNameDisplay">Player 1</span></p>
+            <p id="playerNameDisplay">Player 1's Turn</p>
             <p>Attempts Left: <span id="attemptsLeft">-</span></p>
         </div>
         <div class="game-controls">
-            <input type="number" id="guessField" class="guess-field">
+            <input type="number" id="guessField" class="guess-field" disabled>
             <button id="guessSubmit" class="guess-submit" disabled>Submit Guess</button>
         </div>
     </div>
     <p class="message"></p>
     <p class="winner"></p>
+    <audio id="correctSound" src="correct.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+    <audio id="gameOverSound" src="gameover.mp3"></audio>
     <script src="script.js"></script>
 </body>
 </html>
