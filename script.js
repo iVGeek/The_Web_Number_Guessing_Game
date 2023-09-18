@@ -1,12 +1,23 @@
 // Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
-    const EASY_MIN = 1;
-    const EASY_MAX = 50;
-    const MEDIUM_MIN = 1;
-    const MEDIUM_MAX = 100;
-    const HARD_MIN = 1;
-    const HARD_MAX = 500;
+    const DIFFICULTIES = {
+        easy: {
+            min: 1,
+            max: 50,
+            maxTries: 5, // Adjust the number of tries for each player
+        },
+        medium: {
+            min: 1,
+            max: 100,
+            maxTries: 4, // Adjust the number of tries for each player
+        },
+        hard: {
+            min: 1,
+            max: 500,
+            maxTries: 3, // Adjust the number of tries for each player
+        },
+    };
 
     // Get player names from input fields
     const player1NameInput = document.getElementById('player1Name');
@@ -27,10 +38,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
 
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
+    let min, max, targetNumber, timer, bestScore, currentPlayer;
     const playerGuesses = {
         1: [],
         2: [],
+    };
+
+    const playerAttempts = {
+        1: 0,
+        2: 0,
     };
 
     // Countdown animation
@@ -52,19 +68,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
-        if (selectedDifficulty === 'easy') {
-            min = EASY_MIN;
-            max = EASY_MAX;
-        } else if (selectedDifficulty === 'medium') {
-            min = MEDIUM_MIN;
-            max = MEDIUM_MAX;
-        } else if (selectedDifficulty === 'hard') {
-            min = HARD_MIN;
-            max = HARD_MAX;
-        }
+        const selectedLevel = DIFFICULTIES[selectedDifficulty];
+
+        min = selectedLevel.min;
+        max = selectedLevel.max;
+        const maxTries = selectedLevel.maxTries; // Number of tries for each player
 
         targetNumber = generateRandomNumber(min, max);
-        remainingAttempts = maxAttemptsByDifficulty(selectedDifficulty);
         bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
         currentPlayer = 1;
         playerGuesses[1] = [];
@@ -81,26 +91,15 @@ document.addEventListener('DOMContentLoaded', function () {
         timeLimitInput.setAttribute('disabled', 'disabled');
         startButton.setAttribute('disabled', 'disabled');
 
+        playerAttempts[1] = maxTries; // Initialize player attempts
+        playerAttempts[2] = maxTries;
+
         startTimer();
     }
 
     // Generate a random number within a given range
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // Calculate maximum attempts based on difficulty
-    function maxAttemptsByDifficulty(difficulty) {
-        switch (difficulty) {
-            case 'easy':
-                return 10;
-            case 'medium':
-                return 7;
-            case 'hard':
-                return 5;
-            default:
-                return 10;
-        }
     }
 
     // Start the timer
@@ -114,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeLeft.textContent = timeRemaining;
 
             if (timeRemaining === 0) {
-                endGame(0); // Time's up, declare a tie
+                endGame(0); // Time's up, declare both players as losers
             }
         }, 1000);
     }
@@ -133,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
             endGame(player);
-        } else if (playerGuesses[player].length >= remainingAttempts) {
-            endGame(0); // All attempts used, declare a tie
+        } else if (playerGuesses[player].length >= playerAttempts[player]) {
+            endGame(0); // All attempts used, declare both players as losers
         } else {
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
@@ -143,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // End the game and declare the winner
+    // End the game and declare the winner or both players as losers
     function endGame(winner) {
         clearInterval(timer);
         guessField.setAttribute('disabled', 'disabled');
@@ -152,15 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.removeAttribute('disabled');
 
         if (winner === 1 || winner === 2) {
-            if (playerGuesses[1].length < playerGuesses[2].length) {
-                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
-            } else if (playerGuesses[2].length < playerGuesses[1].length) {
-                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
-            } else {
-                message.textContent = `${getPlayerName(winner)} wins with ${playerGuesses[winner].length} attempts! The correct number was ${targetNumber}.`;
-            }
+            message.textContent = `${getPlayerName(winner)} wins with ${playerGuesses[winner].length} attempts! The correct number was ${targetNumber}.`;
         } else {
-            message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
+            message.textContent = `${getPlayerName(1)} and ${getPlayerName(2)} both lose! The correct number was ${targetNumber}.`;
         }
 
         // Update best score if applicable
