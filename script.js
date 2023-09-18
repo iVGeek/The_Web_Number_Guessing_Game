@@ -2,39 +2,22 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
     const EASY_MIN = 1;
-    const EASY_MAX = 50;
+    const EASY_MAX = 20;
     const MEDIUM_MIN = 1;
-    const MEDIUM_MAX = 100;
+    const MEDIUM_MAX = 50;
     const HARD_MIN = 1;
-    const HARD_MAX = 500;
+    const HARD_MAX = 100;
 
-    // Get player names and game mode from input fields
+    // Get player names from input fields
     const player1NameInput = document.getElementById('player1Name');
-    const player2NameInput = document.getElementById('player2Name');
-    const gameModeSelect = document.getElementById('gameMode');
-    const player2Label = document.getElementById('player2Label');
-
+    const player1Display = document.getElementById('player1');
     const difficultySelect = document.getElementById('difficulty');
-    const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
     const guessField = document.getElementById('guessField');
     const guessSubmit = document.getElementById('guessSubmit');
     const message = document.querySelector('.message');
-    const timeLeft = document.getElementById('timeLeft');
-    const attempts = document.getElementById('attempts');
-    const bestScoreDisplay = document.getElementById('bestScore');
-    const correctSound = document.getElementById('correctSound');
-    const wrongSound = document.getElementById('wrongSound');
-    const gameOverSound = document.getElementById('gameOverSound');
 
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
-    const playerGuesses = {
-        1: [],
-        2: [],
-    };
-
-    // Countdown animation
-    const timeLeftElement = document.getElementById('timeLeft');
+    let min, max, targetNumber, remainingAttempts, currentPlayer;
 
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
@@ -44,57 +27,36 @@ document.addEventListener('DOMContentLoaded', function () {
         checkGuess(currentPlayer);
     });
 
-    // Event listener for game mode selection
-    gameModeSelect.addEventListener('change', function () {
-        // Show/hide player 2 input field based on game mode selection
-        if (gameModeSelect.value === 'single') {
-            player2NameInput.style.display = 'none';
-            player2Label.style.display = 'none';
-        } else {
-            player2NameInput.style.display = 'block';
-            player2Label.style.display = 'block';
-        }
-    });
-
     // Start the game
     function startGame() {
-        // Get player names and game mode from input fields
-        const player1Name = player1NameInput.value || 'Player 1';
-        const player2Name = player2NameInput.value || 'Player 2';
-        const gameMode = gameModeSelect.value;
+        // Get player name
+        const player1Name = player1NameInput.value;
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
         if (selectedDifficulty === 'easy') {
             min = EASY_MIN;
             max = EASY_MAX;
+            remainingAttempts = 4; // 4 attempts for Easy mode
         } else if (selectedDifficulty === 'medium') {
             min = MEDIUM_MIN;
             max = MEDIUM_MAX;
+            remainingAttempts = 6; // 6 attempts for Medium mode
         } else {
             min = HARD_MIN;
             max = HARD_MAX;
+            remainingAttempts = 8; // 8 attempts for Hard mode
         }
 
         targetNumber = generateRandomNumber(min, max);
-        remainingAttempts = maxAttemptsByDifficulty(selectedDifficulty);
-        bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
         currentPlayer = 1;
-        playerGuesses[1] = [];
-        playerGuesses[2] = [];
 
         guessField.value = '';
-        message.textContent = '';
-        timeLeft.textContent = timeLimitInput.value;
-        attempts.textContent = '0';
-        bestScoreDisplay.textContent = bestScore === Infinity ? '-' : bestScore;
-
+        message.textContent = `Hello, ${player1Name}! Enter a number between ${min} and ${max}.`;
+        player1Display.textContent = `${player1Name}'s Turn`;
         guessField.removeAttribute('disabled');
         guessSubmit.removeAttribute('disabled');
-        timeLimitInput.setAttribute('disabled', 'disabled');
         startButton.setAttribute('disabled', 'disabled');
-
-        startTimer();
     }
 
     // Generate a random number within a given range
@@ -102,108 +64,64 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Calculate maximum attempts based on difficulty
-    function maxAttemptsByDifficulty(difficulty) {
-        switch (difficulty) {
-            case 'easy':
-                return 4; // Adjusted attempts for single player
-            case 'medium':
-                return 6; // Adjusted attempts for single player
-            case 'hard':
-                return 8; // Adjusted attempts for single player
-            default:
-                return 10;
-        }
-    }
-
-    // Start the timer
-    function startTimer() {
-        clearInterval(timer);
-        const timeLimit = parseInt(timeLimitInput.value);
-        let timeRemaining = timeLimit;
-
-        timer = setInterval(function () {
-            timeRemaining--;
-            timeLeft.textContent = timeRemaining;
-
-            if (timeRemaining === 0) {
-                endGame(0); // Time's up, declare a tie
-            }
-        }, 1000);
-    }
-
     // Check the user's guess
     function checkGuess(player) {
         const userGuess = parseInt(guessField.value);
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
-            message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
+            message.textContent = `Please enter a valid number between ${min} and ${max}.`;
             return;
         }
 
-        playerGuesses[player].push(userGuess);
+        remainingAttempts--;
 
-        // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
             endGame(player);
-        } else if (playerGuesses[player].length >= remainingAttempts) {
-            endGame(0); // All attempts used, declare a tie
+        } else if (remainingAttempts === 0) {
+            endGame(0); // No more attempts, declare a tie
         } else {
-            message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
+            message.textContent = `Sorry, ${player1Name}, that's not correct. ${remainingAttempts} ${
+                remainingAttempts === 1 ? 'attempt' : 'attempts'
+            } left.`;
             guessField.value = '';
-            guessField.focus();
-            currentPlayer = 3 - currentPlayer; // Switch players
+            currentPlayer = 2; // Switch to the AI's turn
+            player1Display.textContent = "AI's Turn";
+
+            // Simulate AI's guess (you can implement AI logic here)
+            setTimeout(simulateAIGuess, 1000);
         }
     }
 
-    // End the game and declare the winner
+    // Simulate AI's guess (generates a random number)
+    function simulateAIGuess() {
+        const aiGuess = generateRandomNumber(min, max);
+        remainingAttempts--;
+
+        if (aiGuess === targetNumber) {
+            endGame(2); // AI wins
+        } else if (remainingAttempts === 0) {
+            endGame(0); // No more attempts, declare a tie
+        } else {
+            message.textContent = `AI guessed ${aiGuess}. ${remainingAttempts} ${
+                remainingAttempts === 1 ? 'attempt' : 'attempts'
+            } left.`;
+            currentPlayer = 1;
+            player1Display.textContent = `${player1Name}'s Turn`;
+        }
+    }
+
+    // End the game and declare the result
     function endGame(winner) {
-        clearInterval(timer);
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
-        timeLimitInput.removeAttribute('disabled');
         startButton.removeAttribute('disabled');
 
-        let endMessage = '';
         if (winner === 1) {
-            endMessage = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
+            message.textContent = `${player1Name} wins! The correct number was ${targetNumber}.`;
         } else if (winner === 2) {
-            endMessage = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
-        } else if (playerGuesses[1].length === playerGuesses[2].length) {
-            endMessage = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+            message.textContent = `AI wins! The correct number was ${targetNumber}.`;
         } else {
-            endMessage = `${getPlayerName(1)} and ${getPlayerName(2)} both lose! The correct number was ${targetNumber}.`;
-        }
-
-        message.textContent = endMessage;
-
-        // Update best score if applicable
-        if (winner === 1 || winner === 2) {
-            if (playerGuesses[1].length < bestScore) {
-                bestScore = playerGuesses[1].length;
-                localStorage.setItem(difficultySelect.value, bestScore);
-                bestScoreDisplay.textContent = bestScore;
-            } else if (playerGuesses[2].length < bestScore) {
-                bestScore = playerGuesses[2].length;
-                localStorage.setItem(difficultySelect.value, bestScore);
-                bestScoreDisplay.textContent = bestScore;
-            }
-        }
-
-        // Play sound based on the result
-        if (winner === 1 || winner === 2) {
-            correctSound.play(); // Play a victory sound
-        } else {
-            gameOverSound.play(); // Play a game over sound
-        }
-    }
-
-    // Helper function to get player name
-    function getPlayerName(player) {
-        if (gameModeSelect.value === 'single' && player === 2) {
-            return 'A.I.';
-        } else {
-            return player === 1 ? player1NameInput.value || 'Player 1' : player2NameInput.value || 'Player 2';
+            message.textContent = `It's a tie! The correct number was ${targetNumber}.`;
         }
     }
 });
