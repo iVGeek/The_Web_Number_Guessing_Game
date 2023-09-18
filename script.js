@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let player1Name = '';
     let player2Name = '';
     let gameMode = 'single';
+    let playerGuesses = [];
+    let computerGuesses = [];
 
     // Event listener for the game mode selection
     gameModeSelect.addEventListener('change', function () {
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updatePlayerNameInputs() {
         if (gameMode === 'single') {
             playerNameInputs.innerHTML = `
-                <label for="playerName">Enter Your Name:</label>
+                <label for="playerName">Your Name:</label>
                 <input type="text" id="playerName" required>
             `;
         } else if (gameMode === 'multi') {
@@ -79,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function () {
         targetNumber = generateRandomNumber(min, max);
         bestScore = localStorage.getItem(selectedDifficulty) || '-';
         currentPlayer = 1;
+        playerGuesses = [];
+        computerGuesses = [];
 
         guessField.value = '';
         message.textContent = '';
@@ -92,6 +96,11 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.setAttribute('disabled', 'disabled');
 
         startTimer();
+
+        if (gameMode === 'single') {
+            // In single-player mode, start with the computer's turn
+            computerPlay();
+        }
     }
 
     // Generate a random number within a given range
@@ -135,7 +144,28 @@ document.addEventListener('DOMContentLoaded', function () {
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
             guessField.focus();
-            currentPlayer = 3 - currentPlayer; // Switch players
+
+            if (gameMode === 'single' && currentPlayer === 2) {
+                // In single-player mode, it's the computer's turn
+                computerPlay();
+            } else {
+                currentPlayer = 3 - currentPlayer; // Switch players
+            }
+        }
+    }
+
+    // Computer's turn in single-player mode
+    function computerPlay() {
+        // Generate a random guess for the computer
+        const computerGuess = generateRandomNumber(min, max);
+        computerGuesses.push(computerGuess);
+
+        // Display the computer's guess
+        message.textContent = `Computer guessed ${computerGuess}.`;
+
+        // Check if the computer guessed correctly
+        if (computerGuess === targetNumber) {
+            endGame(2);
         }
     }
 
@@ -150,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (winner === 1 || winner === 2) {
             message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
         } else {
-            message.textContent = `${player1Name} and ${player2Name} lost. The correct number was ${targetNumber}.`;
+            message.textContent = `${player1Name} and the computer lost. The correct number was ${targetNumber}.`;
         }
 
         if (bestScore === '-' || remainingAttempts < bestScore) {
@@ -180,7 +210,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Helper function to get player name
     function getPlayerName(player) {
-        return player === 1 ? player1Name : player2Name;
+        if (gameMode === 'single') {
+            return player === 1 ? player1Name : 'Computer';
+        } else {
+            return player === 1 ? player1Name : player2Name;
+        }
     }
 
     // Event listener for the guess button
