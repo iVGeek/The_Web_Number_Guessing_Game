@@ -3,17 +3,15 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-image: url('background.jpg'); /* Replace with your image file path */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: #f2f2f2;
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
 }
 
 .dark-mode {
-    background-color: #333;
-    color: #fff;
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color for better visibility */
 }
 
 h1 {
@@ -28,118 +26,75 @@ h1 {
     border: 1px solid #ddd;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease; /* Smooth transition for dark mode */
 }
 
-.game-settings label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+/* Rest of your existing CSS styles */
+
+.dark-mode .game-settings {
+    background-color: #444; /* Darker background color for settings */
 }
 
-.game-settings select,
-.game-settings input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.dark-mode .game-settings label {
+    color: #fff; /* Light text color for better visibility in dark mode */
 }
 
-.game-settings button {
-    padding: 10px 20px;
+.dark-mode .game-settings select,
+.dark-mode .game-settings input[type="text"] {
+    background-color: #666; /* Darker background for input fields */
+    color: #fff; /* Light text color for better visibility in dark mode */
+    border: 1px solid #555; /* Darker border color */
+}
+
+.dark-mode .game-settings button {
     background-color: #007BFF;
     color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-.game-settings button.hidden {
-    display: none;
-}
-
-.gameplay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px auto;
-    width: 80%;
-    max-width: 400px;
+.dark-mode .gameplay {
     background-color: #fff;
     border: 1px solid #ddd;
-    padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.player-info p {
-    margin: 0;
-    font-weight: bold;
+/* Rest of your existing CSS styles */
+
+.dark-mode .gameplay {
+    background-color: #444; /* Darker background color for gameplay */
 }
 
-.game-controls {
-    margin-top: 20px;
+.dark-mode .player-info p {
+    color: #fff; /* Light text color for better visibility in dark mode */
 }
 
-.guess-field {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.dark-mode .guess-field {
+    background-color: #666; /* Darker background for input fields */
+    color: #fff; /* Light text color for better visibility in dark mode */
+    border: 1px solid #555; /* Darker border color */
 }
 
-.guess-submit {
-    padding: 10px 20px;
+.dark-mode .guess-submit {
     background-color: #28a745;
     color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-.message {
-    margin-top: 20px;
-    font-weight: bold;
+.dark-mode .message {
+    color: #28a745; /* Change message color in dark mode */
 }
 
-.winner {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #28a745;
+.dark-mode .winner {
+    color: #28a745; /* Change winner message color in dark mode */
 }
 
-#leaderboard {
-    display: none;
-    background-color: #fff;
-    width: 80%;
-    max-width: 400px;
-    margin: 20px auto;
-    border: 1px solid #ddd;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#leaderboard h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-#leaderboardList {
-    list-style: none;
-    padding: 0;
-}
-
-#leaderboardList li {
-    margin-bottom: 5px;
-}
-
-#leaderboardCloseButton {
-    padding: 5px 10px;
-    background-color: #dc3545;
+/* Dark mode toggle button */
+#toggleDarkMode {
+    background-color: #333;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
+}
+
+#toggleDarkMode:hover {
+    background-color: #555;
 }
