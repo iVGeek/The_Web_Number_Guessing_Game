@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let player2Name = '';
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
+    let player1Color = 'green'; // Define player 1 color
+    let player2Color = 'blue'; // Define player 2 color
 
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
             message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = '';
         } else {
-            const winnerColor = correctGuess ? (winner === player1Name ? player1Color : player2Color) : 'black';
+            const winnerColor = correctGuess ? (winner === player1Name ? player1Color : player2Color) : 'red';
             message.innerHTML = `<span style="color:${winnerColor}">${winner} wins! The correct number was ${targetNumber}.</span>`;
             winnerDisplay.textContent = `${winner} wins!`;
         }
