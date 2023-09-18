@@ -1,4 +1,3 @@
-// Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
     const EASY_MIN = 1;
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const guessSubmit = document.getElementById('guessSubmit');
     const message = document.querySelector('.message');
 
-    let min, max, targetNumber, remainingAttempts, currentPlayer;
+    let min, max, targetNumber, remainingAttempts, currentPlayer, player1Name;
 
     // Event listener for the start button
     startButton.addEventListener('click', startGame);
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Start the game
     function startGame() {
         // Get player name
-        const player1Name = player1NameInput.value;
+        player1Name = player1NameInput.value;
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
@@ -85,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } left.`;
             guessField.value = '';
             currentPlayer = 2; // Switch to the AI's turn
-            player1Display.textContent = "AI's Turn";
+            player1Display.textContent = `${player1Name}'s Turn`;
 
             // Simulate AI's guess (you can implement AI logic here)
             setTimeout(simulateAIGuess, 1000);
