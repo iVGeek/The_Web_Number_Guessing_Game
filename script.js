@@ -31,6 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     toggleDarkModeButton.addEventListener('click', function () {
         body.classList.toggle('dark-mode');
+
+        // Add background animations based on dark or light mode
+        if (body.classList.contains('dark-mode')) {
+            body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Dark mode background image
+        } else {
+            body.style.backgroundImage = 'url("light-mode-bg.jpg")'; // Light mode background image
+        }
     });
 
     gameModeSelect.addEventListener('change', function () {
