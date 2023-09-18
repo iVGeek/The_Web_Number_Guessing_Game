@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Get player names from input fields
     const gameModeSelect = document.getElementById('gameMode');
-    const playerNameInputs = document.getElementById('playerNameInputs');
+    const playerNameInputs = document.getElementById('playerNameInputs'); // Changed from 'player1NameInput'
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
