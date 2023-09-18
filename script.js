@@ -26,19 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
-    const soundToggle = document.getElementById('soundToggle');
-    const wrongToggle = document.getElementById('wrongToggle');
-    const gameOverToggle = document.getElementById('gameOverToggle');
 
     let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
     const playerGuesses = {
         1: [],
         2: [],
     };
-
-    let soundEnabled = true;
-    let wrongEnabled = true;
-    let gameOverEnabled = true;
 
     // Countdown animation
     const timeLeftElement = document.getElementById('timeLeft');
@@ -50,11 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
     guessSubmit.addEventListener('click', function () {
         checkGuess(currentPlayer);
     });
-
-    // Event listeners for sound toggles
-    soundToggle.addEventListener('click', toggleSound);
-    wrongToggle.addEventListener('click', toggleWrongSound);
-    gameOverToggle.addEventListener('click', toggleGameOverSound);
 
     // Start the game
     function startGame() {
@@ -136,7 +124,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const userGuess = parseInt(guessField.value);
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
+            // For an invalid entry
             message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
+            message.classList.remove('correct-guess'); // Remove the correct-guess class
+            message.classList.add('wrong-guess'); // Add the wrong-guess class
             return;
         }
 
@@ -144,11 +135,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
+            // For a correct guess
+            message.textContent = `${getPlayerName(player)} wins with a correct guess of ${userGuess}!`;
+            message.classList.remove('wrong-guess'); // Remove the wrong-guess class
+            message.classList.add('correct-guess'); // Add the correct-guess class
             endGame(player);
-        } else if (playerGuesses[player].length >= remainingAttempts) {
-            endGame(0); // All attempts used, declare a tie
+        } else if (playerGuesses[3 - player].length > 0) {
+            // Both players have played, and neither guessed correctly
+            message.textContent = `${getPlayerName(1)} and ${getPlayerName(2)} both lost. The correct number was ${targetNumber}.`;
+            message.classList.remove('correct-guess'); // Remove the correct-guess class
+            message.classList.add('wrong-guess'); // Add the wrong-guess class
+            endGame(0); // Declare both players as losers
         } else {
+            // For a wrong guess
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
+            message.classList.remove('correct-guess'); // Remove the correct-guess class
+            message.classList.add('wrong-guess'); // Add the wrong-guess class
             guessField.value = '';
             guessField.focus();
             currentPlayer = 3 - currentPlayer; // Switch players
@@ -169,10 +171,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (playerGuesses[2].length < playerGuesses[1].length) {
                 message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
             } else {
-                message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+                message.textContent = `${getPlayerName(winner)} wins with ${playerGuesses[winner].length} attempts! The correct number was ${targetNumber}.`;
             }
         } else {
-            message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
+            message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
         }
 
         // Update best score if applicable
@@ -188,36 +190,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Play sound based on the result
         if (winner === 1 || winner === 2) {
-            if (soundEnabled) {
-                correctSound.play(); // Play a victory sound
-            }
+            correctSound.play(); // Play a victory sound
         } else {
-            if (gameOverEnabled) {
-                gameOverSound.play(); // Play a game over sound
-            }
+            gameOverSound.play(); // Play a game over sound
         }
     }
 
     // Helper function to get player name
     function getPlayerName(player) {
         return player === 1 ? player1Name : player2Name;
-    }
-
-    // Toggle sound
-    function toggleSound() {
-        soundEnabled = !soundEnabled;
-        soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
-    }
-
-    // Toggle wrong sound
-    function toggleWrongSound() {
-        wrongEnabled = !wrongEnabled;
-        wrongToggle.textContent = wrongEnabled ? '🔊' : '🔇';
-    }
-
-    // Toggle game over sound
-    function toggleGameOverSound() {
-        gameOverEnabled = !gameOverEnabled;
-        gameOverToggle.textContent = gameOverEnabled ? '🔊' : '🔇';
     }
 });
