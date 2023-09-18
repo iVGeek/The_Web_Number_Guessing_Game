@@ -19,14 +19,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const winnerDisplay = document.querySelector('.winner');
     const playerNameDisplay = document.getElementById('playerNameDisplay');
     const attemptsLeftDisplay = document.getElementById('attemptsLeft');
+    const leaderboardButton = document.getElementById('leaderboardButton');
+    const leaderboard = document.getElementById('leaderboard');
+    const leaderboardList = document.getElementById('leaderboardList');
+    const leaderboardCloseButton = document.getElementById('leaderboardCloseButton');
 
     let min, max, targetNumber, remainingAttempts, currentPlayer;
     let player1Name = '';
     let player2Name = '';
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
-    let player1Color = 'green'; // Define player 1 color
-    let player2Color = 'blue'; // Define player 2 color
+    let leaderboardData = [];
 
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
@@ -85,9 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
         attemptsLeftDisplay.textContent = remainingAttempts;
 
         if (userGuess === targetNumber) {
-            endGame(currentPlayerName, true); // Correct guess, pass 'true' as the second argument
+            endGame(currentPlayerName);
         } else if (remainingAttempts === 0) {
-            endGame('none', false); // No correct guess, pass 'false' as the second argument
+            endGame('none');
         } else {
             currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function endGame(winner, correctGuess) {
+    function endGame(winner) {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
         startButton.removeAttribute('disabled');
@@ -104,9 +107,21 @@ document.addEventListener('DOMContentLoaded', function () {
             message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = '';
         } else {
-            const winnerColor = correctGuess ? (winner === player1Name ? player1Color : player2Color) : 'red';
-            message.innerHTML = `<span style="color:${winnerColor}">${winner} wins! The correct number was ${targetNumber}.</span>`;
+            message.textContent = `${winner} wins! The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = `${winner} wins!`;
+
+            // Add the winner to the leaderboard data
+            leaderboardData.push({
+                name: winner,
+                attempts: remainingAttempts,
+                difficulty: difficultySelect.value,
+            });
+
+            // Sort the leaderboard data by attempts (lower attempts are better)
+            leaderboardData.sort((a, b) => a.attempts - b.attempts);
+
+            // Update the leaderboard UI
+            updateLeaderboard();
         }
     }
 
@@ -123,4 +138,30 @@ document.addEventListener('DOMContentLoaded', function () {
     guessSubmit.addEventListener('click', function () {
         makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
+
+    // Leaderboard button click event
+    leaderboardButton.addEventListener('click', function () {
+        // Display the leaderboard
+        leaderboard.style.display = 'block';
+
+        // Update the leaderboard UI
+        updateLeaderboard();
+    });
+
+    // Leaderboard close button click event
+    leaderboardCloseButton.addEventListener('click', function () {
+        // Hide the leaderboard
+        leaderboard.style.display = 'none';
+    });
+
+    function updateLeaderboard() {
+        leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
+
+        // Add leaderboard entries to the UI
+        leaderboardData.forEach((entry, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `#${index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
+            leaderboardList.appendChild(listItem);
+        });
+    }
 });
