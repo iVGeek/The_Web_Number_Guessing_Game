@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let player1Name = 'Player 1'; // Default names
     let player2Name = 'Player 2';
 
+    // Elements for player names with colors
+    const player1NameElement = document.getElementById('player1Name');
+    const player2NameElement = document.getElementById('player2Name');
+
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
@@ -23,70 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeLeft = document.getElementById('timeLeft');
     const attempts = document.getElementById('attempts');
     const bestScoreDisplay = document.getElementById('bestScore');
-    const correctSound = document.getElementById('correctSound');
-    const wrongSound = document.getElementById('wrongSound');
-    const gameOverSound = document.getElementById('gameOverSound');
-
-    // Define an array of levels
-    const levels = [
-        { target: 25, attempts: 5 },
-        { target: 50, attempts: 7 },
-        { target: 75, attempts: 10 },
-        // Add more levels as needed
-    ];
-
-    let currentLevel = 0; // Initialize the current level
-
-    // Define an array of daily challenges
-    const dailyChallenges = [
-        {
-            description: 'Guess the correct number in 3 attempts.',
-            reward: 50, // Reward in points or currency
-            completed: false, // Indicates if the challenge is completed
-        },
-        {
-            description: 'Play the game for 30 minutes.',
-            reward: 100,
-            completed: false,
-        },
-        // Add more daily challenges with descriptions and rewards
-    ];
-
-    // Define a player profile object to store customization data
-    const playerProfile = {
-        theme: 'default', // Default theme
-        background: 'background1.jpg', // Default background
-        avatar: 'avatar1.png', // Default avatar
-    };
-
-    // Define arrays to store friends and friend requests
-    const friendsList = [];
-    const friendRequests = [];
-
-    // Define an array of achievements
-    const achievements = [
-        {
-            name: 'Novice Guesser',
-            condition: 'Guess the correct number 10 times.',
-            reward: 100,
-            earned: false,
-        },
-        {
-            name: 'Master Guesser',
-            condition: 'Guess the correct number 50 times.',
-            reward: 500,
-            earned: false,
-        },
-        // Add more achievements with names, conditions, and rewards
-    ];
-
-    // Define daily login rewards
-    const dailyLoginRewards = [
-        { day: 1, reward: 50 },
-        { day: 2, reward: 100 },
-        { day: 3, reward: 150 },
-        // Define rewards for each consecutive day
-    ];
 
     let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
     const playerGuesses = {
@@ -124,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
             max = HARD_MAX;
         }
 
-        targetNumber = generateRandomNumber(levels[currentLevel].target);
-        remainingAttempts = levels[currentLevel].attempts;
+        targetNumber = generateRandomNumber(min, max);
+        remainingAttempts = maxAttemptsByDifficulty(selectedDifficulty);
         bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
         currentPlayer = 1;
         playerGuesses[1] = [];
@@ -146,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Generate a random number within a given range
-    function generateRandomNumber(max) {
+    function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
@@ -234,61 +174,10 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
         }
-
-        // Play sound based on the result
-        if (winner === 1 || winner === 2) {
-            correctSound.play(); // Play a victory sound
-        } else {
-            gameOverSound.play(); // Play a game over sound
-        }
     }
 
     // Helper function to get player name
     function getPlayerName(player) {
         return player === 1 ? player1Name : player2Name;
     }
-
-    // Call applyCustomization() during game initialization to apply customization settings
-    function applyCustomization() {
-        // Apply selected theme, background, and avatar to the game interface
-        // Update CSS classes or styles to reflect the customization
-    }
-
-    // Function to send a friend request
-    function sendFriendRequest(playerName) {
-        // Add playerName to friendRequests array
-        // Implement UI to send friend requests
-    }
-
-    // Function to accept a friend request
-    function acceptFriendRequest(playerName) {
-        // Remove playerName from friendRequests array
-        // Add playerName to friendsList array
-        // Implement UI to accept friend requests
-    }
-
-    // Function to send a chat message
-    function sendChatMessage(playerName, message) {
-        // Implement UI to send and display chat messages
-    }
-
-    // Function to check and unlock achievements
-    function checkAchievements() {
-        achievements.forEach((achievement) => {
-            if (!achievement.earned) {
-                // Check if the player meets the conditions of the achievement
-                // If conditions are met, mark the achievement as earned
-                // Reward the player with the specified points or currency
-            }
-        });
-    }
-
-    // Function to claim daily login rewards
-    function claimDailyLoginReward(day) {
-        // Check if the player's login day matches the reward's day
-        // If a match is found, reward the player with points or currency
-    }
-
-    // Call applyCustomization() during game initialization to apply customization settings
-    applyCustomization();
 });
