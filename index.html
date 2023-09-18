@@ -31,17 +31,25 @@
     <p>Time Left: <span id="timeLeft">60</span> seconds</p>
     <p>Attempts: <span id="attempts">0</span></p>
     <p>Best Score: <span id="bestScore">-</span> attempts</p>
+
+    <!-- Sound Controls -->
+    <div class="sound-controls">
+        <span class="sound-icon" id="soundToggle">&#128266;</span>
+        <span class="sound-icon" id="wrongToggle">&#128266;</span>
+        <span class="sound-icon" id="gameOverToggle">&#128266;</span>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard">
+        <h2>Leaderboard</h2>
+        <ol id="leaderboardList"></ol>
+    </div>
+
+    <!-- Audio Elements -->
     <audio id="correctSound" src="correct.mp3"></audio>
     <audio id="wrongSound" src="wrong.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
-    <button id="soundToggle" class="sound-icon correct-sound">&#128266;</button>
-    <button id="wrongToggle" class="sound-icon wrong-sound">&#128266;</button>
-    <button id="gameOverToggle" class="sound-icon game-over-sound">&#128266;</button>
-    <div class="leaderboard">
-        <h2>Leaderboard</h2>
-        <ol id="leaderboardList">
-        </ol>
-    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
