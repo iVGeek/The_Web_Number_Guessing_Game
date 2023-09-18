@@ -3,40 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Number Game</title>
+    <title>Number Guessing Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Guess the Number Game</h1>
-    <div class="settings">
-        <label for="gameMode">Game Mode:</label>
-        <select id="gameMode">
-            <option value="single">Single Player</option>
-            <option value="multi">Multi Player</option>
-        </select>
-        <div id="playerNameInputs">
-            <!-- Player name inputs will be added here dynamically based on the selected game mode -->
-        </div>
-        <label for="difficulty">Difficulty:</label>
-        <select id="difficulty">
-            <option value="easy">Easy (1-20)</option>
-            <option value="medium">Medium (1-50)</option>
-            <option value="hard">Hard (1-100)</option>
-        </select>
-        <button id="startButton">Start Game</button>
-    </div>
-    <p>Guess a number:</p>
-    <input type="number" id="guessField">
-    <button id="guessSubmit">Submit Guess</button>
-    <p class="message"></p>
-    <p>Time Left: <span id="timeLeft">60</span> seconds</p>
-    <p>Attempts Left: <span id="attempts">0</span></p>
-    <p>Best Score: <span id="bestScore">-</span> attempts</p>
+    <h1>Number Guessing Game</h1>
 
-    <!-- Add audio elements for sounds -->
-    <audio id="correctSound" src="correct.mp3"></audio>
-    <audio id="wrongSound" src="wrong.mp3"></audio>
-    <audio id="gameOverSound" src="game-over.mp3"></audio>
+    <div id="gameModeSelect">
+        <label for="gameMode">Select Game Mode:</label>
+        <select id="gameMode" name="gameMode">
+            <option value="single">Single Player</option>
+            <option value="multi">Multiplayer</option>
+        </select>
+    </div>
+
+    <div id="playerNameInputs">
+        <!-- Player name inputs will be dynamically added here based on the game mode -->
+    </div>
+
+    <div id="difficultySelect">
+        <label for="difficulty">Select Difficulty:</label>
+        <select id="difficulty" name="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <div id="timeLimitSelect">
+        <label for="timeLimit">Set Time Limit (seconds):</label>
+        <input type="number" id="timeLimit" name="timeLimit" value="20">
+    </div>
+
+    <button id="startButton">Start Game</button>
+
+    <div id="gameContainer">
+        <div id="gameInfo">
+            <p class="message"></p>
+            <p>Time Left: <span id="timeLeft">20</span> seconds</p>
+            <p>Attempts Left: <span id="attempts">4</span></p>
+            <p>Best Score: <span id="bestScore">-</span></p>
+        </div>
+        <div id="gamePlay">
+            <label for="guessField">Enter a guess:</label>
+            <input type="number" id="guessField" class="guess-field" autocomplete="off">
+            <button id="guessSubmit" class="guess-submit">Submit Guess</button>
+        </div>
+    </div>
+
+    <div id="sounds">
+        <audio id="correctSound" src="correct.mp3"></audio>
+        <audio id="wrongSound" src="wrong.mp3"></audio>
+        <audio id="gameOverSound" src="game-over.mp3"></audio>
+    </div>
 
     <script src="script.js"></script>
 </body>
