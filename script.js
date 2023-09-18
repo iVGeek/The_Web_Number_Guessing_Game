@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Get player names from input fields
     const gameModeSelect = document.getElementById('gameMode');
-    const playerNameInputs = document.getElementById('playerNameInputs'); // Changed from 'player1NameInput'
+    const playerNameInputs = document.getElementById('playerNameInputs');
     const difficultySelect = document.getElementById('difficulty');
     const timeLimitInput = document.getElementById('timeLimit');
     const startButton = document.getElementById('startButton');
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for the game mode select
     gameModeSelect.addEventListener('change', function () {
         const selectedMode = gameModeSelect.value;
-        playerNameInputs.innerHTML = ''; // Clear previous player name inputs
+        playerNameInputs.innerHTML = '';
 
         if (selectedMode === 'single') {
             createPlayerNameInput('player1Name', 'Player Name:');
@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedMode = gameModeSelect.value;
 
         // Check if player names are entered based on the selected game mode
+        let player1Name, player2Name;
+
         if (selectedMode === 'single') {
             player1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
         } else if (selectedMode === 'multi') {
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeLeft.textContent = timeRemaining;
 
             if (timeRemaining === 0) {
-                endGame(0, false); // Time's up, declare the result
+                endGame(0, false);
             }
         }, 1000);
     }
@@ -147,21 +149,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
             message.textContent = `${getPlayerName(player)}, please enter a valid number between ${min} and ${max}.`;
-            guessField.style.borderColor = 'red'; // Set the border color to red for wrong entry
+            guessField.style.borderColor = 'red';
             return;
         }
 
         playerGuesses[player].push(userGuess);
 
-        // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
-            endGame(player, true); // The current player won
+            endGame(player, true);
         } else {
-            guessField.style.borderColor = 'green'; // Set the border color to green for correct entry
+            guessField.style.borderColor = 'green';
             message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
             guessField.value = '';
             guessField.focus();
-            currentPlayer = 3 - currentPlayer; // Switch players
+            currentPlayer = 3 - currentPlayer;
             attempts.textContent = playerAttempts[currentPlayer - 1];
         }
     }
@@ -180,30 +181,28 @@ document.addEventListener('DOMContentLoaded', function () {
             message.textContent = `Both players, ${player1Name} and ${player2Name}, lose! The correct number was ${targetNumber}.`;
         }
 
-        // Update best score if applicable
         if (playerAttempts[3 - winner] < bestScore) {
             bestScore = playerAttempts[3 - winner];
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
         }
 
-        // Play sound based on the result
-        if (correctGuess) {
-            correctSound.play(); // Play a victory sound
-        } else {
-            gameOverSound.play(); // Play a game over sound
-        }
-
-        // Reset the guess field border color
+        correctSound.play();
         guessField.style.borderColor = '';
+        guessField.value = '';
 
-        // Reset player names
-        player1NameInput.value = '';
-        player2NameInput.value = '';
+        if (selectedMode === 'multi') {
+            document.getElementById('player1Name').value = '';
+            document.getElementById('player2Name').value = '';
+        }
     }
 
     // Helper function to get player name
     function getPlayerName(player) {
-        return player === 1 ? player1Name : player2Name;
+        if (selectedMode === 'single') {
+            return player === 1 ? player1Name : 'Computer';
+        } else {
+            return player === 1 ? player1Name : player2Name;
+        }
     }
 });
