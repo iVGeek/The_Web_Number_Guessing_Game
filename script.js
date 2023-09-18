@@ -4,18 +4,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const DIFFICULTIES = {
         easy: {
             min: 1,
-            max: 50,
-            maxTries: 5, // Adjust the number of tries for each player
+            max: 20,
+            maxTries: 4, // Adjusted number of tries for easy difficulty
         },
         medium: {
             min: 1,
-            max: 100,
-            maxTries: 4, // Adjust the number of tries for each player
+            max: 50,
+            maxTries: 6, // Adjusted number of tries for medium difficulty
         },
         hard: {
             min: 1,
-            max: 500,
-            maxTries: 3, // Adjust the number of tries for each player
+            max: 100,
+            maxTries: 8, // Adjusted number of tries for hard difficulty
         },
     };
 
@@ -38,12 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
 
-    let min, max, targetNumber, timer, bestScore, currentPlayer;
+    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
     const playerGuesses = {
         1: [],
         2: [],
     };
-
     const playerAttempts = {
         1: 0,
         2: 0,
@@ -68,11 +67,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Get selected difficulty and set game parameters
         const selectedDifficulty = difficultySelect.value;
-        const selectedLevel = DIFFICULTIES[selectedDifficulty];
+        const difficulty = DIFFICULTIES[selectedDifficulty];
 
-        min = selectedLevel.min;
-        max = selectedLevel.max;
-        const maxTries = selectedLevel.maxTries; // Number of tries for each player
+        min = difficulty.min;
+        max = difficulty.max;
+        remainingAttempts = difficulty.maxTries; // Adjusted number of tries based on difficulty
+        playerAttempts[1] = remainingAttempts;
+        playerAttempts[2] = remainingAttempts;
 
         targetNumber = generateRandomNumber(min, max);
         bestScore = parseInt(localStorage.getItem(selectedDifficulty)) || Infinity;
@@ -83,16 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
         guessField.value = '';
         message.textContent = '';
         timeLeft.textContent = timeLimitInput.value;
-        attempts.textContent = '0';
+        attempts.textContent = playerAttempts[1];
         bestScoreDisplay.textContent = bestScore === Infinity ? '-' : bestScore;
 
         guessField.removeAttribute('disabled');
         guessSubmit.removeAttribute('disabled');
         timeLimitInput.setAttribute('disabled', 'disabled');
         startButton.setAttribute('disabled', 'disabled');
-
-        playerAttempts[1] = maxTries; // Initialize player attempts
-        playerAttempts[2] = maxTries;
 
         startTimer();
     }
@@ -129,16 +127,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         playerGuesses[player].push(userGuess);
 
-        // Check if the current player has guessed correctly
         if (userGuess === targetNumber) {
             endGame(player);
-        } else if (playerGuesses[player].length >= playerAttempts[player]) {
-            endGame(0); // All attempts used, declare both players as losers
         } else {
-            message.textContent = `${getPlayerName(player)}, your guess is recorded. Next player's turn.`;
+            message.textContent = `${getPlayerName(player)}, your guess is recorded.`;
             guessField.value = '';
             guessField.focus();
-            currentPlayer = 3 - currentPlayer; // Switch players
+            playerAttempts[player]--;
+
+            if (playerAttempts[player] === 0) {
+                endGame(0); // No more attempts, declare both players as losers
+            } else {
+                attempts.textContent = playerAttempts[player];
+                currentPlayer = 3 - currentPlayer; // Switch players
+            }
         }
     }
 
@@ -151,12 +153,13 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.removeAttribute('disabled');
 
         if (winner === 1 || winner === 2) {
-            message.textContent = `${getPlayerName(winner)} wins with ${playerGuesses[winner].length} attempts! The correct number was ${targetNumber}.`;
+            message.textContent = `${getPlayerName(winner)} wins! The correct number was ${targetNumber}.`;
+            correctSound.play();
         } else {
-            message.textContent = `${getPlayerName(1)} and ${getPlayerName(2)} both lose! The correct number was ${targetNumber}.`;
+            message.textContent = `${player1Name} and ${player2Name} both lose. The correct number was ${targetNumber}.`;
+            gameOverSound.play();
         }
 
-        // Update best score if applicable
         if (playerGuesses[1].length < bestScore) {
             bestScore = playerGuesses[1].length;
             localStorage.setItem(difficultySelect.value, bestScore);
@@ -165,13 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
             bestScore = playerGuesses[2].length;
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
-        }
-
-        // Play sound based on the result
-        if (winner === 1 || winner === 2) {
-            correctSound.play(); // Play a victory sound
-        } else {
-            gameOverSound.play(); // Play a game over sound
         }
     }
 
