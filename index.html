@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game</title>
+    <title>Guess the Number Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Number Guessing Game</h1>
+    <h1>Guess the Number Game</h1>
     <div class="game-settings">
         <label for="gameMode">Game Mode:</label>
         <select id="gameMode">
@@ -45,20 +45,6 @@
     <audio id="correctSound" src="correct.mp3"></audio>
     <audio id="wrongSound" src="wrong.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
-    <button id="leaderboardButton">Leaderboard</button>
-    <div id="leaderboard" class="hidden">
-        <h2>Leaderboard</h2>
-        <label for="sortCriteria">Sort Criteria:</label>
-        <select id="sortCriteria">
-            <option value="attempts">Attempts</option>
-            <option value="difficulty">Difficulty</option>
-        </select>
-        <ul id="leaderboardList"></ul>
-        <button id="leaderboardCloseButton">Close</button>
-    </div>
-    <button id="prevPageButton" disabled>Previous Page</button>
-    <button id="nextPageButton" disabled>Next Page</button>
-    <p id="currentPage">Page 1</p>
     <script src="script.js"></script>
 </body>
 </html>
