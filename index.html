@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Guess the Number Game</h1>
+    <!-- Add input fields for player names -->
     <div class="settings">
         <label for="player1Name">Player 1 Name:</label>
         <input type="text" id="player1Name">
@@ -30,11 +31,9 @@
     <p>Time Left: <span id="timeLeft">60</span> seconds</p>
     <p>Attempts: <span id="attempts">0</span></p>
     <p>Best Score: <span id="bestScore">-</span> attempts</p>
-
     <audio id="correctSound" src="correct.mp3"></audio>
     <audio id="wrongSound" src="wrong.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
-
     <script src="script.js"></script>
 </body>
 </html>
