@@ -1,3 +1,9 @@
+// Define playerGuesses outside of the DOMContentLoaded event
+const playerGuesses = {
+    1: [],
+    2: [],
+};
+
 // Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
@@ -26,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
+
+    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
 
     // Countdown animation
     const timeLeftElement = document.getElementById('timeLeft');
@@ -147,9 +155,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (winner === 1 || winner === 2) {
             if (playerGuesses[1].length < playerGuesses[2].length) {
-                message.innerHTML = `<span style="color: blue;">${player1Name}</span> wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
+                message.textContent = `${getPlayerName(1)} wins with ${playerGuesses[1].length} attempts! The correct number was ${targetNumber}.`;
             } else if (playerGuesses[2].length < playerGuesses[1].length) {
-                message.innerHTML = `<span style="color: red;">${player2Name}</span> wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
+                message.textContent = `${getPlayerName(2)} wins with ${playerGuesses[2].length} attempts! The correct number was ${targetNumber}.`;
             } else {
                 message.textContent = `It's a tie with ${playerGuesses[1].length} attempts each! The correct number was ${targetNumber}.`;
             }
@@ -167,12 +175,17 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
         }
+
+        // Play sound based on the result
+        if (winner === 1 || winner === 2) {
+            correctSound.play(); // Play a victory sound
+        } else {
+            gameOverSound.play(); // Play a game over sound
+        }
     }
 
-    // Helper function to get player name with color
+    // Helper function to get player name
     function getPlayerName(player) {
-        const playerName = player === 1 ? player1Name : player2Name;
-        const color = player === 1 ? 'blue' : 'red'; // You can adjust the colors as needed
-        return `<span style="color: ${color};">${playerName}</span>`;
+        return player === 1 ? player1Name : player2Name;
     }
 });
