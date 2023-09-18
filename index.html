@@ -17,7 +17,7 @@
         </select>
     </div>
     <div id="playerNameInputs" class="hidden">
-        <label for="player1Name">Player 1 Name:</label>
+        <label for="player1Name">Player Name:</label>
         <input type="text" id="player1Name">
         <label id="player2NameLabel" class="hidden" for="player2Name">Player 2 Name:</label>
         <input id="player2NameInput" class="hidden" type="text" id="player2Name">
@@ -51,19 +51,6 @@
         <h2>Leaderboard</h2>
         <ol id="leaderboardList"></ol>
         <button id="leaderboardCloseButton">Close</button>
-        <select id="sortCriteria">
-            <option value="attempts">Sort by Attempts</option>
-            <option value="difficulty">Sort by Difficulty</option>
-        </select>
-        <select id="filterDifficulty">
-            <option value="all">All Difficulties</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
-        <button id="prevPageButton" disabled>Previous Page</button>
-        <span id="currentPage">Page 1</span>
-        <button id="nextPageButton">Next Page</button>
     </div>
     <script src="script.js"></script>
 </body>
