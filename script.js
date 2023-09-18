@@ -27,12 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
 
-    let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
-    const playerGuesses = {
-        1: [],
-        2: [],
-    };
-
     // Countdown animation
     const timeLeftElement = document.getElementById('timeLeft');
 
@@ -172,13 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
             bestScore = playerGuesses[2].length;
             localStorage.setItem(difficultySelect.value, bestScore);
             bestScoreDisplay.textContent = bestScore;
-        }
-
-        // Play sound based on the result
-        if (winner === 1 || winner === 2) {
-            correctSound.play(); // Play a victory sound
-        } else {
-            gameOverSound.play(); // Play a game over sound
         }
     }
 
