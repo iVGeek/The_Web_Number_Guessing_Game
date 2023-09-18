@@ -1,3 +1,4 @@
+// Wrap the code in an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Constants for difficulty levels
     const EASY_MIN = 1;
@@ -28,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const soundToggle = document.getElementById('soundToggle');
     const wrongToggle = document.getElementById('wrongToggle');
     const gameOverToggle = document.getElementById('gameOverToggle');
-    const leaderboardList = document.getElementById('leaderboardList');
 
     let min, max, targetNumber, remainingAttempts, timer, bestScore, currentPlayer;
     const playerGuesses = {
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         checkGuess(currentPlayer);
     });
 
-    // Event listener for sound toggle
+    // Event listeners for sound toggles
     soundToggle.addEventListener('click', toggleSound);
     wrongToggle.addEventListener('click', toggleWrongSound);
     gameOverToggle.addEventListener('click', toggleGameOverSound);
@@ -192,11 +192,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 correctSound.play(); // Play a victory sound
             }
         } else {
-            if (soundEnabled && gameOverEnabled) {
+            if (gameOverEnabled) {
                 gameOverSound.play(); // Play a game over sound
             }
         }
-        updateLeaderboard();
     }
 
     // Helper function to get player name
@@ -204,38 +203,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return player === 1 ? player1Name : player2Name;
     }
 
-    // Toggle correct sound
+    // Toggle sound
     function toggleSound() {
         soundEnabled = !soundEnabled;
-        soundToggle.textContent = soundEnabled ? '&#128266;' : '&#128263;';
+        soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
     }
 
     // Toggle wrong sound
     function toggleWrongSound() {
         wrongEnabled = !wrongEnabled;
-        wrongToggle.textContent = wrongEnabled ? '&#128266;' : '&#128263;';
+        wrongToggle.textContent = wrongEnabled ? '🔊' : '🔇';
     }
 
     // Toggle game over sound
     function toggleGameOverSound() {
         gameOverEnabled = !gameOverEnabled;
-        gameOverToggle.textContent = gameOverEnabled ? '&#128266;' : '&#128263;';
-    }
-
-    // Update leaderboard
-    function updateLeaderboard() {
-        const leaderboardData = [
-            { name: player1Name, attempts: playerGuesses[1].length },
-            { name: player2Name, attempts: playerGuesses[2].length },
-        ];
-
-        leaderboardData.sort((a, b) => a.attempts - b.attempts);
-
-        leaderboardList.innerHTML = '';
-        for (let i = 0; i < leaderboardData.length; i++) {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${leaderboardData[i].name}: ${leaderboardData[i].attempts} attempts`;
-            leaderboardList.appendChild(listItem);
-        }
+        gameOverToggle.textContent = gameOverEnabled ? '🔊' : '🔇';
     }
 });
