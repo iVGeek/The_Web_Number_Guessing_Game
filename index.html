@@ -43,36 +43,15 @@
     </div>
     <p class="message"></p>
     <p class="winner"></p>
-    <audio id="correctSound" src="correct.mp3"></audio>
-    <audio id="wrongSound" src="wrong.mp3"></audio>
-    <audio id="gameOverSound" src="gameover.mp3"></audio>
     <button id="leaderboardButton">Leaderboard</button>
     <div id="leaderboard" class="hidden">
         <h2>Leaderboard</h2>
-        <label for="sortCriteria">Sort Criteria:</label>
-        <select id="sortCriteria">
-            <option value="attempts">Attempts</option>
-            <option value="name">Name</option>
-        </select>
-        <label for="filterDifficulty">Filter Difficulty:</label>
-        <select id="filterDifficulty"> <!-- Add this element for filtering -->
-            <option value="all">All</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
         <ol id="leaderboardList"></ol>
         <button id="leaderboardCloseButton">Close</button>
-        <div id="paginationControls"> <!-- Add this div for pagination controls -->
-            <button id="prevPageButton">Previous Page</button>
-            <span id="currentPage">Page 1</span>
-            <button id="nextPageButton">Next Page</button>
-        </div>
     </div>
-    <!-- Add buttons to test audio -->
-    <button id="playCorrectSound">Play Correct Sound</button>
-    <button id="playWrongSound">Play Wrong Sound</button>
-    <button id="playGameOverSound">Play Game Over Sound</button>
+    <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
+    <audio id="gameOverSound" src="gameover.mp3" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>
