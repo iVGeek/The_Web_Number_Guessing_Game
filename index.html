@@ -29,7 +29,7 @@
             <option value="medium">Medium (1-50)</option>
             <option value="hard">Hard (1-100)</option>
         </select>
-        <button id="startButton" class="hidden">Start Game</button> <!-- Make sure this button is present -->
+        <button id="startButton" class="hidden">Start Game</button>
     </div>
     <div class="gameplay">
         <div class="player-info">
@@ -49,13 +49,18 @@
     <button id="leaderboardButton">Leaderboard</button>
     <div id="leaderboard" class="hidden">
         <h2>Leaderboard</h2>
-        <label for="sortCriteria">Sort Criteria:</label> <!-- Add the Sort Criteria Select Element here -->
+        <label for="sortCriteria">Sort Criteria:</label>
         <select id="sortCriteria">
             <option value="attempts">Attempts</option>
             <option value="name">Name</option>
         </select>
         <ol id="leaderboardList"></ol>
         <button id="leaderboardCloseButton">Close</button>
+        <div id="paginationControls"> <!-- Add this div for pagination controls -->
+            <button id="prevPageButton">Previous Page</button>
+            <span id="currentPage">Page 1</span>
+            <button id="nextPageButton">Next Page</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
