@@ -19,14 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const winnerDisplay = document.querySelector('.winner');
     const playerNameDisplay = document.getElementById('playerNameDisplay');
     const attemptsLeftDisplay = document.getElementById('attemptsLeft');
-    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
-    const body = document.body;
 
     let min, max, targetNumber, remainingAttempts, currentPlayer;
     let player1Name = '';
     let player2Name = '';
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
+
+    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+    const body = document.body;
 
     toggleDarkModeButton.addEventListener('click', function () {
         body.classList.toggle('dark-mode');
@@ -217,4 +218,20 @@ document.addEventListener('DOMContentLoaded', function () {
             nextPageButton.removeAttribute('disabled');
         }
     }
+
+    // Event listeners for audio test buttons
+    document.getElementById('playCorrectSound').addEventListener('click', function () {
+        const correctSound = document.getElementById('correctSound');
+        correctSound.play();
+    });
+
+    document.getElementById('playWrongSound').addEventListener('click', function () {
+        const wrongSound = document.getElementById('wrongSound');
+        wrongSound.play();
+    });
+
+    document.getElementById('playGameOverSound').addEventListener('click', function () {
+        const gameOverSound = document.getElementById('gameOverSound');
+        gameOverSound.play();
+    });
 });
