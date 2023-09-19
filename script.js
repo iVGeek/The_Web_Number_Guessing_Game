@@ -26,25 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
 
-    // Check if the body initially has the 'dark-mode' class
-    const body = document.body;
-    const isDarkMode = body.classList.contains('dark-mode');
-
-    // Apply the appropriate background image based on the initial mode
-    if (isDarkMode) {
-        body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Dark mode background image
-    } else {
-        body.style.backgroundImage = 'url("light-mode-bg.jpg")'; // Light mode background image
-    }
-
     const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+    const body = document.body;
 
     toggleDarkModeButton.addEventListener('click', function () {
-        // Toggle the 'dark-mode' and 'light-mode' classes on the body element
         body.classList.toggle('dark-mode');
-        body.classList.toggle('light-mode');
 
-        // Toggle the background image based on the current mode
+        // Add background animations based on dark or light mode
         if (body.classList.contains('dark-mode')) {
             body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Dark mode background image
         } else {
