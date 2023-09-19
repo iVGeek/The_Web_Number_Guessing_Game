@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(userGuess) || userGuess < min || userGuess > max) {
             message.textContent = `Please enter a valid number between ${min} and ${max}.`;
-            playWrongSound();
             return;
         }
 
@@ -99,10 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (userGuess === targetNumber) {
             endGame(currentPlayerName);
-            playCorrectSound();
         } else if (remainingAttempts === 0) {
             endGame('none');
-            playGameOverSound();
         } else {
             currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
@@ -227,17 +224,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const gameOverSound = document.getElementById('gameOverSound');
 
     function playCorrectSound() {
-        correctSound.currentTime = 0; // Rewind to the beginning in case it's already playing
-        correctSound.play();
+        if (correctSound) {
+            correctSound.currentTime = 0;
+            correctSound.play();
+        }
     }
 
     function playWrongSound() {
-        wrongSound.currentTime = 0; // Rewind to the beginning in case it's already playing
-        wrongSound.play();
+        if (wrongSound) {
+            wrongSound.currentTime = 0;
+            wrongSound.play();
+        }
     }
 
     function playGameOverSound() {
-        gameOverSound.currentTime = 0; // Rewind to the beginning in case it's already playing
-        gameOverSound.play();
+        if (gameOverSound) {
+            gameOverSound.currentTime = 0;
+            gameOverSound.play();
+        }
     }
 });
