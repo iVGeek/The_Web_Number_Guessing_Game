@@ -19,23 +19,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const winnerDisplay = document.querySelector('.winner');
     const playerNameDisplay = document.getElementById('playerNameDisplay');
     const attemptsLeftDisplay = document.getElementById('attemptsLeft');
+    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+    const body = document.body;
 
     let min, max, targetNumber, remainingAttempts, currentPlayer;
     let player1Name = '';
     let player2Name = '';
     let currentPlayerName = '';
-    let singlePlayer = true;
-
-    const toggleDarkModeButton = document.getElementById('toggleDarkMode');
-    const body = document.body;
+    let singlePlayer = true; // Single player mode flag
 
     toggleDarkModeButton.addEventListener('click', function () {
         body.classList.toggle('dark-mode');
 
+        // Add background animations based on dark or light mode
         if (body.classList.contains('dark-mode')) {
-            body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Path to your dark mode background image
+            body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Dark mode background image
         } else {
-            body.style.backgroundImage = 'url("light-mode-bg.jpg")'; // Path to your light mode background image
+            body.style.backgroundImage = 'url("light-mode-bg.jpg")'; // Light mode background image
         }
     });
 
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (remainingAttempts === 0) {
             endGame('none');
         } else {
-            currentPlayer = 3 - currentPlayer;
+            currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
             message.textContent = `${currentPlayerName}'s Turn`;
         }
@@ -110,11 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
         startButton.removeAttribute('disabled');
-
-        const attempts = remainingAttempts;
-        const difficulty = difficultySelect.value;
-
-        leaderboardData.push({ name: currentPlayerName, attempts, difficulty });
 
         if (winner === 'none') {
             message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
@@ -136,10 +131,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     guessSubmit.addEventListener('click', function () {
-        makeGuess();
+        makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
 
-    // Leaderboard features (Add this section)
+    // Leaderboard features
     const leaderboardButton = document.getElementById('leaderboardButton');
     const leaderboard = document.getElementById('leaderboard');
     const leaderboardList = document.getElementById('leaderboardList');
@@ -150,15 +145,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextPageButton = document.getElementById('nextPageButton');
     const currentPageDisplay = document.getElementById('currentPage');
 
+    let leaderboardData = [];
     let currentPage = 1;
     const leaderboardPerPage = 5;
 
     leaderboardButton.addEventListener('click', function () {
+        // Display the leaderboard
         leaderboard.style.display = 'block';
+
+        // Update the leaderboard UI
         updateLeaderboard();
     });
 
     leaderboardCloseButton.addEventListener('click', function () {
+        // Hide the leaderboard
         leaderboard.style.display = 'none';
     });
 
@@ -181,18 +181,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateLeaderboard() {
-        leaderboardList.innerHTML = '';
-        const sortedData = sortLeaderboardData(leaderboardData, sortCriteriaSelect.value);
-        const filteredData = filterLeaderboardData(sortedData, filterDifficultySelect.value);
+        leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
 
+        // Calculate the start and end indices for the current page
         const startIndex = (currentPage - 1) * leaderboardPerPage;
         const endIndex = startIndex + leaderboardPerPage;
-        const displayedData = filteredData.slice(startIndex, endIndex);
 
-        displayedData.forEach((entry, index) => {
+        // Add leaderboard entries to the UI for the current page
+        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
             const listItem = document.createElement('li');
             listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
 
+            // Highlight the current user's entry
             if (entry.name === currentPlayerName) {
                 listItem.classList.add('current-user');
             }
@@ -200,46 +200,21 @@ document.addEventListener('DOMContentLoaded', function () {
             leaderboardList.appendChild(listItem);
         });
 
+        // Update current page display
         currentPageDisplay.textContent = `Page ${currentPage}`;
 
+        // Disable pagination buttons when at the start or end of the leaderboard
         if (currentPage === 1) {
             prevPageButton.setAttribute('disabled', 'disabled');
         } else {
             prevPageButton.removeAttribute('disabled');
         }
 
-        const maxPage = Math.ceil(filteredData.length / leaderboardPerPage);
+        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
         if (currentPage === maxPage) {
             nextPageButton.setAttribute('disabled', 'disabled');
         } else {
             nextPageButton.removeAttribute('disabled');
         }
     }
-
-    function sortLeaderboardData(data, criteria) {
-        if (criteria === 'attempts-asc') {
-            return data.slice().sort((a, b) => a.attempts - b.attempts);
-        } else if (criteria === 'attempts-desc') {
-            return data.slice().sort((a, b) => b.attempts - a.attempts);
-        } else {
-            return data.slice().sort((a, b) => a.name.localeCompare(b.name));
-        }
-    }
-
-    function filterLeaderboardData(data, difficulty) {
-        if (difficulty === 'all') {
-            return data;
-        } else {
-            return data.filter(entry => entry.difficulty === difficulty);
-        }
-    }
-
-    // Audio elements with file paths
-    const correctSound = new Audio('correct.mp3'); // Path to your correct sound file
-    const wrongSound = new Audio('wrong.mp3'); // Path to your wrong sound file
-    const gameOverSound = new Audio('gameover.mp3'); // Path to your game over sound file
-
-    guessSubmit.addEventListener('click', function () {
-        makeGuess();
-    });
 });
