@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Constants for difficulty levels
     const EASY_MIN = 1;
     const EASY_MAX = 20;
     const MEDIUM_MIN = 1;
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const HARD_MIN = 1;
     const HARD_MAX = 100;
 
-    // Elements
     const gameModeSelect = document.getElementById('gameMode');
     const playerNameInputs = document.getElementById('playerNameInputs');
     const player1NameInput = document.getElementById('player1Name');
@@ -28,22 +26,25 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
 
-    // Dark mode toggle
     const toggleDarkModeButton = document.getElementById('toggleDarkMode');
     const body = document.body;
+    let isDarkMode = false; // Add a variable to track the mode
 
     toggleDarkModeButton.addEventListener('click', function () {
+        isDarkMode = !isDarkMode; // Toggle the mode
         body.classList.toggle('dark-mode');
 
+        // Update button text based on the current mode
+        toggleDarkModeButton.textContent = isDarkMode ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+
         // Add background animations based on dark or light mode
-        if (body.classList.contains('dark-mode')) {
+        if (isDarkMode) {
             body.style.backgroundImage = 'url("dark-mode-bg.jpg")'; // Dark mode background image
         } else {
             body.style.backgroundImage = 'url("light-mode-bg.jpg")'; // Light mode background image
         }
     });
 
-    // Event listener for game mode selection
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
         if (selectedGameMode === 'single') {
@@ -60,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.classList.remove('hidden');
     });
 
-    // Event listener for starting the game
     startButton.addEventListener('click', function () {
         player1Name = player1NameInput.value.trim() || 'Player 1';
         player2Name = player2NameInput.value.trim() || 'Player 2';
@@ -86,12 +86,10 @@ document.addEventListener('DOMContentLoaded', function () {
         resetUI();
     });
 
-    // Function to generate a random number within a range
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Function to handle player guesses
     function makeGuess() {
         const userGuess = parseInt(guessField.value);
 
@@ -114,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to end the game
     function endGame(winner) {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
@@ -129,19 +126,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Open the leaderboard when a player wins
             leaderboard.style.display = 'block';
-
-            // Add the winner to the leaderboard
-            leaderboardData.push({
-                name: winner,
-                attempts: remainingAttempts,
-                difficulty: difficultySelect.value,
-            });
-
             updateLeaderboard();
         }
     }
 
-    // Function to reset the UI for a new game
     function resetUI() {
         guessField.value = '';
         guessField.removeAttribute('disabled');
@@ -152,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function () {
         playerNameDisplay.textContent = currentPlayerName;
     }
 
-    // Event listener for submitting a guess
     guessSubmit.addEventListener('click', function () {
         makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
@@ -185,11 +172,9 @@ document.addEventListener('DOMContentLoaded', function () {
         leaderboard.style.display = 'none';
     });
 
-    // Event listener for sorting criteria and difficulty filter
     sortCriteriaSelect.addEventListener('change', updateLeaderboard);
     filterDifficultySelect.addEventListener('change', updateLeaderboard);
 
-    // Event listener for pagination buttons
     prevPageButton.addEventListener('click', function () {
         if (currentPage > 1) {
             currentPage--;
@@ -205,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Function to update the leaderboard UI
     function updateLeaderboard() {
         leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
 
@@ -213,19 +197,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (currentPage - 1) * leaderboardPerPage;
         const endIndex = startIndex + leaderboardPerPage;
 
-        // Sort the leaderboard data based on the selected criteria
-        let sortedData = [...leaderboardData];
-        if (sortCriteriaSelect.value === 'name') {
-            sortedData.sort((a, b) => a.name.localeCompare(b.name));
-        } else if (sortCriteriaSelect.value === 'attempts') {
-            sortedData.sort((a, b) => a.attempts - b.attempts);
-        }
-
-        // Apply difficulty filter
-        const filteredData = sortedData.filter((entry) => entry.difficulty === filterDifficultySelect.value);
-
         // Add leaderboard entries to the UI for the current page
-        filteredData.slice(startIndex, endIndex).forEach((entry, index) => {
+        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
             const listItem = document.createElement('li');
             listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
 
@@ -247,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
             prevPageButton.removeAttribute('disabled');
         }
 
-        const maxPage = Math.ceil(filteredData.length / leaderboardPerPage);
+        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
         if (currentPage === maxPage) {
             nextPageButton.setAttribute('disabled', 'disabled');
         } else {
@@ -255,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Sound effects
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
