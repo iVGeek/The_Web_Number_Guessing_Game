@@ -6,12 +6,11 @@ body {
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s ease;
-    border-radius: 10px;
 }
 
 .game-title {
     color: #333;
+    font-weight: bold; /* Make the title text bold */
 }
 
 .game-settings {
@@ -22,13 +21,12 @@ body {
     border: 1px solid #ddd;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
 }
 
 .game-settings label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
+    font-weight: bold; /* Make labels bold */
 }
 
 .game-settings select,
@@ -45,8 +43,10 @@ body {
     background-color: #007BFF;
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold; /* Make buttons bold */
+    animation: bounce 1s infinite; /* Add bouncing animation to buttons */
 }
 
 .game-settings button.hidden {
@@ -65,12 +65,11 @@ body {
     border: 1px solid #ddd;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
 }
 
 .player-info p {
     margin: 0;
-    font-weight: bold;
+    font-weight: bold; /* Make player info text bold */
 }
 
 .game-controls {
@@ -92,29 +91,34 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold; /* Make the guess submit button bold */
 }
 
 .message {
     margin-top: 20px;
-    font-weight: bold;
+    font-weight: bold; /* Make message text bold */
 }
 
 .winner {
     margin-top: 10px;
-    font-weight: bold;
+    font-weight: bold; /* Make winner text bold */
     color: #28a745;
 }
 
+/* Leaderboard button */
 .leaderboard-button {
     margin: 20px auto;
     padding: 10px 20px;
     background-color: #007BFF;
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold; /* Make leaderboard button bold */
+    animation: bounce 1s infinite; /* Add bouncing animation to the leaderboard button */
 }
 
+/* Leaderboard styles */
 .leaderboard {
     display: none;
     position: fixed;
@@ -128,11 +132,11 @@ body {
     overflow-y: auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
-    border-radius: 10px;
 }
 
 .leaderboard h2 {
     margin-top: 0;
+    font-weight: bold; /* Make leaderboard title text bold */
 }
 
 .leaderboard-list {
@@ -142,9 +146,10 @@ body {
 
 .leaderboard-list li {
     margin-bottom: 10px;
-    font-weight: bold;
+    font-weight: bold; /* Make leaderboard entry text bold */
 }
 
+/* Pagination buttons */
 .pagination {
     margin-top: 20px;
     text-align: center;
@@ -158,6 +163,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-right: 5px;
+    font-weight: bold; /* Make pagination button text bold */
 }
 
 .pagination button:disabled {
@@ -165,34 +171,42 @@ body {
     cursor: not-allowed;
 }
 
+/* Highlight current user's entry */
 .current-user {
-    background-color: #28a745;
+    background-color: #28a745; /* Default green color */
     color: #fff;
+    font-weight: bold; /* Make current user's entry text bold */
 }
 
+/* Dark mode */
 .dark-mode {
     background-color: #222;
     color: #fff;
-    border-radius: 10px;
 }
 
 .dark-mode .game-title {
-    color: #28a745;
+    color: #28a745; /* Dark green color for the title in dark mode */
+}
+
+.dark-mode .game-settings,
+.dark-mode .gameplay {
+    background-color: #444; /* Darker background for settings and gameplay areas in dark mode */
+    border: 1px solid #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff; /* Light text color for better visibility in dark mode */
 }
 
 /* Rest of your existing CSS styles */
 
-/* Updated toggle button text */
-#toggleDarkMode {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#toggleDarkMode:hover {
-    background-color: #007BFF;
+/* Bouncing Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
 }
