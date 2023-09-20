@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game Developed by iVGeek</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Guess the Number Game Developed by iVGeek</h1>
+    <button id="toggleDarkMode">Toggle Dark Mode</button>
+    <div class="game-settings">
+        <label for="gameMode">Game Mode:</label>
+        <select id="gameMode">
+            <option value="single">Single Player</option>
+            <option value="multi">Multiplayer</option>
+        </select>
+    </div>
+    <div id="playerNameInputs" class="hidden">
+        <label for="player1Name">Player Name:</label>
+        <input type="text" id="player1Name">
+        <label id="player2NameLabel" class="hidden" for="player2Name">Player 2 Name:</label>
+        <input id="player2NameInput" class="hidden" type="text" id="player2Name">
+    </div>
+    <div class="game-settings">
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy (1-20)</option>
+            <option value="medium">Medium (1-50)</option>
+            <option value="hard">Hard (1-100)</option>
+        </select>
+        <button id="startButton" class="hidden">Start Game</button>
+    </div>
+    <div class="gameplay">
+        <div class="player-info">
+            <p id="playerNameDisplay">Player 1's Turn</p>
+            <p>Attempts Left: <span id="attemptsLeft">-</span></p>
+        </div>
+        <div class="game-controls">
+            <input type="number" id="guessField" class="guess-field" disabled>
+            <button id="guessSubmit" class="guess-submit" disabled>Submit Guess</button>
+        </div>
+    </div>
+    <p class="message"></p>
+    <p class="winner"></p>
+    <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
+    <audio id="gameOverSound" src="gameover.mp3" preload="auto"></audio>
+    <button id="leaderboardButton">Leaderboard</button>
+    <div id="leaderboard" class="hidden">
+        <h2>Leaderboard</h2>
+        <div class="game-settings">
+            <label for="sortCriteria">Sort Criteria:</label>
+            <select id="sortCriteria">
+                <option value="name">Name</option>
+                <option value="attempts">Attempts</option>
+            </select>
+        </div>
+        <div class="game-settings">
+            <label for="filterDifficulty">Filter by Difficulty:</label>
+            <select id="filterDifficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        <ol id="leaderboardList"></ol>
+        <button id="leaderboardCloseButton">Close</button>
+        <div class="pagination">
+            <button id="prevPageButton">Previous Page</button>
+            <button id="nextPageButton">Next Page</button>
+            <p id="currentPage"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
