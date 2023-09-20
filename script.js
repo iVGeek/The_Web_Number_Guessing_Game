@@ -197,8 +197,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (currentPage - 1) * leaderboardPerPage;
         const endIndex = startIndex + leaderboardPerPage;
 
+        // Sort and filter the leaderboard data
+        const sortCriteria = sortCriteriaSelect.value;
+        const filterDifficulty = filterDifficultySelect.value;
+
+        let filteredData = leaderboardData;
+        if (filterDifficulty !== 'all') {
+            filteredData = leaderboardData.filter(entry => entry.difficulty === filterDifficulty);
+        }
+
+        if (sortCriteria === 'attempts') {
+            filteredData.sort((a, b) => a.attempts - b.attempts);
+        } else {
+            filteredData.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
         // Add leaderboard entries to the UI for the current page
-        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
+        filteredData.slice(startIndex, endIndex).forEach((entry, index) => {
             const listItem = document.createElement('li');
             listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
 
@@ -220,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
             prevPageButton.removeAttribute('disabled');
         }
 
-        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
+        const maxPage = Math.ceil(filteredData.length / leaderboardPerPage);
         if (currentPage === maxPage) {
             nextPageButton.setAttribute('disabled', 'disabled');
         } else {
