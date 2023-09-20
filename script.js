@@ -118,6 +118,10 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             message.textContent = `${winner} wins! The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = `${winner} wins!`;
+
+            // Open the leaderboard when a player wins
+            leaderboard.style.display = 'block';
+            updateLeaderboard();
         }
     }
 
