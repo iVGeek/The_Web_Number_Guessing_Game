@@ -129,6 +129,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Open the leaderboard when a player wins
             leaderboard.style.display = 'block';
+
+            // Add the winner to the leaderboard
+            leaderboardData.push({
+                name: winner,
+                attempts: remainingAttempts,
+                difficulty: difficultySelect.value,
+            });
+
             updateLeaderboard();
         }
     }
@@ -205,8 +213,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const startIndex = (currentPage - 1) * leaderboardPerPage;
         const endIndex = startIndex + leaderboardPerPage;
 
+        // Sort the leaderboard data based on the selected criteria
+        let sortedData = [...leaderboardData];
+        if (sortCriteriaSelect.value === 'name') {
+            sortedData.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (sortCriteriaSelect.value === 'attempts') {
+            sortedData.sort((a, b) => a.attempts - b.attempts);
+        }
+
+        // Apply difficulty filter
+        const filteredData = sortedData.filter((entry) => entry.difficulty === filterDifficultySelect.value);
+
         // Add leaderboard entries to the UI for the current page
-        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
+        filteredData.slice(startIndex, endIndex).forEach((entry, index) => {
             const listItem = document.createElement('li');
             listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
 
@@ -228,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
             prevPageButton.removeAttribute('disabled');
         }
 
-        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
+        const maxPage = Math.ceil(filteredData.length / leaderboardPerPage);
         if (currentPage === maxPage) {
             nextPageButton.setAttribute('disabled', 'disabled');
         } else {
