@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Constants for difficulty levels
     const EASY_MIN = 1;
     const EASY_MAX = 20;
     const MEDIUM_MIN = 1;
@@ -6,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const HARD_MIN = 1;
     const HARD_MAX = 100;
 
+    // Elements
     const gameModeSelect = document.getElementById('gameMode');
     const playerNameInputs = document.getElementById('playerNameInputs');
     const player1NameInput = document.getElementById('player1Name');
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPlayerName = '';
     let singlePlayer = true; // Single player mode flag
 
+    // Dark mode toggle
     const toggleDarkModeButton = document.getElementById('toggleDarkMode');
     const body = document.body;
 
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Event listener for game mode selection
     gameModeSelect.addEventListener('change', function () {
         const selectedGameMode = gameModeSelect.value;
         if (selectedGameMode === 'single') {
@@ -56,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         startButton.classList.remove('hidden');
     });
 
+    // Event listener for starting the game
     startButton.addEventListener('click', function () {
         player1Name = player1NameInput.value.trim() || 'Player 1';
         player2Name = player2NameInput.value.trim() || 'Player 2';
@@ -81,10 +86,12 @@ document.addEventListener('DOMContentLoaded', function () {
         resetUI();
     });
 
+    // Function to generate a random number within a range
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    // Function to handle player guesses
     function makeGuess() {
         const userGuess = parseInt(guessField.value);
 
@@ -107,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Function to end the game
     function endGame(winner) {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
@@ -125,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Function to reset the UI for a new game
     function resetUI() {
         guessField.value = '';
         guessField.removeAttribute('disabled');
@@ -135,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
         playerNameDisplay.textContent = currentPlayerName;
     }
 
+    // Event listener for submitting a guess
     guessSubmit.addEventListener('click', function () {
         makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
@@ -167,9 +177,11 @@ document.addEventListener('DOMContentLoaded', function () {
         leaderboard.style.display = 'none';
     });
 
+    // Event listener for sorting criteria and difficulty filter
     sortCriteriaSelect.addEventListener('change', updateLeaderboard);
     filterDifficultySelect.addEventListener('change', updateLeaderboard);
 
+    // Event listener for pagination buttons
     prevPageButton.addEventListener('click', function () {
         if (currentPage > 1) {
             currentPage--;
@@ -185,6 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Function to update the leaderboard UI
     function updateLeaderboard() {
         leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
 
@@ -223,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Sound effects
     const correctSound = document.getElementById('correctSound');
     const wrongSound = document.getElementById('wrongSound');
     const gameOverSound = document.getElementById('gameOverSound');
