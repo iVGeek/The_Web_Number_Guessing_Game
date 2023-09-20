@@ -193,30 +193,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateLeaderboard() {
         leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
 
-        const sortCriteria = sortCriteriaSelect.value;
-        const filterDifficulty = filterDifficultySelect.value;
-
-        let filteredData = leaderboardData;
-
-        if (filterDifficulty !== 'all') {
-            filteredData = filteredData.filter(entry => entry.difficulty === filterDifficulty);
-        }
-
-        if (sortCriteria === 'attempts') {
-            filteredData.sort((a, b) => a.attempts - b.attempts);
-        } else {
-            filteredData.sort((a, b) => a.name.localeCompare(b.name));
-        }
-
         // Calculate the start and end indices for the current page
         const startIndex = (currentPage - 1) * leaderboardPerPage;
-        const endIndex = Math.min(startIndex + leaderboardPerPage, filteredData.length);
+        const endIndex = startIndex + leaderboardPerPage;
 
         // Add leaderboard entries to the UI for the current page
-        for (let i = startIndex; i < endIndex; i++) {
-            const entry = filteredData[i];
+        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
             const listItem = document.createElement('li');
-            listItem.textContent = `#${i + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
+            listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
 
             // Highlight the current user's entry
             if (entry.name === currentPlayerName) {
@@ -224,14 +208,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             leaderboardList.appendChild(listItem);
-        }
+        });
 
         // Update current page display
         currentPageDisplay.textContent = `Page ${currentPage}`;
 
         // Disable pagination buttons when at the start or end of the leaderboard
-        prevPageButton.disabled = currentPage === 1;
-        nextPageButton.disabled = endIndex === filteredData.length;
+        if (currentPage === 1) {
+            prevPageButton.setAttribute('disabled', 'disabled');
+        } else {
+            prevPageButton.removeAttribute('disabled');
+        }
+
+        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
+        if (currentPage === maxPage) {
+            nextPageButton.setAttribute('disabled', 'disabled');
+        } else {
+            nextPageButton.removeAttribute('disabled');
+        }
     }
 
     const correctSound = document.getElementById('correctSound');
