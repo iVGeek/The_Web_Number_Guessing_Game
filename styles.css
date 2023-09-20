@@ -1,17 +1,54 @@
-/* Add your CSS styles here */
-
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s;
 }
 
-.game-title {
+h1 {
     color: #333;
+    margin-top: 20px;
 }
 
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #222;
+    color: #fff;
+}
+
+/* Header Styles */
+header {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Header Styles */
+.dark-mode header {
+    background-color: #28a745;
+}
+
+/* Button Styles */
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+/* Dark Mode Button Styles */
+.dark-mode button {
+    background-color: #28a745;
+}
+
+/* Game Settings Styles */
 .game-settings {
     margin: 20px auto;
     width: 80%;
@@ -38,18 +75,11 @@ body {
 }
 
 .game-settings button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    display: block;
+    margin: 20px auto;
 }
 
-.game-settings button.hidden {
-    display: none;
-}
-
+/* Gameplay Styles */
 .gameplay {
     display: flex;
     justify-content: center;
@@ -101,19 +131,14 @@ body {
     color: #28a745;
 }
 
-/* Leaderboard button */
-.leaderboard-button {
+/* Leaderboard Button Styles */
+#leaderboardButton {
     margin: 20px auto;
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-/* Leaderboard styles */
-.leaderboard {
+/* Leaderboard Styles */
+#leaderboard {
     display: none;
     position: fixed;
     top: 50%;
@@ -128,21 +153,21 @@ body {
     z-index: 1;
 }
 
-.leaderboard h2 {
+#leaderboard h2 {
     margin-top: 0;
 }
 
-.leaderboard-list {
+#leaderboardList {
     list-style-type: none;
     padding: 0;
 }
 
-.leaderboard-list li {
+#leaderboardList li {
     margin-bottom: 10px;
     font-weight: bold;
 }
 
-/* Pagination buttons */
+/* Pagination Styles */
 .pagination {
     margin-top: 20px;
     text-align: center;
@@ -168,23 +193,3 @@ body {
     background-color: #28a745; /* Default green color */
     color: #fff;
 }
-
-/* Dark mode */
-.dark-mode {
-    background-color: #222;
-    color: #fff;
-}
-
-.dark-mode .game-title {
-    color: #28a745; /* Dark green color for the title in dark mode */
-}
-
-.dark-mode .game-settings,
-.dark-mode .gameplay {
-    background-color: #444; /* Darker background for settings and gameplay areas in dark mode */
-    border: 1px solid #333;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: #fff; /* Light text color for better visibility in dark mode */
-}
-
-/* Rest of your existing CSS styles */
