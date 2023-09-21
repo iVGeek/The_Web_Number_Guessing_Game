@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const player2NameLabel = document.getElementById('player2NameLabel');
     const player2NameInput = document.getElementById('player2Name');
     const difficultySelect = document.getElementById('difficulty');
-    const startButton = document.getElementById('startButton');
+    const startButton = document.getElementById('startButton'); // Add Start Game button
     const guessField = document.getElementById('guessField');
     const guessSubmit = document.getElementById('guessSubmit');
     const message = document.querySelector('.message');
@@ -58,10 +58,14 @@ document.addEventListener('DOMContentLoaded', function () {
             player2NameInput.classList.remove('hidden');
             singlePlayer = false;
         }
-        startButton.classList.remove('hidden');
+        startButton.classList.remove('hidden'); // Show Start Game button
     });
 
     startButton.addEventListener('click', function () {
+        startGame(); // Start the game when the Start Game button is clicked
+    });
+
+    function startGame() {
         player1Name = player1NameInput.value.trim() || 'Player 1';
         player2Name = player2NameInput.value.trim() || 'Player 2';
         currentPlayerName = player1Name;
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         targetNumber = generateRandomNumber(min, max);
         currentPlayer = 1;
         resetUI();
-    });
+    }
 
     function generateRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -116,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function endGame(winner) {
         guessField.setAttribute('disabled', 'disabled');
         guessSubmit.setAttribute('disabled', 'disabled');
-        startButton.removeAttribute('disabled');
+        startButton.removeAttribute('disabled'); // Enable the Start Game button
 
         if (winner === 'none') {
             message.textContent = `Both players lost. The correct number was ${targetNumber}.`;
@@ -124,10 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             message.textContent = `${winner} wins! The correct number was ${targetNumber}.`;
             winnerDisplay.textContent = `${winner} wins!`;
-
-            // Open the leaderboard when a player wins
-            leaderboard.style.display = 'block';
-            updateLeaderboard();
         }
     }
 
@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
         guessField.value = '';
         guessField.removeAttribute('disabled');
         guessSubmit.removeAttribute('disabled');
+        startButton.setAttribute('disabled', 'disabled'); // Disable the Start Game button during gameplay
         message.textContent = `${currentPlayerName}'s Turn`;
         winnerDisplay.textContent = '';
         attemptsLeftDisplay.textContent = remainingAttempts;
@@ -144,113 +145,4 @@ document.addEventListener('DOMContentLoaded', function () {
     guessSubmit.addEventListener('click', function () {
         makeGuess(); // Call the makeGuess function when the Submit Guess button is clicked
     });
-
-    // Leaderboard features
-    const leaderboardButton = document.getElementById('leaderboardButton');
-    const leaderboard = document.getElementById('leaderboard');
-    const leaderboardList = document.getElementById('leaderboardList');
-    const leaderboardCloseButton = document.getElementById('leaderboardCloseButton');
-    const sortCriteriaSelect = document.getElementById('sortCriteria');
-    const filterDifficultySelect = document.getElementById('filterDifficulty');
-    const prevPageButton = document.getElementById('prevPageButton');
-    const nextPageButton = document.getElementById('nextPageButton');
-    const currentPageDisplay = document.getElementById('currentPage');
-
-    let leaderboardData = [];
-    let currentPage = 1;
-    const leaderboardPerPage = 5;
-
-    leaderboardButton.addEventListener('click', function () {
-        // Display the leaderboard
-        leaderboard.style.display = 'block';
-
-        // Update the leaderboard UI
-        updateLeaderboard();
-    });
-
-    leaderboardCloseButton.addEventListener('click', function () {
-        // Hide the leaderboard
-        leaderboard.style.display = 'none';
-    });
-
-    sortCriteriaSelect.addEventListener('change', updateLeaderboard);
-    filterDifficultySelect.addEventListener('change', updateLeaderboard);
-
-    prevPageButton.addEventListener('click', function () {
-        if (currentPage > 1) {
-            currentPage--;
-            updateLeaderboard();
-        }
-    });
-
-    nextPageButton.addEventListener('click', function () {
-        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
-        if (currentPage < maxPage) {
-            currentPage++;
-            updateLeaderboard();
-        }
-    });
-
-    function updateLeaderboard() {
-        leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
-
-        // Calculate the start and end indices for the current page
-        const startIndex = (currentPage - 1) * leaderboardPerPage;
-        const endIndex = startIndex + leaderboardPerPage;
-
-        // Add leaderboard entries to the UI for the current page
-        leaderboardData.slice(startIndex, endIndex).forEach((entry, index) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `#${startIndex + index + 1}: ${entry.name} - ${entry.attempts} attempts (${entry.difficulty})`;
-
-            // Highlight the current user's entry
-            if (entry.name === currentPlayerName) {
-                listItem.classList.add('current-user');
-            }
-
-            leaderboardList.appendChild(listItem);
-        });
-
-        // Update current page display
-        currentPageDisplay.textContent = `Page ${currentPage}`;
-
-        // Disable pagination buttons when at the start or end of the leaderboard
-        if (currentPage === 1) {
-            prevPageButton.setAttribute('disabled', 'disabled');
-        } else {
-            prevPageButton.removeAttribute('disabled');
-        }
-
-        const maxPage = Math.ceil(leaderboardData.length / leaderboardPerPage);
-        if (currentPage === maxPage) {
-            nextPageButton.setAttribute('disabled', 'disabled');
-        } else {
-            nextPageButton.removeAttribute('disabled');
-        }
-    }
-
-    const correctSound = document.getElementById('correctSound');
-    const wrongSound = document.getElementById('wrongSound');
-    const gameOverSound = document.getElementById('gameOverSound');
-
-    function playCorrectSound() {
-        if (correctSound) {
-            correctSound.currentTime = 0;
-            correctSound.play();
-        }
-    }
-
-    function playWrongSound() {
-        if (wrongSound) {
-            wrongSound.currentTime = 0;
-            wrongSound.play();
-        }
-    }
-
-    function playGameOverSound() {
-        if (gameOverSound) {
-            gameOverSound.currentTime = 0;
-            gameOverSound.play();
-        }
-    }
 });
