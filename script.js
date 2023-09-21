@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const playerNameInputs = document.getElementById('playerNameInputs');
     const player1NameInput = document.getElementById('player1Name');
     const player2NameLabel = document.getElementById('player2NameLabel');
-    const player2NameInput = document.getElementById('player2NameInput');
+    const player2NameInput = document.getElementById('player2Name');
     const difficultySelect = document.getElementById('difficulty');
     const startButton = document.getElementById('startButton');
     const guessField = document.getElementById('guessField');
@@ -63,14 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     startButton.addEventListener('click', function () {
         player1Name = player1NameInput.value.trim() || 'Player 1';
+        player2Name = player2NameInput.value.trim() || 'Player 2';
         currentPlayerName = player1Name;
-
-        if (!singlePlayer) {
-            player2Name = player2NameInput.value.trim() || 'Player 2';
-            currentPlayer = getRandomPlayer(); // Randomly determine the starting player
-        } else {
-            currentPlayer = 1; // Single player always starts
-        }
 
         const selectedDifficulty = difficultySelect.value;
         if (selectedDifficulty === 'easy') {
@@ -88,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         targetNumber = generateRandomNumber(min, max);
+        currentPlayer = 1;
         resetUI();
     });
 
@@ -111,8 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (remainingAttempts === 0) {
             endGame('none');
         } else {
-            currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
-            currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
+            // Switch players correctly
+            currentPlayer = 3 - currentPlayer;
+            currentPlayerName = (currentPlayer === 1) ? player1Name : player2Name;
             message.textContent = `${currentPlayerName}'s Turn`;
         }
     }
@@ -256,10 +252,5 @@ document.addEventListener('DOMContentLoaded', function () {
             gameOverSound.currentTime = 0;
             gameOverSound.play();
         }
-    }
-
-    function getRandomPlayer() {
-        // Generate a random number (1 or 2) to determine the starting player
-        return Math.floor(Math.random() * 2) + 1;
     }
 });
