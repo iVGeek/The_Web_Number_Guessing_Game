@@ -59,19 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             singlePlayer = false;
         }
         startButton.classList.remove('hidden');
-        adjustUIForSinglePlayer(); // Call the function to adjust UI based on the game mode
     });
-
-    // Function to adjust UI based on game mode
-    function adjustUIForSinglePlayer() {
-        if (singlePlayer) {
-            player2NameLabel.classList.add('hidden');
-            player2NameInput.classList.add('hidden');
-        } else {
-            player2NameLabel.classList.remove('hidden');
-            player2NameInput.classList.remove('hidden');
-        }
-    }
 
     startButton.addEventListener('click', function () {
         player1Name = player1NameInput.value.trim() || 'Player 1';
@@ -118,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (remainingAttempts === 0) {
             endGame('none');
         } else {
-            currentPlayer = currentPlayer === 1 ? 2 : 1; // Switch between players 1 and 2
+            currentPlayer = 3 - currentPlayer; // Switch players (1 <-> 2)
             currentPlayerName = (currentPlayer === 1 || singlePlayer) ? player1Name : player2Name;
             message.textContent = `${currentPlayerName}'s Turn`;
         }
