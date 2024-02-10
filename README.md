@@ -33,11 +33,8 @@ Welcome to the "Multiplayer Guess the Number" game! This classic number guessing
 9. Enjoy sound effects for correct and incorrect guesses.
 10. Click the "Start Game" button to start a new game at any time.
 
-## Installation
-
-1. Clone this repository to your local machine.
-
-2. Open the `index.html` file in your web browser to start playing.
+## Launch
+Play the Guess the Word Game here (good luck!): https://ivgeek.github.io/The_Web_Number_Guessing_Game/
 
 ## Audio Credits
 
